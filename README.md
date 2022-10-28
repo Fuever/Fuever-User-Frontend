@@ -1,5 +1,7 @@
 # Fuever
 
+![2](https://user-images.githubusercontent.com/81243518/197668135-56ab8a08-531b-4625-94a2-1c29fa657133.png)
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
