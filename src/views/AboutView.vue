@@ -1,6 +1,10 @@
+<script setup lang="ts">
+import BaseDateCircle from '../components/BaseDateCircle.vue'
+</script>
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>The page is for preview</h1>
+    <BaseDateCircle day="０１" month="10月" :height="6"></BaseDateCircle>
   </div>
 </template>
 
