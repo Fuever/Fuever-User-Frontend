@@ -15,7 +15,7 @@ const props=defineProps<{
     <div class="circle-dashed"></div>
     <div class="circle-bk"></div>
     <div class="up-semicircle-bk"></div>
-    <h2 class="day" :style="{fontSize:height/4+'em'}">{{ day }}</h2>
+    <h2 class="day" :style="{fontSize:height/2.5+'em'}">{{ day }}</h2>
     <h1 class="month" :style="{fontSize:height/5+'em'}">{{ month }}</h1>
   </div>
 </template>
@@ -59,8 +59,8 @@ const props=defineProps<{
   z-index:3;
 }
 .day{
-  left: 25%;
-  top: 10%;
+  left: 28%;
+  top: 0;
   position: absolute;
   color: azure;
   z-index:3;

@@ -4,7 +4,8 @@ import BaseDateCircle from '../components/BaseDateCircle.vue'
 <template>
   <div class="about">
     <h1>The page is for preview</h1>
-    <BaseDateCircle day="０１" month="10月" :height="6"></BaseDateCircle>
+    <BaseDateCircle day="01" month="10月" :height="8"></BaseDateCircle>
+    <BaseDateCircle day="20" month="10月" :height="8"></BaseDateCircle>
   </div>
 </template>
 
