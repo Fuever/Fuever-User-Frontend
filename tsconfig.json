@@ -11,5 +11,9 @@
       "path": "./tsconfig.vitest.json"
     }
   ],
-  "include": ["app.d.ts"]
+  "include": ["app.d.ts"],
+  "compilerOptions": {
+    "types": ["element-plus/global"]
+  },
+  
 }
