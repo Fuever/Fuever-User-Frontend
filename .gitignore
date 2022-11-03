@@ -27,5 +27,6 @@ coverage
 *.sln
 *.sw?
 
-# 忽略.gitignore文件本身
-.gitignore
+# 忽略本地预览文件
+# 开发时的组件显示可以放入该view
+*LocalDevView.vue
