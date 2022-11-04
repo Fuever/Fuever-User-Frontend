@@ -1,26 +1,41 @@
+
 <script setup lang="ts">
 import { computed } from 'vue';
 
 const props=defineProps<{
   day: string;
   month: string;
-  height: number;
 }>();
 
 
 </script>
 
 <template>
-  <div :style="{ height: height+'em', width: height+'em' }">
-    <div class="circle-dashed"></div>
-    <div class="circle-bk"></div>
-    <div class="up-semicircle-bk"></div>
-    <h2 class="day" :style="{fontSize:height/2.5+'em'}">{{ day }}</h2>
-    <h1 class="month" :style="{fontSize:height/5+'em'}">{{ month }}</h1>
+  <div class="square-by-height">
+    <div class="square-by-width">
+      <div class="circle-dashed"></div>
+      <div class="circle-bk"></div>
+      <div class="up-semicircle-bk"></div>
+      <h1 class="day frame">{{ day }}</h1>
+      <h1 class="month frame">{{ month }}</h1>
+    </div>
   </div>
+  
 </template>
 
 <style scoped>
+.square-by-height{
+  /* 表示能在父容器中表示的最大正方形 */
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1/1;
+}
+.square-by-width{
+  /* 表示能在父容器中表示的最大正方形 */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+}
 .circle-dashed {
   background-color: transparent;
   width: 100%;
@@ -52,19 +67,37 @@ const props=defineProps<{
   z-index: 2;
 }
 .month{
-  left: 28%;
-  bottom: 20%;
+  width: 100%;
+  
+  /* 字体居中 */
+  margin: 0 auto;
+  text-align: center;
+
+  font-size: 1em;
+
   position: absolute;
+  bottom: 10%;
+
   color: azure;
   z-index:3;
 }
 .day{
-  left: 28%;
-  top: 0;
+  width: 100%;
+
+  /* 字体居中 */
+  margin: 0 auto;
+  text-align: center;
+
+  font-size: 1.6em;
+
   position: absolute;
+  
+
   color: azure;
   z-index:3;
 }
-
+/* .frame {
+  border: 2px solid red;
+} */
 
 </style>
