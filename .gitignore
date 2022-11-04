@@ -28,5 +28,6 @@ coverage
 *.sw?
 
 # 忽略本地预览文件
-# 开发时的组件显示可以放入该view
+# 开发时的组件预览可以放入下列位置
 *LocalDevView.vue
+local
