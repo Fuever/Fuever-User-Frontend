@@ -1,4 +1,10 @@
-
+<!--
+* @FileDescription: 首页-新闻模块下日期组件，使用时需要设定style中的font-size属性
+* @Author: Gallon
+* @Date: 2022/11/04
+* @LastEditors: Gallon
+* @LastEditTime: 2022/11/04 21:55
+-->
 <script setup lang="ts">
 import { computed } from 'vue';
 
