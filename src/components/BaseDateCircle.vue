@@ -6,16 +6,11 @@
 * @LastEditTime: 2022/11/04 21:55
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
-
-const props=defineProps<{
+const props = defineProps<{
   day: string;
   month: string;
 }>();
-
-
 </script>
-
 <template>
   <div class="square-by-height">
     <div class="square-by-width">
@@ -26,17 +21,16 @@ const props=defineProps<{
       <h1 class="month frame">{{ month }}</h1>
     </div>
   </div>
-  
 </template>
 
 <style scoped>
-.square-by-height{
+.square-by-height {
   /* 表示能在父容器中表示的最大正方形 */
   height: 100%;
   width: auto;
   aspect-ratio: 1/1;
 }
-.square-by-width{
+.square-by-width {
   /* 表示能在父容器中表示的最大正方形 */
   width: 100%;
   height: auto;
@@ -53,7 +47,7 @@ const props=defineProps<{
   z-index: 0;
 }
 .circle-bk {
-  background-color: #E99D42;
+  background-color: #e99d42;
   width: 90%;
   height: 90%;
   position: absolute;
@@ -62,8 +56,8 @@ const props=defineProps<{
   border-radius: 50%;
   z-index: 1;
 }
-.up-semicircle-bk{
-  background-color: #BD3124;
+.up-semicircle-bk {
+  background-color: #bd3124;
   width: 90%;
   height: 45%;
   position: absolute;
@@ -72,9 +66,9 @@ const props=defineProps<{
   top: 5%;
   z-index: 2;
 }
-.month{
+.month {
   width: 100%;
-  
+
   /* 字体居中 */
   margin: 0 auto;
   text-align: center;
@@ -85,9 +79,9 @@ const props=defineProps<{
   bottom: 10%;
 
   color: azure;
-  z-index:3;
+  z-index: 3;
 }
-.day{
+.day {
   width: 100%;
 
   /* 字体居中 */
@@ -97,13 +91,11 @@ const props=defineProps<{
   font-size: 1.6em;
 
   position: absolute;
-  
 
   color: azure;
-  z-index:3;
+  z-index: 3;
 }
 /* .frame {
   border: 2px solid red;
 } */
-
 </style>
