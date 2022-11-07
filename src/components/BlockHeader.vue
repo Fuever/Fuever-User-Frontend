@@ -14,7 +14,7 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-  <div class="flex" style="align-items: end">
+  <div class="flex header-container">
       <h1 class="title">{{title}}</h1>
       <h2 class="title-eng">{{title_english}}</h2>
       <el-button class="btn-more" type="primary" text>
@@ -28,6 +28,11 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+
+.header-container{
+  align-items: end;
+  margin:4% 0 0 0
+}
 .flex {
   display: flex;
 }
@@ -52,5 +57,10 @@ const props = defineProps<{
 .btn-more {
   margin: 0 4% 2% 0;
   padding: 0;
+}
+
+
+.years {
+  margin: 0 0 4% 0;
 }
 </style>
