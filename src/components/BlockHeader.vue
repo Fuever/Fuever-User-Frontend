@@ -38,7 +38,7 @@ const props = defineProps<{
 }
 .title-eng {
   font-size: 2em;
-  margin: 0 0 2% 4%;
+  margin: 0 0 1% 4%;
   flex: 1;
   color: #e99d42;
 }

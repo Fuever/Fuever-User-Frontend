@@ -17,7 +17,7 @@ const props = defineProps<{
 <template>
   <div class="flex">
     <BaseDateCircle class="news-date" :month="month" :day="day"></BaseDateCircle>
-    <div class="flex f-col news-titles">
+    <div class="flex f-col news-titles hidden">
       <h1>{{ title }}</h1>
       <h2>{{ brief }}</h2>
     </div>
@@ -35,17 +35,26 @@ h1{
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+
 }
 h2 {
     /* 多余内容省略号 */
-    width: 80%;
+    width: 90%;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+
+    max-width: 100%;
 }
 .flex {
   display: flex;
+  max-width: 100%;
 }
+
+.hidden{
+  overflow: hidden;
+}
+
 .f-col {
   flex-direction: column;
 }
