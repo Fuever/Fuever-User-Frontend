@@ -1,9 +1,9 @@
 <!--
-* @FileDescription: 首页-新闻模块下日期组件，使用时需要设定style中的font-size属性
+* @FileDescription: 新闻Item组件，使用时指定日、月、标题、文章缩略
 * @Author: Gallon
-* @Date: 2022/11/04
+* @Date: 2022/11/07
 * @LastEditors: Gallon
-* @LastEditTime: 2022/11/04 21:55
+* @LastEditTime: 2022/11/07 22:16
 -->
 <script setup lang="ts">
 import BaseDateCircle from "../components/BaseDateCircle.vue";
@@ -43,8 +43,6 @@ h2 {
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-
-    max-width: 100%;
 }
 .flex {
   display: flex;

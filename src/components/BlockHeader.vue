@@ -1,9 +1,10 @@
 <!--
-* @FileDescription: 首页-新闻模块下日期组件，使用时需要设定style中的font-size属性
-* @Author: Gallon
-* @Date: 2022/11/04
-* @LastEditors: Gallon
-* @LastEditTime: 2022/11/04 21:55
+* @FileDescription: 首页模块block标题头组件
+* 使用时绑定标题、英文标题
+* @Author: 
+* @Date: 2022/11/07
+* @LastEditors: 
+* @LastEditTime: 2022/11/07 22:16
 -->
 <script setup lang="ts">
 const props = defineProps<{
