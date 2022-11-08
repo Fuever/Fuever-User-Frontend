@@ -14,7 +14,6 @@ const props = defineProps<{
 <template>
   <div class="square-by-height">
     <div class="square-by-width">
-      <div class="circle-dashed"></div>
       <div class="circle-bk"></div>
       <div class="up-semicircle-bk"></div>
       <h1 class="day frame">{{ day }}</h1>
@@ -36,16 +35,6 @@ const props = defineProps<{
   height: auto;
   aspect-ratio: 1/1;
 }
-.circle-dashed {
-  background-color: transparent;
-  width: 100%;
-  height: 100%;
-  margin: 0 0 0 0;
-  position: absolute;
-  border-radius: 50%;
-  border: 2px dashed darkgray;
-  z-index: 0;
-}
 .circle-bk {
   background-color: #e99d42;
   width: 90%;
@@ -55,6 +44,7 @@ const props = defineProps<{
   top: 5%;
   border-radius: 50%;
   z-index: 1;
+
 }
 .up-semicircle-bk {
   background-color: #bd3124;
