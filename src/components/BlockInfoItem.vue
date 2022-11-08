@@ -16,9 +16,10 @@
 <template>
   <div class="flex f-col">
       <div class="flex hidden">
-        <h1 class="info-month">{{month}}/</h1>
-        <h2 class="info-day">{{day}}</h2>
-        <h2 class="info-title">{{title}}</h2>
+        
+        <h4 class="info-title">· {{title}}</h4>
+
+        <h4 class="info-date">- {{month}}/{{day}}</h4>
       </div>
     </div>
 </template>
@@ -31,22 +32,14 @@
 .f-col {
   flex-direction: column;
 }
-.info-month{
-  color: #BD3124;
-  margin: 0 0 0 4%;
-  font-weight: bold;
-}
 
-.info-day{
-  color: #BD3124;
-  margin: 2% 0 0 0 ;
-  font-weight: bold;
-}
 
 .info-title{
   color: black;
   overflow: hidden;
-  margin: 2% 0 0 2% ;
+  font-weight: bold;
+  flex:1;
+  margin: 1% 0 0 4%;
 
   /* 多余内容省略号 */
   width: 70%;
@@ -60,7 +53,9 @@
 }
 
 
-.years {
-  margin: 0 0 4% 0;
+
+.info-date{
+  color: #999;
+  margin: 1% 4% 0 2%;
 }
 </style>
