@@ -18,26 +18,17 @@ const props = defineProps<{
   <div class="flex">
     <BaseDateCircle class="news-date" :month="month" :day="day"></BaseDateCircle>
     <div class="flex f-col news-titles hidden">
-      <h1>{{ title }}</h1>
-      <h2>{{ brief }}</h2>
+      <h4 class="title">{{ title }}</h4>
+      <h4>{{ brief }}</h4>
     </div>
   </div>
 </template>
 
 <style scoped>
-h1{
-
-    font-size: 2em;
-    font-weight: bold;
-
-    /* 多余内容省略号 */
-    width: 70%;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-
+.title{
+  font-weight: bold;
 }
-h2 {
+h4 {
     /* 多余内容省略号 */
     width: 90%;
     white-space:nowrap;
@@ -61,8 +52,8 @@ h2 {
 }
 
 .news-date {
-  height: 100px;
-  font-size: 1.8em;
+  height: 50px;
+  font-size: 0.8em;
   margin: 2% 2% 0 2%;
 }
 
