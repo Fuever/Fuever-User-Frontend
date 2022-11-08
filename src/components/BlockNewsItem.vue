@@ -54,10 +54,10 @@ h4 {
 .news-date {
   height: 50px;
   font-size: 0.8em;
-  margin: 2% 2% 0 2%;
+  margin: 0 2% 0 2%;
 }
 
 .news-titles {
-  margin: 4% 2% 0 2%;
+  margin: 1% 2% 0 2%;
 }
 </style>
