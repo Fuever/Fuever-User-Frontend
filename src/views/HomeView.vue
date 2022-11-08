@@ -59,7 +59,7 @@ loadForums();
       </el-carousel-item>
     </el-carousel>
 
-    <BlockHeader title="新闻栏" title_english="News"></BlockHeader>
+    <BlockHeader title="校园资讯" title_english="Information"></BlockHeader>
     <BlockNewsItem
       v-for="newItem in news"
       :day="(newItem['date'] as string).substring(8,10)"
@@ -68,14 +68,6 @@ loadForums();
       :brief="newItem['content']"
     ></BlockNewsItem>
 
-    <BlockHeader title="校园资讯" title_english="Information"></BlockHeader>
-    <BlockInfoItem
-      v-for="item in infos"
-      :day="(item['date'] as string).substring(8,10)"
-      :month="(item['date'] as string).substring(5,7)"
-      :title="item['title']"
-      :brief="item['content']"
-    ></BlockInfoItem>
 
     <BlockHeader title="影像福大" title_english="Videos"></BlockHeader>
     <video class="frame" type="video/mp4"></video>
@@ -98,7 +90,7 @@ loadForums();
       </el-timeline>
     </div>
 
-    <BlockHeader title="时光长廊" title_english="Images"></BlockHeader>
+    <BlockHeader title="时光长廊" title_english="Gallery"></BlockHeader>
     <div class="flex f-col images">
       <el-carousel :interval="5000" type="card" height="160px" arrow="always">
         <el-carousel-item v-for="item in 6" :key="item" style="border: 2px solid black">
