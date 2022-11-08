@@ -1,43 +1,166 @@
 <script setup lang="ts">
-
+import BlockNewsItem from "../components/BlockNewsItem.vue";
+import BlockHeader from "@/components/BaseHeader.vue";
+import BlockInfoItem from "@/components/BlockInfoItem.vue";
+import BlockSingleForum from "@/components/BlockSingleForum.vue";
+import BaseTail from "@/components/BaseTail.vue"; 
+import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from "element-plus";
+import axios from "axios";
+import { ref, reactive, computed, watch, watchEffect } from "vue";
+import IconFzu from "../components/icons/IconFzu.vue";
+import { AlarmClock } from "@element-plus/icons-vue";
+const news = ref([]);
+const infos = ref([]);
+const activities = ref([]);
+const forums = ref([]);
+const loadNews = async () => {
+  try {
+    let { data } = await axios("http://localhost:3001/news");
+    news.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const loadInfos = async () => {
+  try {
+    let { data } = await axios("http://localhost:3001/infos");
+    infos.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const loadActivities = async () => {
+  try {
+    let { data } = await axios("http://localhost:3001/activities");
+    activities.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const loadForums = async () => {
+  try {
+    let { data } = await axios("http://localhost:3001/forums");
+    forums.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+loadNews();
+loadInfos();
+loadActivities();
+loadForums();
 </script>
 
 <template>
-  <body class="flex column">
-    <div style="height: 160px;" class="flex shuffle"></div>
-    <div style="height: 280px;" class="flex column news">
-      <div style="height: 100px;" class="flex title">新闻</div>
-      <div style="flex:1" class="flex">
-        <div class="flex news-date "  style="flex:1">日期</div>
-        <div class="flex flex1"  style="flex:5">新闻简略信息</div>
-      </div>
-      <div style="flex:1" class="flex">
-        <div class="flex news-date" style="flex:1">日期</div>
-        <div class="flex flex1"  style="flex:5">新闻简略信息</div>
-      </div>
+  <div class="flex f-col">
+    <el-carousel>
+      <el-carousel-item v-for="item in 4" :key="item">
+        <h1 class="small justify-center" text="2xl">{{ item }}</h1>
+      </el-carousel-item>
+    </el-carousel>
+
+    <BlockHeader title="新闻栏" title_english="News"></BlockHeader>
+    <BlockNewsItem
+      v-for="newItem in news"
+      :day="(newItem['date'] as string).substring(8,10)"
+      :month="(newItem['date'] as string).substring(5,7)+'月'"
+      :title="newItem['title']"
+      :brief="newItem['content']"
+    ></BlockNewsItem>
+
+    <BlockHeader title="校园资讯" title_english="Information"></BlockHeader>
+    <BlockInfoItem
+      v-for="item in infos"
+      :day="(item['date'] as string).substring(8,10)"
+      :month="(item['date'] as string).substring(5,7)"
+      :title="item['title']"
+      :brief="item['content']"
+    ></BlockInfoItem>
+
+    <BlockHeader title="影像福大" title_english="Videos"></BlockHeader>
+    <video class="frame" type="video/mp4"></video>
+
+    <BlockHeader title="校庆活动" title_english="Activities"></BlockHeader>
+
+    <div style="margin: 0 4% 0 0; overflow-y: overlay; height: 280px">
+      <el-timeline>
+        <el-timeline-item
+          v-for="item in activities"
+          center
+          :timestamp="item['date']"
+          placement="top"
+        >
+          <el-card>
+            <h4>{{ item["title"] }}</h4>
+            <p>{{ item["creator"] }}提交于{{ item["date"] }}</p>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
     </div>
+
+    <BlockHeader title="时光长廊" title_english="Images"></BlockHeader>
+    <div class="flex f-col images">
+      <el-carousel :interval="5000" type="card" height="160px" arrow="always">
+        <el-carousel-item v-for="item in 6" :key="item" style="border: 2px solid black">
+          <h3 text="2xl" justify="center">{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
+      <h2 class="image-title">图书馆后的小树林</h2>
+    </div>
+
+    <BlockHeader title="交流论坛" title_english="Forum"></BlockHeader>
+    <div class="flex f-col forum-container">
+      <BlockSingleForum
+        v-for="item in forums"
+        :title="item['title']"
+        :description="item['description']"
+        :creator="item['creator']"
+        :date="item['date']"
+      />
+    </div>
+    <BaseTail/>
+
     
-  </body>
+  </div>
 </template>
 <style scoped>
-
-*{
-  border: 1px solid black;
-  
+.frame {
+  border: 2px solid royalblue;
 }
-.flex{
-  margin: 3px;
-  padding: 3px;
-  display:flex;
-  
+.flex {
+  display: flex;
 }
 
-.flex1{
-  flex:1
+.f-center {
+  align-items: center;
 }
-.column{
+.f-col {
   flex-direction: column;
-
 }
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+
+.image-title {
+  align-self: center;
+  font-weight: bold;
+}
+
+.images {
+  margin: 0 2% 0 2%;
+}
+
+.forum-container {
+  border: 1px solid #777;
+  height: 260px;
+  overflow-y: auto;
+  margin: 0 3% 0 3%;
+}
+
 
 </style>
