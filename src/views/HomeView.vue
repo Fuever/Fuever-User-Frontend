@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import BlockNewsItem from "../components/BlockNewsItem.vue";
 import BlockHeader from "@/components/BaseHeader.vue";
-import BlockInfoItem from "@/components/BlockInfoItem.vue";
 import BlockSingleForum from "@/components/BlockSingleForum.vue";
 import BaseTail from "@/components/BaseTail.vue"; 
 import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from "element-plus";
