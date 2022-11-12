@@ -2,63 +2,33 @@
 
 ![2](https://user-images.githubusercontent.com/81243518/197668135-56ab8a08-531b-4625-94a2-1c29fa657133.png)
 
-This template should help get you started developing with Vue 3 in Vite.
+虎纠呆哦软件工程软工实践小组
 
-## Recommended IDE Setup
+# 开发说明
+## 项目创建
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+`需要在src/views下新建名为LocalDevView.vue的文件`
 
-## Type Support for `.vue` Imports in TS
+> 该页面文件已放入了.gitignore，目的是每个开发成员可以在本地有一份开发时的预览界面且不干扰其他协作者的开发。建议的实践方法是对任意的组件或界面，先在这个页面进行开发，效果基本实现后再新建文件放入。（间接原因是Volar的单页面预览功能并不完善）
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+> 同时.gitignore中含一个local文件夹，任何在本地开发而应该脱离版本控制的文件可以放在这里。(比如想要为尝试flex布局中一些小细节而创建的html预览文件)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+`上面创建文件这步要有否则后面会报错`
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 预览
+由于后端暂时没有给出接口
+```sh
+npm run json
+```
+
+> 将暴露本地3001端口模拟json，否则不会有数据显示
+
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
