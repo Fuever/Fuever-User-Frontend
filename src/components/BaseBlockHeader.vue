@@ -4,34 +4,38 @@
 * @Author: 
 * @Date: 2022/11/07
 * @LastEditors: 
-* @LastEditTime: 2022/11/07 22:16
+* @LastEditTime: 2022/11/12 22:38
 -->
 <script setup lang="ts">
-const props = defineProps<{
-    title: string,
-    title_english: string;
-  
-}>();
+export interface Props {
+  title: string;
+  title_english: string;
+  hideMore?: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  hideMore:true,
+})
 </script>
 <template>
   <div class="flex header-container">
-      <h1 class="title">{{title}}</h1>
-      <h2 class="title-eng">{{title_english}}</h2>
+    <h1 class="title">{{ title }}</h1>
+    <h2 class="title-eng">{{ title_english }}</h2>
+    <div v-if="hideMore">
       <el-button class="btn-more" type="primary" text>
         <h2 class="more-text">更多&nbsp;</h2>
         <el-icon size="12">
-          <ArrowRightBold/>
+          <ArrowRightBold />
         </el-icon>
       </el-button>
     </div>
-    <img class="years" src="../assets/images/years.png" alt="" />
+  </div>
+  <img class="years" src="../assets/images/years.png" alt="" />
 </template>
 
 <style scoped>
-
-.header-container{
+.header-container {
   align-items: end;
-  margin:4% 0 0 0
+  margin: 4% 0 0 0;
 }
 .flex {
   display: flex;
@@ -58,7 +62,6 @@ const props = defineProps<{
   margin: 0 4% 2% 0;
   padding: 0;
 }
-
 
 .years {
   margin: 0 0 4% 0;
