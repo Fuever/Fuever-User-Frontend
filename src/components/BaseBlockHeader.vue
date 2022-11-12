@@ -1,9 +1,9 @@
 <!--
 * @FileDescription: 首页模块block标题头组件
 * 使用时绑定标题、英文标题
-* @Author: 
+* @Author: Gallon
 * @Date: 2022/11/07
-* @LastEditors: 
+* @LastEditors: Gallon
 * @LastEditTime: 2022/11/12 22:38
 -->
 <script setup lang="ts">
