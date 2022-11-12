@@ -47,7 +47,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <template>
-  <img src="../../local/pexels-justyna-serafin-11346010.jpg" class="bk" alt="" />
+  <img src="@/assets/login_bk.jpg" class="bk" alt="" />
   <div class="bk-filter"></div>
   <div class="flex col">
     
