@@ -4,24 +4,34 @@
 * @Author: Gallon
 * @Date: 2022/11/07
 * @LastEditors: Gallon
-* @LastEditTime: 2022/11/12 22:38
+* @LastEditTime: 2022/11/13 16:38
 -->
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
 export interface Props {
   title: string;
   title_english: string;
-  hideMore?: boolean
+  hideMore?: boolean;
+  toPath?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  hideMore:true,
+  hideMore: false,
+  toPath: '/'
 })
+const router = useRouter()
+const toMore = (path:string) => {
+  router.push({
+    path:path
+  })
+}
 </script>
 <template>
   <div class="flex header-container">
     <h1 class="title">{{ title }}</h1>
     <h2 class="title-eng">{{ title_english }}</h2>
-    <div v-if="hideMore">
-      <el-button class="btn-more" type="primary" text>
+    <div v-if="!hideMore">
+      <el-button @click="toMore(toPath)" class="btn-more" type="primary" text>
         <h2 class="more-text">更多&nbsp;</h2>
         <el-icon size="12">
           <ArrowRightBold />
