@@ -109,12 +109,13 @@ loadForums();
       <BlockHeader title="交流论坛" title_english="Forum"></BlockHeader>
       <div class="flex f-col forum-container">
         <BlockSingleForum
-          v-for="item in forums"
+         v-for="item in forums"
           :title="item['title']"
           :description="item['description']"
           :creator="item['creator']"
           :date="item['date']"
         />
+      
       </div>
       <BaseTail />
     </div>
