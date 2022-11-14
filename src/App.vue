@@ -40,7 +40,7 @@ nav a.router-link-exact-active:hover {
 nav a {
   display: inline-block;
   padding: 0;
-  color:gray;
+  color: gray;
 }
 
 nav a:first-of-type {
