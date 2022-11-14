@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
@@ -24,7 +23,6 @@ header {
   max-height: 100vh;
 }
 
-
 nav {
   width: 100%;
   font-size: 16px;
@@ -42,11 +40,9 @@ nav a.router-link-exact-active:hover {
 nav a {
   display: inline-block;
   padding: 0;
-  
 }
 
 nav a:first-of-type {
   border: 0;
 }
-
 </style>
