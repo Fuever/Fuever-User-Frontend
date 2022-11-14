@@ -2,7 +2,7 @@
 import BlockHeader from "@/components/BaseBlockHeader.vue";
 import BlockSingleForum from "@/components/BlockSingleForum.vue";
 import BaseTail from "@/components/BaseTail.vue";
-import _InfiniteScroll from "element-plus/es/components/infinite-scroll";
+
 import { ElCarousel } from "element-plus";
 import TopicIconVue from "@/components/TopicIcon.vue";
 import { ref } from "vue";
