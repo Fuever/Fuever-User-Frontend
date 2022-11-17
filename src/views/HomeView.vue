@@ -6,46 +6,32 @@
 * @LastEditTime: 2022/11/13 16:58
 -->
 <script setup lang="ts">
-import BlockNewsItem from "../components/BlockNewsItem.vue";
-import BlockHeader from "@/components/BaseBlockHeader.vue";
-import BlockSingleForum from "@/components/BlockSingleForum.vue";
-import BaseTail from "@/components/BaseTail.vue";
-import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from "element-plus";
-import axios from "axios";
-import { ref } from "vue";
-const news = ref([]);
-const activities = ref([]);
-const forums = ref([]);
-const loadNews = async () => {
-  try {
-    let { data } = await axios("http://localhost:3001/news");
-    news.value = data;
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const loadActivities = async () => {
-  try {
-    let { data } = await axios("http://localhost:3001/activities");
-    activities.value = data;
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const loadForums = async () => {
-  try {
-    let { data } = await axios("http://localhost:3001/forums");
-    forums.value = data;
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-loadNews();
-loadActivities();
-loadForums();
+import BlockNewsItem from '../components/BlockNewsItem.vue'
+import BlockHeader from '@/components/BaseBlockHeader.vue'
+import BlockSingleForum from '@/components/BlockSingleForum.vue'
+import BaseTail from '@/components/BaseTail.vue'
+import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from 'element-plus'
+import { ref } from 'vue'
+import { getAnniversaries, getNews, getPosts } from '@/server/api'
+import type { News, Post, Anniversary } from '@/server/models'
+const news = ref<News[] | null>()
+const anniversaries = ref<Anniversary[] | null>()
+const posts = ref<Post[] | null>()
+console.log('=========>')
+console.log(news)
+console.log(anniversaries)
+console.log(posts)
+console.log('=========>')
+getNews().then((result) => {
+  news.value = result
+})
+getPosts().then((result) => {
+  posts.value = result
+})
+getAnniversaries().then((result) => {
+  anniversaries.value = result
+})
+
 </script>
 
 <template>
@@ -59,16 +45,12 @@ loadForums();
         </el-carousel>
       </div>
 
-      <BlockHeader
-        title="校园资讯"
-        title_english="Information"
-        to-path="/news"
-      ></BlockHeader>
+      <BlockHeader title="校园资讯" title_english="Information" to-path="/news"></BlockHeader>
 
       <BlockNewsItem
         v-for="newItem in news"
-        :day="(newItem['date'] as string).substring(8,10)"
-        :month="(newItem['date'] as string).substring(5,7)+'月'"
+        :day="(newItem['createTime'] as string).substring(8,10)"
+        :month="(newItem['createTime'] as string).substring(5,7)+'月'"
         :title="newItem['title']"
         :brief="newItem['content']"
       ></BlockNewsItem>
@@ -76,33 +58,24 @@ loadForums();
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
       <video class="frame" type="video/mp4"></video>
 
-      <BlockHeader
-        title="校庆活动"
-        title_english="Activities"
-        to-path="/activity"
-      ></BlockHeader>
+      <BlockHeader title="校庆活动" title_english="Activities" to-path="/activity"></BlockHeader>
 
       <div style="margin: 0 4% 0 0; overflow-y: overlay; height: 240px">
         <el-timeline>
           <el-timeline-item
-            v-for="item in activities"
+            v-for="item in anniversaries"
             center
-            :timestamp="item['date']"
+            :timestamp="item['start']"
             placement="top"
           >
             <el-card>
-              <h4>{{ item["title"] }}</h4>
-              <p>{{ item["creator"] }}提交于{{ item["date"] }}</p>
+              <h4>{{ item['title'] }}</h4>
+              <p>{{ item['adminID'] }}提交于{{ item['start'] }}</p>
             </el-card>
           </el-timeline-item>
         </el-timeline>
       </div>
-
-      <BlockHeader
-        title="时光长廊"
-        title_english="Gallery"
-        to-path="/gallery"
-      ></BlockHeader>
+      <BlockHeader title="时光长廊" title_english="Gallery" to-path="/gallery"></BlockHeader>
       <div class="flex f-col images">
         <el-carousel :interval="5000" type="card" height="160px" arrow="always">
           <el-carousel-item v-for="item in 6" :key="item" style="border: 2px solid black">
@@ -111,15 +84,14 @@ loadForums();
         </el-carousel>
         <h2 class="image-title">图书馆后的小树林</h2>
       </div>
-
       <BlockHeader title="交流论坛" title_english="Forum" to-path="/forum"></BlockHeader>
       <div class="flex f-col forum-container">
         <BlockSingleForum
-          v-for="item in forums"
+          v-for="item in posts"
           :title="item['title']"
           :description="item['description']"
-          :creator="item['creator']"
-          :date="item['date']"
+          :creator="item['authorID'].toString()"
+          :date="item['updatedTime']"
         />
       </div>
       <BaseTail />
