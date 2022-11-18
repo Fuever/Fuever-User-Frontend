@@ -1,3 +1,10 @@
+<!--
+* @FileDescription: initial version
+* @Author: Phoshowy
+* @Date: 2022/11/15
+* @LastEditors: Phoshowy
+* @LastEditTime: 2022/11/15 16:24
+-->
 <script setup lang="ts">
 import BlockHeader from "@/components/BaseBlockHeader.vue";
 import BlockSingleForum from "@/components/BlockSingleForum.vue";
@@ -125,10 +132,12 @@ export default {
   margin: 0 3% 5% 3%;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 }
 .icon-more {
   width: 10%;
   height: 10%;
   color: #bd3124;
+  cursor: pointer;
 }
 </style>
