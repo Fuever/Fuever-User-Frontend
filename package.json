@@ -10,7 +10,7 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "json": "json-server --watch local/server/db.json -p 3001"
+    "json": "json-server --watch src/server/db.json -p 3001"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
