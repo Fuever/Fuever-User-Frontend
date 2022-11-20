@@ -6,48 +6,42 @@
 * @LastEditTime: 2022/11/11 15:40
 -->
 <script setup lang="ts">
-import IconFzu from "@/components/icons/IconFzu.vue";
-import { useRouter } from "vue-router";
-import { ElForm, ElFormItem } from "element-plus";
-import { reactive, ref } from "vue";
-import type { FormInstance, FormRules } from "element-plus";
-import { ElMessage } from 'element-plus';
-import { Message } from "@element-plus/icons-vue";
-const ruleFormRef = ref<FormInstance>();
+import IconFzu from '@/components/icons/IconFzu.vue'
+import { useRouter } from 'vue-router'
+import { ElForm, ElFormItem } from 'element-plus'
+import { reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { Message } from '@element-plus/icons-vue'
+const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
-  accountID: "",
-  password: "",
-});
+  accountID: '',
+  password: ''
+})
 const rules = reactive<FormRules>({
-  accountID: [{ required: true, message: "请输入您的账号", trigger: "blur" }],
-  password: [{ required: true, message: "请输入您的密码", trigger: "blur" }],
-});
+  accountID: [{ required: true, message: '请输入您的账号', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入您的密码', trigger: 'blur' }]
+})
 const open = () => {
   ElMessage.warning('账号和密码不得为空！')
 }
 const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
+  if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log("submit!");
+      console.log('submit!')
     } else {
-      open();
+      open()
     }
-  });
-};
-
-const router=useRouter()
-const toSignUp = () =>
-{
-  router.push({
-    name:'signup'
   })
 }
 
-
-
-
-
+const router = useRouter()
+const toSignUp = () => {
+  router.push({
+    name: 'signup'
+  })
+}
 </script>
 
 <template>
@@ -59,12 +53,17 @@ const toSignUp = () =>
     <h3 class="welcome-hint-eng">Welcome Back FZU</h3>
     <elCard class="f-col form-card">
       <el-form class="form" ref="ruleFormRef" :model="ruleForm" :rules="rules">
-        <el-form-item label="账号：" class="account"  prop="accountID">
-          <el-input v-model="ruleForm.accountID" placeholder="邮箱/电话号" />
+        <el-form-item label="账号：" class="account" prop="accountID">
+          <el-input v-model="ruleForm.accountID" placeholder="邮箱/电话号" clearable />
         </el-form-item>
-        <el-form-item label="密码：" prop="password">
-          <el-input v-model="ruleForm.password" type="password" placeholder="密码" show-password/>
-          
+        <el-form-item label="密码：" class="pwd" prop="password">
+          <el-input
+            v-model="ruleForm.password"
+            type="password"
+            placeholder="密码"
+            show-password
+            clearable
+          />
         </el-form-item>
         <el-form-item class="login">
           <el-button type="primary" style="flex: 1" @click="submitForm(ruleFormRef)"
@@ -72,7 +71,9 @@ const toSignUp = () =>
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" text style="flex: 1" @click="toSignUp">未有账号？立即注册</el-button>
+          <el-button type="primary" text style="flex: 1" @click="toSignUp"
+            >未有账号？立即注册</el-button
+          >
         </el-form-item>
       </el-form>
     </elCard>
@@ -93,6 +94,7 @@ const toSignUp = () =>
 .form-card {
   margin: 0;
   padding: 0;
+  border-radius: 10px;
 }
 .fzu-icon {
   width: 50%;
@@ -101,7 +103,7 @@ const toSignUp = () =>
   color: #bd3124;
 }
 .welcome-hint {
-  font-family: "楷体";
+  font-family: '楷体';
   font-weight: bolder;
 }
 
@@ -125,11 +127,7 @@ const toSignUp = () =>
   height: 100%;
   width: 100%;
   position: absolute;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.6)
-  );
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.6));
   z-index: -1;
 }
 
@@ -137,6 +135,9 @@ const toSignUp = () =>
   margin-top: 6%;
 }
 
+.pwd {
+  width: 70vw;
+}
 .login {
   margin-top: 24%;
 }
