@@ -6,13 +6,13 @@
 * @LastEditTime: 2022/11/08 18:20
 -->
 <script setup lang="ts">
-import IconFzu from "../components/icons/IconFzu.vue";
+import IconFzu from '../components/icons/IconFzu.vue'
 const props = defineProps<{
-  title: string;
-  description: string;
-  creator: string;
-  date: string;
-}>();
+  title: string
+  description: string
+  creator: string
+  date: string
+}>()
 </script>
 <template>
   <div class="flex single-forum-container light-gray-bk">
@@ -21,14 +21,14 @@ const props = defineProps<{
       <h2 style="font-weight: bolder; margin-top: 6%">
         {{ title }}
       </h2>
-      <h3 style="flex: 1">
+      <h3 class="description">
         {{ description }}
       </h3>
       <div class="flex">
         <User class="forum-icon"></User>
-        <h3 class="forum-info">{{ creator }}</h3>
+        <h3 class="forum-info author">{{ creator }}</h3>
         <AlarmClock class="forum-icon"></AlarmClock>
-        <h3 class="forum-info">{{ date }}</h3>
+        <h3 class="forum-info date">{{ date }}</h3>
       </div>
     </div>
   </div>
@@ -37,13 +37,12 @@ const props = defineProps<{
 <style scoped>
 .flex {
   display: flex;
-  max-width: 100%;
+  width: 100%;
 }
 
 .f-col {
   flex-direction: column;
-  align-items: center;
- 
+  align-items: start;
 }
 
 .single-forum-container {
@@ -61,7 +60,6 @@ const props = defineProps<{
 .forum-icon {
   height: 24px;
   margin-bottom: 4%;
- 
 }
 
 .forum-info {
@@ -72,5 +70,32 @@ const props = defineProps<{
 
 .light-gray-bk {
   background-color: #f1f1f1;
+}
+
+.description {
+  flex: 1;
+  width: 90%;
+  white-space: nowrap;
+  /* 防止文字内容过多导致被撑开 */
+  overflow: hidden;
+  /* 溢出文字用省略号取代 */
+  text-overflow: ellipsis;
+}
+.date {
+  width: 40%;
+  white-space: nowrap;
+  /* 防止文字内容过多导致被撑开 */
+  overflow: hidden;
+  /* 溢出文字用省略号取代 */
+  text-overflow: ellipsis;
+}
+
+.author {
+  width: 20%;
+  white-space: nowrap;
+  /* 防止文字内容过多导致被撑开 */
+  overflow: hidden;
+  /* 溢出文字用省略号取代 */
+  text-overflow: ellipsis;
 }
 </style>

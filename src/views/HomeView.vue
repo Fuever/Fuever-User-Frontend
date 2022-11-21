@@ -12,14 +12,14 @@ import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
 import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from 'element-plus'
 import { ref } from 'vue'
-import { getAnniversaries, getNews, getPosts } from '@/server/api'
+import { getAnniversaries, getNewsByPAge, getPosts } from '@/server/api'
 import type { News, Post, Anniversary } from '@/server/models'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
 const posts = ref<Post[] | null>()
-getNews(1,4).then((result) => {
+getNewsByPAge(1,4).then((result) => {
   news.value = result
 })
 getPosts().then((result) => {

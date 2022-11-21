@@ -1,6 +1,5 @@
-import { useLoginStateStore } from './../stores/counter'
+import { useLoginStateStore } from '../stores/counter'
 import SignUpView from '@/views/SignUpView.vue'
-import ForumView from '../views/ForumView.vue'
 import { ElMessage } from 'element-plus'
 import { createRouter, createWebHistory, useRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
@@ -16,9 +15,9 @@ const whiteList: Array<string> = [
   'signup',
   'newsDetail',
   'news',
+  'forum',
+  'notFound'
 ]
-
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,9 +48,9 @@ const router = createRouter({
       component: SignUpView
     },
     {
-        path: '/forum',
-        name: 'forum',
-        component: ForumView
+      path: '/forum',
+      name: 'forum',
+      component: ()=> import('../views/ForumView.vue')
     },
     {
       path: '/news',
@@ -61,7 +60,7 @@ const router = createRouter({
     {
       path: '/news/detail/:id',
       name: 'newsDetail',
-      component: () => import('../views/LocalDevView.vue')
+      component: () => import('../views/NewsDetailView.vue')
     },
     {
       path: '/video',
@@ -84,18 +83,13 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/forum',
-      name: 'forum',
-      component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/forum/detail',
       name: 'forumDetail',
       component: () => import('../views/AboutView.vue')
     },
     {
       path: '/:pathMatch(.*)',
-      name: 'NotFound',
+      name: 'notFound',
       component: () => NotFound
     }
   ]
@@ -105,8 +99,7 @@ router.beforeEach((to, from, next) => {
   //https://stackoverflow.com/questions/70710965
 
   let whiteDynamicListJudge: boolean = false
-  
-  
+
   if (whiteList.includes(to.name?.toString() as string) || whiteDynamicListJudge) {
     console.log(to.path)
     next()
