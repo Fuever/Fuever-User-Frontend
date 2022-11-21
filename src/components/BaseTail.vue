@@ -12,7 +12,7 @@ import IconFzu from "../components/icons/IconFzu.vue";
   <div class="flex f-col tail-container f-center">
       <div class="flex" style="margin-top: 4%">
         <IconFzu class="tail-fzu-icon" />
-        <img src="src/assets/images/characters.png" class="tail-fzu-icon" />
+        <img src="@/assets/images/characters.png" class="tail-fzu-icon" />
       </div>
       <h4 class="white">计算机与大数据学院/软件学院</h4>
       <p class="white" style="font-size: 2px">
@@ -32,7 +32,7 @@ import IconFzu from "../components/icons/IconFzu.vue";
             <h4 class="white tail-contacts" style="flex: 1">13578633241</h4>
           </div>
         </div>
-        <img class="tail-qrcode" src="src/assets/images/qrcode.png" />
+        <img class="tail-qrcode" src="@/assets/images/qrcode.png" />
       </div>
     </div>
 </template>

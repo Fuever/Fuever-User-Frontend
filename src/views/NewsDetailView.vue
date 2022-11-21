@@ -9,7 +9,7 @@
 import NavMenu from '@/components/NavMenu.vue'
 import { getNewsDetail } from '@/server/api'
 import type { News } from '@/server/models'
-import { stringLiteral } from '@babel/types'
+
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
@@ -41,6 +41,7 @@ const back = () => {
         {{ row }}
       </p>
     </div>
+    
   </div>
 </template>
 

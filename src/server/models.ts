@@ -44,13 +44,12 @@ export interface Message {
   postID: number
   createdTime: string
 }
-export interface Gallery {
-  id: number
-  title: string
+export interface Gallery extends Location {
   author: string
   content: string
   cover: string
   createTime: number
+  // 需要增加对应热帖的id
 }
 // 班级名隐式与Block相等
 export interface Class {
@@ -63,14 +62,17 @@ export interface ResponseError {
   error: string
   message?: string
 }
-export interface Anniversary {
-  id: number
+export interface Anniversary extends Location {
   adminID: number
-  title: string
   content: string
   start: string
   end: string
+  // TODO 后端需要添加这两个属性
+  cover: string
+}
+export interface Location {
+  id: number
   x?: string
   y?: string
-  cover: string
+  title:string
 }

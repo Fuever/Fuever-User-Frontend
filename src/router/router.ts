@@ -13,10 +13,12 @@ const whiteList: Array<string> = [
   'about',
   'login',
   'signup',
-  'newsDetail',
   'news',
+  'newsDetail',
   'forum',
-  'notFound'
+  'notFound',
+  'gallery',
+  'galleryDetail'
 ]
 
 const router = createRouter({
@@ -30,7 +32,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/GalleryView.vue')
     },
     {
       path: '/dev',
@@ -63,29 +65,35 @@ const router = createRouter({
       component: () => import('../views/NewsDetailView.vue')
     },
     {
+      path: '/gallery',
+      name: 'gallery',
+      component: () => import('../views/GalleryView.vue')
+    },
+    {
+      path: '/gallery/detail/:id',
+      name: 'galleryDetail',
+      component: () => import('../views/GalleryDetailView.vue')
+    },
+    {
       path: '/video',
       name: 'video',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/GuideOutView.vue')
     },
     {
       path: '/activity',
       name: 'activity',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/GuideOutView.vue')
     },
     {
       path: '/activity/detail',
       name: 'activityDetail',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/GuideOutView.vue')
     },
-    {
-      path: '/gallery',
-      name: 'gallery',
-      component: () => import('../views/AboutView.vue')
-    },
+    
     {
       path: '/forum/detail',
       name: 'forumDetail',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/GuideOutView.vue')
     },
     {
       path: '/:pathMatch(.*)',

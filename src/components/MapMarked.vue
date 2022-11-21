@@ -7,8 +7,15 @@
 -->
 <!-- TODO 这里定位的是IconButton左上角而不是图标的位置 -->
 <script lang="ts" setup>
-import type { Anniversary } from '@/server/models'
-const props = defineProps<{ activities?: Anniversary[] }>()
+import type { Anniversary,Gallery } from '@/server/models'
+import { useRouter } from 'vue-router';
+const props = defineProps<{ activities?: Anniversary[] | null, galleries?: Gallery[] | null }>()
+const router = useRouter()
+const toDetail = (id: number) => {
+    router.push({
+    path:`/gallery/detail/${id}`
+    })
+}
 </script>
 <template>
     <div style="overflow: scroll">
@@ -19,13 +26,29 @@ const props = defineProps<{ activities?: Anniversary[] }>()
                 class="icon-container"
                 :style="{ top: item['y'], left: item['x'] }"
             >
-                <el-button link>
+            
+                <el-button link @click="toDetail(item.id)">
                     <LocationFilled color="red" class="icon" />
                     <h1 class="activity_title" style="">
                         {{ item['title'] }}
                     </h1>
                 </el-button>
             </div>
+
+            <div
+            v-for="item in props.galleries"
+            class="icon-container"
+            :style="{ top: item['y'], left: item['x'] }"
+        >
+        
+            <el-button link @click="toDetail(item.id)">
+                <LocationFilled color="red" class="icon" />
+                <h1 class="activity_title" style="">
+                    {{ item['title'] }}
+                </h1>
+            </el-button>
+        </div>
+
         </div>
     </div>
 </template>
@@ -48,6 +71,7 @@ const props = defineProps<{ activities?: Anniversary[] }>()
     color: red;
     font-size: 1.6em;
     font-weight: bolder;
+    text-align: left;
     width: 180px;
     font-family: '楷体', '楷体_GB2312';
     /* 文本不换行 */

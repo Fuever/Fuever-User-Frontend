@@ -7,6 +7,7 @@ import { getNewsByPAge } from '@/server/api'
 import type { News } from '@/server/models'
 import { ceil } from 'lodash'
 import { useRouter } from 'vue-router'
+import BaseTail from "@/components/BaseTail.vue"
 const router = useRouter()
 const news = ref<News[] | null>()
 // TODO 修改为换页时才请求
@@ -57,6 +58,7 @@ const toNewsDetails = (id: number) => {
         />
       </div>
     </div>
+    <BaseTail/>
   </div>
 </template>
 <style scoped>
