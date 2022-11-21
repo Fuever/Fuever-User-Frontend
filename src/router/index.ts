@@ -1,5 +1,6 @@
 import { useLoginStateStore } from './../stores/counter'
 import SignUpView from '@/views/SignUpView.vue'
+import ForumView from '../views/ForumView.vue'
 import { ElMessage } from 'element-plus'
 import { createRouter, createWebHistory, useRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: SignUpView
+    },
+    {
+        path: '/forum',
+        name: 'forum',
+        component: ForumView
     },
     {
       path: '/news',

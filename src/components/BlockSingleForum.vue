@@ -42,6 +42,8 @@ const props = defineProps<{
 
 .f-col {
   flex-direction: column;
+  align-items: center;
+ 
 }
 
 .single-forum-container {
@@ -59,6 +61,7 @@ const props = defineProps<{
 .forum-icon {
   height: 24px;
   margin-bottom: 4%;
+ 
 }
 
 .forum-info {
