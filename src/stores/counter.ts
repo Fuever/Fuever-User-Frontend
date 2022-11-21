@@ -1,12 +1,28 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
+const enum Names{
+  Login = 'judgeLogin',
+  Font = 'fontsizeAdjust'
+} 
+
+
+export const useLoginStateStore = defineStore(Names.Login, () => {
+  const login = ref(false)
+  
+  function changeLoginState() {
+    login.value=!login.value
   }
 
-  return { count, doubleCount, increment }
+  return { login,changeLoginState }
+})
+
+export const useFontsizeStore = defineStore(Names.Font, () => {
+  const level = ref(1)
+  
+  function toLevel(new_level:number) {
+    level.value=new_level
+  }
+
+  return { level,toLevel }
 })

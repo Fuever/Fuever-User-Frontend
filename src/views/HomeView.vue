@@ -14,15 +14,12 @@ import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from 'element-plus'
 import { ref } from 'vue'
 import { getAnniversaries, getNews, getPosts } from '@/server/api'
 import type { News, Post, Anniversary } from '@/server/models'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
 const posts = ref<Post[] | null>()
-console.log('=========>')
-console.log(news)
-console.log(anniversaries)
-console.log(posts)
-console.log('=========>')
-getNews().then((result) => {
+getNews(1,4).then((result) => {
   news.value = result
 })
 getPosts().then((result) => {
@@ -32,6 +29,11 @@ getAnniversaries().then((result) => {
   anniversaries.value = result
 })
 
+const toNewsDetails = (id: number) => {
+  router.push({
+    path:`/news/detail/${id}`
+  })
+}
 </script>
 
 <template>
@@ -47,12 +49,14 @@ getAnniversaries().then((result) => {
 
       <BlockHeader title="校园资讯" title_english="Information" to-path="/news"></BlockHeader>
 
-      <BlockNewsItem
-        v-for="newItem in news"
-        :day="(newItem['createTime'] as string).substring(8,10)"
-        :month="(newItem['createTime'] as string).substring(5,7)+'月'"
-        :title="newItem['title']"
-        :brief="newItem['content']"
+      <BlockNewsItem 
+        v-for="newsItem in news"
+        :key="newsItem['id']"
+        :day="(newsItem['createTime'] as string).substring(8,10)"
+        :month="(newsItem['createTime'] as string).substring(5,7)+'月'"
+        :title="newsItem['title']"
+        :brief="newsItem['content']"
+        @click="toNewsDetails(newsItem['id'])"
       ></BlockNewsItem>
 
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
@@ -93,7 +97,6 @@ getAnniversaries().then((result) => {
           :creator="item['authorID'].toString()"
           :date="item['updatedTime']"
         />
-      
       </div>
       <BaseTail />
     </div>
@@ -107,9 +110,6 @@ getAnniversaries().then((result) => {
   overflow-x: hidden;
 }
 
-.frame {
-  border: 2px solid royalblue;
-}
 .flex {
   display: flex;
 }
