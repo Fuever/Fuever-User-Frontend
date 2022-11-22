@@ -92,7 +92,7 @@ const toNewsDetails = (id: number) => {
             style="height: 100%"
             :label="gallery.title"
           >
-            <el-image style="height: 100%" :src="gallery.cover" alt="" fit="contain" />
+            <el-image style="height: 100%" :src="gallery.cover" :preview-src-list="gallery.cover" alt="" fit="contain" />
           </el-carousel-item>
         </el-carousel>
       </div>
