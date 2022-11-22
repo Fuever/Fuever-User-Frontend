@@ -3,7 +3,7 @@
 * @Author: Gallon
 * @Date: 2022/11/11
 * @LastEditors: Gallon
-* @LastEditTime: 2022/11/13 16:58
+* @LastEditTime: 2022/11/22 16:58
 -->
 <script setup lang="ts">
 import BlockNewsItem from '../components/BlockNewsItem.vue'
@@ -64,7 +64,12 @@ const toNewsDetails = (id: number) => {
       ></BlockNewsItem>
 
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
-      <video class="frame" type="video/mp4"></video>
+
+      <video controls loop class="video" crossorigin="anonymous" preload="auto">
+        <!-- 自动加载视频的下载 -->
+        <!-- 在跨域请求时不携带凭证 -->
+        <source src="//d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4" type="video/mp4" />
+      </video>
 
       <BlockHeader title="校庆活动" title_english="Activities" to-path="/activity"></BlockHeader>
 
@@ -92,7 +97,13 @@ const toNewsDetails = (id: number) => {
             style="height: 100%"
             :label="gallery.title"
           >
-            <el-image style="height: 100%" :src="gallery.cover" :preview-src-list="gallery.cover" alt="" fit="contain" />
+            <el-image
+              style="height: 100%"
+              :src="gallery.cover"
+              :preview-src-list="gallery.cover"
+              alt=""
+              fit="contain"
+            />
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -131,6 +142,11 @@ const toNewsDetails = (id: number) => {
 
 .images {
   margin: 0 2% 0 2%;
+}
+
+.video{
+  align-self: center;
+  width: 92vw;
 }
 
 .forum-container {
