@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import BaseBlockHeader from '@/components/BaseBlockHeader.vue'
 import BlockNewsItem from '@/components/BlockNewsItem.vue'
+import NavMenu from '@/components/NavMenu.vue'
 import { computed, ref, type Ref } from 'vue'
-import { getNews } from '@/server/api'
+import { getNewsByPAge } from '@/server/api'
 import type { News } from '@/server/models'
 import { ceil } from 'lodash'
 import { useRouter } from 'vue-router'
+import BaseTail from "@/components/BaseTail.vue"
 const router = useRouter()
 const news = ref<News[] | null>()
-getNews(1, Number.MAX_SAFE_INTEGER).then((result) => {
+// TODO 修改为换页时才请求
+getNewsByPAge(1, Number.MAX_SAFE_INTEGER).then((result) => {
   news.value = result
 })
 
 const currentPage = ref(1)
-const onPageChanged = () => {
-  console.log(currentPage.value)
-}
-console.log(currentPage)
 const newsDisplayed = computed(() => {
   return news.value?.slice(currentPage.value * 10 - 10, currentPage.value * 10)
 })
@@ -28,6 +27,7 @@ const toNewsDetails = (id: number) => {
 </script>
 <template>
   <div class="top">
+    <NavMenu/>
     <div class="flex f-col" style="overflow: hidden">
       <div>
         <el-carousel>
@@ -54,11 +54,11 @@ const toNewsDetails = (id: number) => {
           layout="prev, pager, next"
           :page-count="ceil((news ? news.length : 0) / 10)"
           v-model:currentPage="currentPage"
-          @current-change="onPageChanged()"
           class="pager"
         />
       </div>
     </div>
+    <BaseTail/>
   </div>
 </template>
 <style scoped>

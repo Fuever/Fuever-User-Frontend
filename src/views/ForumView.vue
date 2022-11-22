@@ -2,8 +2,8 @@
 * @FileDescription: 交流区
 * @Author: Phoshowy
 * @Date: 2022/11/20
-* @LastEditors: 
-* @LastEditTime: 2022/11/20 22:47
+* @LastEditors: Gallon
+* @LastEditTime: 2022/11/21 12:47
 -->
 <script setup lang="ts">
 import BlockHeader from '@/components/BaseBlockHeader.vue'
@@ -11,12 +11,21 @@ import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
 import NavMenu from '@/components/NavMenu.vue'
 import { ElCarousel } from 'element-plus'
-import TopicIconVue from '@/components/TopicIcon.vue'
-
 import { ref } from 'vue'
-import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { getPosts } from '@/server/api'
 import type { Post } from '@/server/models'
-const posts = ref<Post[] | null>()
+console.log('=====>')
+const forums = ref<Post[] | null>()
+const displayMode = ref('location')
+getPosts().then(res => {
+  forums.value=res
+})
+const router = useRouter()
+const backHistory = () => {
+  router.back() //返回上一层
+}
+console.log(forums.value)
 </script>
 
 <template>
@@ -32,50 +41,38 @@ const posts = ref<Post[] | null>()
         </el-carousel>
       </div>
 
-      <BlockHeader title="交流论坛" title_english="Forums"></BlockHeader>
+      <BlockHeader title="交流论坛" title_english="Forums" :hide-more="true"></BlockHeader>
       <!--标题栏-->
       <!--图标-->
       <div class="icon-div">
         <Filter class="icon-more" />
-        <TopicIconVue /><!--网页页面比例不合适-->
+        <el-radio-group size="large" v-model="displayMode">
+          <el-radio-button label="location">
+            <h2>地点</h2> 
+          </el-radio-button>
+          <el-radio-button label="theme">
+            <h2>主题</h2> 
+          </el-radio-button>
+        </el-radio-group>
         <Search class="icon-more" />
       </div>
 
       <div
         class="infinite-list-wrapper forum-container"
-        v-infinite-scroll="load"
         infinite-scroll-disabled="disabled"
       >
         <BlockSingleForum
-          v-for="item in posts"
+          v-for="item in forums"
           :title="item['title']"
           :description="item['description']"
-          :creator="item['authorID'].toString()"
-          :date="item['updatedTime']"
+          :creator="item.authorID.toString()"
+          :date="item.updatedTime"
         />
       </div>
     </div>
-    <div style="text-align: center">
-      <el-button v-on:click="backHistory">取消</el-button>
-    </div>
-    <BaseTail /><!--底部信息栏-->
+    <BaseTail />
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  data() {
-    return {}
-  },
-
-  methods: {
-    load() {},
-    backHistory() {
-      this.$router.go(-1) //返回上一层
-    }
-  }
-}
-</script>
 
 <style scoped>
 .frame {
@@ -129,11 +126,12 @@ export default {
   border: #777;
   margin: 0 3% 5% 3%;
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
 }
 .icon-more {
   width: 10%;
   height: 10%;
   color: #bd3124;
 }
+
 </style>
