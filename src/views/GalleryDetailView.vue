@@ -18,24 +18,22 @@ getGalleryDetail(+route.params.id).then((result) => {
   msg.lang = 'zh-CN' // 使用的语言
   msg.pitch = 0.1 // 表示说话的音高
   msg.rate = 0.8 // 语速
-  msg.text = gallery.value?.content as string  // 要合成的文字内容
+  msg.text = gallery.value?.content as string // 要合成的文字内容
   msg.volume = 8 // 声音的音量
-  speaking.value=0
+  speaking.value = 0
 })
-
-
 
 const controlSpeech = () => {
   if (speechSynthesis.paused) {
     speechSynthesis.resume()
-    speaking.value=1
+    speaking.value = 1
   } else if (speechSynthesis.speaking) {
     // 暂停时speaking为True
     speechSynthesis.pause()
-    speaking.value=0
+    speaking.value = 0
   } else {
     speechSynthesis.speak(msg)
-    speaking.value=1
+    speaking.value = 1
   }
 }
 speechSynthesis.cancel()
@@ -46,7 +44,17 @@ speechSynthesis.cancel()
     <h1 style="font-weight: bolder; font-size: 4em; margin-left: 5vw">图书馆</h1>
     <hr class="hr-dashed-fixed" />
     <BaseBlockHeader title="时光长廊" title_english="Gallery" :hide-more="true" />
-
+    <el-image
+      :src="gallery?.cover"
+      fit="scale-down"
+      style="height: 30vh;"
+    >
+      <template #placeholder>
+        <div style="display: flex; flex-direction: column">
+          <h1>加载中……</h1>
+        </div>
+      </template>
+    </el-image>
     <BaseBlockHeader title="岁月史书" title_english="History" :hide-more="true" />
 
     <div class="flex center" style="margin-left: 2%; margin-right: 2%">
@@ -62,8 +70,13 @@ speechSynthesis.cancel()
       <el-button link type="plain" @click="controlSpeech()">
         <h2>语音介绍</h2>
         <el-icon style="height: 40px; width: 40px">
-          <img v-if="speaking===-1"  style="height: 30px; width: 30px" src="@/assets/loading.svg" alt="加载中">
-          <VideoPlay v-else-if="speaking===0" style="height: 30px; width: 30px"></VideoPlay>
+          <img
+            v-if="speaking === -1"
+            style="height: 30px; width: 30px"
+            src="@/assets/loading.svg"
+            alt="加载中"
+          />
+          <VideoPlay v-else-if="speaking === 0" style="height: 30px; width: 30px"></VideoPlay>
           <VideoPause v-else style="height: 30px; width: 30px"></VideoPause>
         </el-icon>
       </el-button>
@@ -78,8 +91,8 @@ speechSynthesis.cancel()
         style="width: 100%; justify-content: space-around"
         :class="{ col: fontSize != '小' }"
       >
-        <div>作者：{{gallery?.author}}</div>
-        <div>发布时间：{{gallery?.createTime}}</div>
+        <div>作者：{{ gallery?.author }}</div>
+        <div>发布时间：{{ gallery?.createTime }}</div>
       </div>
 
       <div class="content" v-for="p in gallery?.content.split('\n')">

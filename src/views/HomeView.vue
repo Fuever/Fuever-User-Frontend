@@ -12,14 +12,18 @@ import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
 import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from 'element-plus'
 import { ref } from 'vue'
-import { getAnniversaries, getNewsByPAge, getPosts } from '@/server/api'
-import type { News, Post, Anniversary } from '@/server/models'
+import { getAnniversaries, getGalleries, getNewsByPAge, getPosts } from '@/server/api'
+import type { News, Post, Anniversary, Gallery } from '@/server/models'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
 const posts = ref<Post[] | null>()
-getNewsByPAge(1,4).then((result) => {
+const galleries = ref<Gallery[] | null>()
+getGalleries().then((res) => {
+  galleries.value = res
+})
+getNewsByPAge(1, 4).then((result) => {
   news.value = result
 })
 getPosts().then((result) => {
@@ -31,7 +35,7 @@ getAnniversaries().then((result) => {
 
 const toNewsDetails = (id: number) => {
   router.push({
-    path:`/news/detail/${id}`
+    path: `/news/detail/${id}`
   })
 }
 </script>
@@ -49,7 +53,7 @@ const toNewsDetails = (id: number) => {
 
       <BlockHeader title="校园资讯" title_english="Information" to-path="/news"></BlockHeader>
 
-      <BlockNewsItem 
+      <BlockNewsItem
         v-for="newsItem in news"
         :key="newsItem['id']"
         :day="(newsItem['createTime'] as string).substring(8,10)"
@@ -81,12 +85,16 @@ const toNewsDetails = (id: number) => {
       </div>
       <BlockHeader title="时光长廊" title_english="Gallery" to-path="/gallery"></BlockHeader>
       <div class="flex f-col images">
-        <el-carousel :interval="5000" type="card" height="160px" arrow="always">
-          <el-carousel-item v-for="item in 6" :key="item" style="border: 2px solid black">
-            <h3 text="2xl" justify="center">{{ item }}</h3>
+        <el-carousel :interval="3000" type="card" height="20vh" arrow="always">
+          <el-carousel-item
+            v-for="gallery in galleries"
+            :key="gallery.id"
+            style="height: 100%"
+            :label="gallery.title"
+          >
+            <el-image style="height: 100%" :src="gallery.cover" alt="" fit="contain" />
           </el-carousel-item>
         </el-carousel>
-        <h2 class="image-title">图书馆后的小树林</h2>
       </div>
       <BlockHeader title="交流论坛" title_english="Forum" to-path="/forum"></BlockHeader>
       <div class="flex f-col forum-container">
@@ -119,19 +127,6 @@ const toNewsDetails = (id: number) => {
 }
 .f-col {
   flex-direction: column;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-.image-title {
-  align-self: center;
-  font-weight: bold;
 }
 
 .images {

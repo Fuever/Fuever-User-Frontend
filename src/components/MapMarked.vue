@@ -6,6 +6,7 @@
 * @LastEditTime: 2022/11/16 09:11
 -->
 <!-- TODO 这里定位的是IconButton左上角而不是图标的位置 -->
+<!-- TODO 需要对这里的跳转按钮添加动画效果 -->
 <script lang="ts" setup>
 import type { Anniversary,Gallery } from '@/server/models'
 import { useRouter } from 'vue-router';
@@ -20,14 +21,14 @@ const toDetail = (id: number) => {
 <template>
     <div style="overflow: scroll">
         <div class="canves" style="height: 100%; position: absolute">
-            <img src="../../local/map.png" alt="" />
+            <img src="@/assets/images/map.png" alt="" />
             <div
                 v-for="item in props.activities"
                 class="icon-container"
                 :style="{ top: item['y'], left: item['x'] }"
             >
             
-                <el-button link @click="toDetail(item.id)">
+                <el-button class="btn" link @click="toDetail(item.id)">
                     <LocationFilled color="red" class="icon" />
                     <h1 class="activity_title" style="">
                         {{ item['title'] }}
@@ -41,7 +42,7 @@ const toDetail = (id: number) => {
             :style="{ top: item['y'], left: item['x'] }"
         >
         
-            <el-button link @click="toDetail(item.id)">
+            <el-button class="btn" link @click="toDetail(item.id)">
                 <LocationFilled color="red" class="icon" />
                 <h1 class="activity_title" style="">
                     {{ item['title'] }}
@@ -80,5 +81,8 @@ const toDetail = (id: number) => {
     overflow: hidden;
     /* 溢出文字用省略号取代 */
     text-overflow: ellipsis;
+}
+.btn:hover{
+    border: 1px solid darkred;
 }
 </style>
