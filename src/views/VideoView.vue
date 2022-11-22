@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import BaseBlockHeader from '@/components/BaseBlockHeader.vue'
 import BlockNewsItem from '@/components/BlockNewsItem.vue'
@@ -7,7 +8,7 @@ import { getNewsByPAge } from '@/server/api'
 import type { News } from '@/server/models'
 import { ceil } from 'lodash'
 import { useRouter } from 'vue-router'
-import BaseTail from "@/components/BaseTail.vue"
+import BaseTail from '@/components/BaseTail.vue'
 import BaseCarousel from '@/components/BaseCarousel.vue'
 const router = useRouter()
 const news = ref<News[] | null>()
@@ -28,11 +29,9 @@ const toNewsDetails = (id: number) => {
 </script>
 <template>
   <div class="top">
-    <NavMenu/>
+    <NavMenu />
     <div class="flex f-col" style="overflow: hidden">
-      <div>
-        <BaseCarousel></BaseCarousel>
-      </div>
+      <BaseCarousel></BaseCarousel>
       <div class="flex f-col">
         <BaseBlockHeader title="校园资讯" title_english="Information" :hide-more="true" />
         <BlockNewsItem
@@ -55,49 +54,22 @@ const toNewsDetails = (id: number) => {
         />
       </div>
     </div>
-    <BaseTail/>
+    <BaseTail />
   </div>
 </template>
+
+
 <style scoped>
 .top {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  overflow-x: hidden;
 }
 
 .flex {
   display: flex;
 }
 
-.f-center {
-  align-items: center;
-}
 .f-col {
   flex-direction: column;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-.pager {
-  align-self: center;
-  margin-top: 4%;
-  margin-bottom: 2%;
-}
-
-.nomore {
-  align-self: center;
-  flex: 1;
-  font-size: 1.2em;
-}
-
-.item {
-  margin-bottom: 2%;
 }
 </style>

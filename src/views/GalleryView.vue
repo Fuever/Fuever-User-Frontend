@@ -6,6 +6,7 @@ import BaseTail from '@/components/BaseTail.vue';
 import type { Gallery } from '@/server/models';
 import { ref } from 'vue';
 import { getGalleries } from '@/server/api';
+import BaseCarousel from '@/components/BaseCarousel.vue';
 const galleries = ref<Gallery[] | null>()
 getGalleries().then(res => {
   galleries.value=res
@@ -14,14 +15,7 @@ getGalleries().then(res => {
 <template>
   <div class="top">
     <NavMenu></NavMenu>
-    <div>
-      <!--轮播图-->
-      <el-carousel>
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h1 class="small justify-center" text="2xl">{{ item }}</h1>
-        </el-carousel-item>
-      </el-carousel>
-    </div>
+    <BaseCarousel></BaseCarousel>
     <BaseBlockHeader title="时光长廊" title_english="Gallery" :hide-more="true"/>
     <MapMarked style="height:50vh;margin: 3vw;" :galleries="galleries" />
     <BaseTail/>

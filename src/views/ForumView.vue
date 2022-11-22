@@ -32,14 +32,7 @@ console.log(forums.value)
   <div style="display: flex; flex-direction: column">
     <div class="flex f-col" style="overflow: auto">
       <NavMenu></NavMenu>
-      <div>
-        <!--轮播图-->
-        <el-carousel>
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h1 class="small justify-center" text="2xl">{{ item }}</h1>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
+      <BaseCarousel></BaseCarousel>
 
       <BlockHeader title="交流论坛" title_english="Forums" :hide-more="true"></BlockHeader>
       <!--标题栏-->

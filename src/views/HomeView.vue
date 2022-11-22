@@ -15,6 +15,7 @@ import { ref } from 'vue'
 import { getAnniversaries, getGalleries, getNewsByPAge, getPosts } from '@/server/api'
 import type { News, Post, Anniversary, Gallery } from '@/server/models'
 import { useRouter } from 'vue-router'
+import BaseCarousel from '@/components/BaseCarousel.vue'
 const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
@@ -43,13 +44,7 @@ const toNewsDetails = (id: number) => {
 <template>
   <div class="top">
     <div class="flex f-col" style="overflow: hidden">
-      <div>
-        <el-carousel>
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h1 class="small justify-center" text="2xl">{{ item }}</h1>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
+      <BaseCarousel></BaseCarousel>
 
       <BlockHeader title="校园资讯" title_english="Information" to-path="/news"></BlockHeader>
 
@@ -65,10 +60,10 @@ const toNewsDetails = (id: number) => {
 
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
 
-      <video controls loop class="video" crossorigin="anonymous" preload="auto">
+      <h1 style="align-self: center;font-weight:bold ;">疫去春来</h1>
+      <video controls class="video" preload="auto">
         <!-- 自动加载视频的下载 -->
-        <!-- 在跨域请求时不携带凭证 -->
-        <source src="//d2zihajmogu5jn.cloudfront.net/elephantsdream/ed_hd.mp4" type="video/mp4" />
+        <source src="https://news.fzu.edu.cn/__local/6/3D/EF/C2A4B68E681360EA48AB4ABD0FF_B00AF9BA_C724CC8.mp4" type="video/mp4" />
       </video>
 
       <BlockHeader title="校庆活动" title_english="Activities" to-path="/activity"></BlockHeader>
