@@ -60,16 +60,27 @@ const toNewsDetails = (id: number) => {
 
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
 
-      <h1 style="align-self: center;font-weight:bold ;">疫去春来</h1>
+      <h1 style="align-self: center; font-weight: bold">疫去春来</h1>
       <video controls class="video" preload="auto">
         <!-- 自动加载视频的下载 -->
-        <source src="https://news.fzu.edu.cn/__local/6/3D/EF/C2A4B68E681360EA48AB4ABD0FF_B00AF9BA_C724CC8.mp4" type="video/mp4" />
+        <source
+          src="https://news.fzu.edu.cn/__local/6/3D/EF/C2A4B68E681360EA48AB4ABD0FF_B00AF9BA_C724CC8.mp4"
+          type="video/mp4"
+        />
       </video>
 
       <BlockHeader title="校庆活动" title_english="Activities" to-path="/activity"></BlockHeader>
 
-      <div style="margin: 0 4% 0 0; overflow-y: overlay; height: 240px">
-        <el-timeline>
+      <div
+        style="
+          margin: 0 2% 0 2%;
+          overflow-y: overlay;
+          height: 40vh;
+          border-radius: 2%;
+          border: 2px solid #bbb;
+        "
+      >
+        <el-timeline style="margin: 3%">
           <el-timeline-item
             v-for="item in anniversaries"
             center
@@ -77,8 +88,8 @@ const toNewsDetails = (id: number) => {
             placement="top"
           >
             <el-card>
-              <h4>{{ item['title'] }}</h4>
-              <p>{{ item['adminID'] }}提交于{{ item['start'] }}</p>
+              <h2>{{ item['title'] }}</h2>
+              <h3>{{ item['adminID'] }}提交于{{ item['start'] }}</h3>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -139,7 +150,7 @@ const toNewsDetails = (id: number) => {
   margin: 0 2% 0 2%;
 }
 
-.video{
+.video {
   align-self: center;
   width: 92vw;
 }
@@ -148,7 +159,10 @@ const toNewsDetails = (id: number) => {
   border: 1px solid #777;
   height: 260px;
   overflow-y: auto;
+  overflow-x: hidden;
+  align-items: center;
   margin: 0 3% 0 3%;
+  padding-bottom: 2%;
 }
 
 .header {

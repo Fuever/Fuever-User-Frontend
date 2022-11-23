@@ -18,7 +18,10 @@ const whiteList: Array<string> = [
   'forum',
   'notFound',
   'gallery',
-  'galleryDetail'
+  'galleryDetail',
+  'video',
+  'activity',
+  'post'
 ]
 
 const router = createRouter({
@@ -55,6 +58,11 @@ const router = createRouter({
       component: ()=> import('../views/ForumView.vue')
     },
     {
+      path: '/post/:id',
+      name: 'post',
+      component: () => import('../views/GuideOutView.vue')
+    },
+    {
       path: '/news',
       name: 'news',
       component: () => import('../views/NewsView.vue')
@@ -77,24 +85,14 @@ const router = createRouter({
     {
       path: '/video',
       name: 'video',
-      component: () => import('../views/GuideOutView.vue')
+      component: () => import('../views/VideoView.vue')
     },
     {
       path: '/activity',
       name: 'activity',
-      component: () => import('../views/GuideOutView.vue')
-    },
-    {
-      path: '/activity/detail',
-      name: 'activityDetail',
-      component: () => import('../views/GuideOutView.vue')
+      component: () => import('../views/ActivityView.vue')
     },
     
-    {
-      path: '/forum/detail',
-      name: 'forumDetail',
-      component: () => import('../views/GuideOutView.vue')
-    },
     {
       path: '/:pathMatch(.*)',
       name: 'notFound',

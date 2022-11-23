@@ -35,6 +35,7 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+
 .flex {
   display: flex;
   width: 100%;
@@ -47,12 +48,14 @@ const props = defineProps<{
 
 .single-forum-container {
   border: 1px solid #777;
-  height: 120px;
+  height: 15vh;
+  width: 90vw;
   margin: 2% 2% 0 2%;
 }
 
 .fzu-forum-icon {
   height: 100%;
+  width: 32vw;
   fill: currentColor;
   color: red;
 }
@@ -74,7 +77,7 @@ const props = defineProps<{
 
 .description {
   flex: 1;
-  width: 90%;
+  width: 54vw;
   white-space: nowrap;
   /* 防止文字内容过多导致被撑开 */
   overflow: hidden;

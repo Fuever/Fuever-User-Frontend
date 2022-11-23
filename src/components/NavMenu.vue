@@ -17,7 +17,7 @@ export default {
 }
 </script>
 <template>
-    <div>
+    <div class="stretch">
         <el-menu
             active-text-color="#ffd04b"
             background-color="#bd3142"
@@ -46,17 +46,20 @@ export default {
                 <el-menu-item index="/">首页</el-menu-item>
                 <el-menu-item index="/login">登录</el-menu-item>
                 <el-menu-item index="/forum">交流区</el-menu-item>
-                <!--增加新页面路由，以 index 作为 path 进行路由跳转，全部完成后顺序需调整-->
                 <el-menu-item index="/news">新闻资讯</el-menu-item>
-                <el-menu-item index="/">影像福大</el-menu-item>
-                <el-menu-item index="/">院庆活动</el-menu-item>
-                <el-menu-item index="/">时光长廊</el-menu-item>
+                <el-menu-item index="/video">影像福大</el-menu-item>
+                <el-menu-item index="/activity">院庆活动</el-menu-item>
+                <el-menu-item index="/gallery">时光长廊</el-menu-item>
             </el-sub-menu>
         </el-menu>
     </div>
 </template>
 
 <style>
+
+.stretch{
+    align-self: stretch;
+}
 .el-sub-menu__title {
     height: 5vh;
 }

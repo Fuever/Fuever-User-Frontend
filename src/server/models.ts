@@ -22,19 +22,20 @@ export interface Post {
   id: number
   authorID: number
   title: string
-  createdTime: string
-  updatedTime: string
+  createdTime: number
+  updatedTime: number
   state: number
   blockID: number
   description: string
   isLock: boolean
+  comments?:Message[]
 }
 export interface News {
   id: number
   authorID: number
   title: string
   content: string
-  createTime: string
+  createTime: number
   cover: string
 }
 export interface Message {
@@ -42,10 +43,12 @@ export interface Message {
   authorID: number
   content: string
   postID: number
-  createdTime: string
+  createdTime: number
+  // 后端需要加头像
+  // avatar
 }
 export interface Gallery extends Location {
-  author: string
+  authorID: number
   content: string
   cover: string
   createTime: number
@@ -65,10 +68,8 @@ export interface ResponseError {
 export interface Anniversary extends Location {
   adminID: number
   content: string
-  start: string
-  end: string
-  // TODO 后端需要添加这两个属性
-  cover: string
+  startTime: number
+  endTime: string
 }
 export interface Location {
   id: number

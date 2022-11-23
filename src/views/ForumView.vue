@@ -10,22 +10,29 @@ import BlockHeader from '@/components/BaseBlockHeader.vue'
 import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
 import NavMenu from '@/components/NavMenu.vue'
-import { ElCarousel } from 'element-plus'
-import { ref } from 'vue'
+import BaseCarousel from '@/components/BaseCarousel.vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getPosts } from '@/server/api'
 import type { Post } from '@/server/models'
-console.log('=====>')
-const forums = ref<Post[] | null>()
+const posts = ref<Post[] | null>()
 const displayMode = ref('location')
-getPosts().then(res => {
-  forums.value=res
+getPosts().then((res) => {
+  posts.value = res
 })
-const router = useRouter()
-const backHistory = () => {
-  router.back() //返回上一层
-}
-console.log(forums.value)
+const filteredPosts = computed(() => {
+  if (displayMode.value === 'theme') {
+    return posts.value?.filter((item) => {
+      console.log(item.basedOnTheme)
+      return item.basedOnTheme
+    })
+  } else if (displayMode.value === 'location') {
+    return posts.value?.filter((item) => {
+      return !item.basedOnTheme
+    })
+  }
+})
+
 </script>
 
 <template>
@@ -41,25 +48,22 @@ console.log(forums.value)
         <Filter class="icon-more" />
         <el-radio-group size="large" v-model="displayMode">
           <el-radio-button label="location">
-            <h2>地点</h2> 
+            <h2>地点</h2>
           </el-radio-button>
           <el-radio-button label="theme">
-            <h2>主题</h2> 
+            <h2>主题</h2>
           </el-radio-button>
         </el-radio-group>
         <Search class="icon-more" />
       </div>
 
-      <div
-        class="infinite-list-wrapper forum-container"
-        infinite-scroll-disabled="disabled"
-      >
+      <div class="flex f-col forum-container">
         <BlockSingleForum
-          v-for="item in forums"
+          v-for="item in filteredPosts"
           :title="item['title']"
           :description="item['description']"
-          :creator="item.authorID.toString()"
-          :date="item.updatedTime"
+          :creator="item['authorID'].toString()"
+          :date="item['updatedTime']"
         />
       </div>
     </div>
@@ -110,9 +114,12 @@ console.log(forums.value)
 
 .forum-container {
   border: 1px solid #777;
-  height: 360px;
   overflow-y: auto;
+  overflow-x: hidden;
+  align-items: center;
   margin: 0 3% 0 3%;
+  padding-bottom: 2%;
+  flex: 1;
 }
 
 .icon-div {
@@ -126,5 +133,4 @@ console.log(forums.value)
   height: 10%;
   color: #bd3124;
 }
-
 </style>

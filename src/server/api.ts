@@ -12,10 +12,10 @@ export async function getNewsByPAge(page:number,limit:Number): Promise<News[] | 
     return null
   }
 }
-export async function getPostsByPAge(page:number,limit:Number): Promise<Post[] | null> {
+export async function getPostById(id:number): Promise<Post | null> {
   try {
-    const response = await instance.get(`/posts?_page=${page}&_limit=${limit}`)
-    return response.data
+    const response = await instance.get(`/posts?id=${id}`)
+    return response.data[0]
   } catch (error) {
     console.log(error)
     return null
