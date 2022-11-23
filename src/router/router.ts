@@ -63,6 +63,11 @@ const router = createRouter({
       component: () => import('../views/GuideOutView.vue')
     },
     {
+      path: '/post/:id',
+      name: 'post',
+      component: () => import('../views/GuideOutView.vue')
+    },
+    {
       path: '/news',
       name: 'news',
       component: () => import('../views/NewsView.vue')
@@ -91,6 +96,17 @@ const router = createRouter({
       path: '/activity',
       name: 'activity',
       component: () => import('../views/ActivityView.vue')
+    },
+    
+    {
+      path: '/forum/detail',
+      name: 'forumDetail',
+      component: () => import('../views/GuideOutView.vue')
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import('../views/UserView.vue')
     },
     
     {
