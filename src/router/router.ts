@@ -54,6 +54,12 @@ const router = createRouter({
       name: 'forum',
       component: ()=> import('../views/ForumView.vue')
     },
+    //需要更改↓
+    {
+        path: '/forum/post',
+        name: 'post',
+        component: () => import('../views/PostView.vue')
+    },
     {
       path: '/news',
       name: 'news',
@@ -95,6 +101,12 @@ const router = createRouter({
       name: 'forumDetail',
       component: () => import('../views/GuideOutView.vue')
     },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import('../views/UserView.vue')
+    },
+    
     {
       path: '/:pathMatch(.*)',
       name: 'notFound',
