@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
@@ -11,6 +10,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/dev">Dev</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/forum">Forum</RouterLink>
       </nav>
     </div>
   </header>
@@ -23,7 +23,6 @@ header {
   line-height: 1.5;
   max-height: 100vh;
 }
-
 
 nav {
   width: 100%;
@@ -47,11 +46,11 @@ nav a {
   display: inline-block;
   padding: 0;
   color: gray;
-  
+
+
 }
 
 nav a:first-of-type {
   border: 0;
 }
-
 </style>
