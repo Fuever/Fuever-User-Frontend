@@ -1,28 +1,22 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
-const enum Names{
-  Login = 'judgeLogin',
-  Font = 'fontsizeAdjust'
-} 
 
 
-export const useLoginStateStore = defineStore(Names.Login, () => {
+
+export const useLoginStateStore = defineStore('loginState', () => {
   const login = ref(false)
   
-  function changeLoginState() {
-    login.value=!login.value
+
+  function setLogin() {
+    login.value=true
   }
 
-  return { login,changeLoginState }
-})
-
-export const useFontsizeStore = defineStore(Names.Font, () => {
-  const level = ref(1)
-  
-  function toLevel(new_level:number) {
-    level.value=new_level
+  function setLoginOut() {
+    login.value=false
   }
 
-  return { level,toLevel }
+  return { login,setLogin,setLoginOut }
 })
+
+

@@ -9,23 +9,20 @@
 import NavMenu from '@/components/NavMenu.vue'
 import { getNewsDetail } from '@/server/api'
 import type { News } from '@/server/models'
-
+import { timestamp2date } from '@/tool'
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-const router = useRouter()
+import { useRoute} from 'vue-router'
 const route = useRoute()
 const news = ref<News | null>()
 const contentRows = ref<string[] | null>()
+console.log(+route.params.id)
 getNewsDetail(+route.params.id).then((result) => {
   // https://stackoverflow.com/questions/14667713
-  news.value = result ? result[0] : null
+  news.value = result
   contentRows.value = news.value ? news.value.content?.split('\n') : ['']
   console.log(news.value)
 })
 
-const back = () => {
-  router.back()
-}
 </script>
 <template>
   <div class="f-col">
@@ -33,7 +30,7 @@ const back = () => {
     <div class="news-body f-col">
       <h2 class="title"> {{ news?.title }} </h2>
       <div class="flex info">
-        <h3>发布日期：{{ news?.createTime }}</h3>
+        <h3>发布日期：{{news?timestamp2date(news.createTime):"不详"}} </h3>
         <h3>作者：{{ news?.authorID }}</h3>
       </div>
       <el-divider content-position="center" />

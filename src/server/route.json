@@ -1,0 +1,7 @@
+{   "/api/auth/posts/p":"/p",
+    "/api/pub/user/*":"/$1",
+    "/api/pub/*":"/$1",
+    "/api/auth/*":"/$1"
+    
+
+}

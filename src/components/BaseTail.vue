@@ -51,7 +51,7 @@ import IconFzu from "../components/icons/IconFzu.vue";
 }
 .tail-container {
   background-color: #bd3124;
-  margin-top: 16%;
+  margin-top: 16vh;
 }
 
 .tail-fzu-icon {

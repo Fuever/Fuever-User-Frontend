@@ -91,8 +91,8 @@ speechSynthesis.cancel()
         style="width: 100%; justify-content: space-around"
         :class="{ col: fontSize != '小' }"
       >
-        <div>作者：{{ gallery?.author }}</div>
-        <div>发布时间：{{ gallery?.createTime }}</div>
+        <div>作者：{{ gallery?.author_name }}</div>
+        <div>发布时间：{{ gallery?.create_time }}</div>
       </div>
 
       <div class="content" v-for="p in gallery?.content.split('\n')">

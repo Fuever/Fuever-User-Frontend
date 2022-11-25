@@ -3,16 +3,17 @@ import BaseBlockHeader from '@/components/BaseBlockHeader.vue'
 import BlockNewsItem from '@/components/BlockNewsItem.vue'
 import NavMenu from '@/components/NavMenu.vue'
 import { computed, ref, type Ref } from 'vue'
-import { getNewsByPAge } from '@/server/api'
+import { getNews } from '@/server/api'
 import type { News } from '@/server/models'
 import { ceil } from 'lodash'
 import { useRouter } from 'vue-router'
-import BaseTail from "@/components/BaseTail.vue"
+import BaseTail from '@/components/BaseTail.vue'
 import BaseCarousel from '@/components/BaseCarousel.vue'
+import { timestamp2time } from '@/tool'
 const router = useRouter()
 const news = ref<News[] | null>()
 // TODO 修改为换页时才请求
-getNewsByPAge(1, Number.MAX_SAFE_INTEGER).then((result) => {
+getNews(1, Number.MAX_SAFE_INTEGER).then((result) => {
   news.value = result
 })
 
@@ -28,7 +29,7 @@ const toNewsDetails = (id: number) => {
 </script>
 <template>
   <div class="top">
-    <NavMenu/>
+    <NavMenu />
     <div class="flex f-col" style="overflow: hidden">
       <div>
         <BaseCarousel></BaseCarousel>
@@ -38,8 +39,8 @@ const toNewsDetails = (id: number) => {
         <BlockNewsItem
           v-for="newsItem in newsDisplayed"
           :key="newsItem.id"
-          :day="(newsItem['createTime'] as string).substring(8,10)"
-          :month="(newsItem['createTime'] as string).substring(5,7)+'月'"
+          :day="timestamp2time(newsItem.createTime).substring(8, 10)"
+          :month="timestamp2time(newsItem.createTime).substring(5, 7) + '月'"
           :title="newsItem['title']"
           :brief="newsItem['content']"
           @click="toNewsDetails(newsItem['id'])"
@@ -55,7 +56,7 @@ const toNewsDetails = (id: number) => {
         />
       </div>
     </div>
-    <BaseTail/>
+    <BaseTail />
   </div>
 </template>
 <style scoped>

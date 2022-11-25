@@ -10,12 +10,14 @@ import BlockNewsItem from '../components/BlockNewsItem.vue'
 import BlockHeader from '@/components/BaseBlockHeader.vue'
 import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
+import NavMenu from '@/components/NavMenu.vue'
 import { ElCard, ElCarousel, ElTimeline, ElTimelineItem } from 'element-plus'
 import { ref } from 'vue'
-import { getAnniversaries, getGalleries, getNewsByPAge, getPosts } from '@/server/api'
+import { getAnniversaries, getGalleries, getNews, getPosts } from '@/server/api'
 import type { News, Post, Anniversary, Gallery } from '@/server/models'
 import { useRouter } from 'vue-router'
 import BaseCarousel from '@/components/BaseCarousel.vue'
+import { timestamp2date,timestamp2time } from '@/tool'
 const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
@@ -24,14 +26,17 @@ const galleries = ref<Gallery[] | null>()
 getGalleries().then((res) => {
   galleries.value = res
 })
-getNewsByPAge(1, 4).then((result) => {
+getNews(0, 3).then((result) => {
   news.value = result
+  console.log('news==>', news.value)
 })
-getPosts().then((result) => {
+getPosts(0,4).then((result) => {
   posts.value = result
+  console.log('posts==>', posts.value)
 })
-getAnniversaries().then((result) => {
+getAnniversaries(0,5).then((result) => {
   anniversaries.value = result
+  console.log('anniversaries==>', anniversaries.value)
 })
 
 const toNewsDetails = (id: number) => {
@@ -39,10 +44,16 @@ const toNewsDetails = (id: number) => {
     path: `/news/detail/${id}`
   })
 }
+const toPostDetail = (id: number) => {
+  router.push({
+    path:`/post/${id}`
+  })
+}
 </script>
 
 <template>
   <div class="top">
+    <NavMenu></NavMenu>
     <div class="flex f-col" style="overflow: hidden">
       <BaseCarousel></BaseCarousel>
 
@@ -51,8 +62,8 @@ const toNewsDetails = (id: number) => {
       <BlockNewsItem
         v-for="newsItem in news"
         :key="newsItem['id']"
-        :day="(newsItem['createTime'] as string).substring(8,10)"
-        :month="(newsItem['createTime'] as string).substring(5,7)+'月'"
+        :day="timestamp2time(newsItem['create_time']).substring(8, 10)"
+        :month="timestamp2time(newsItem['create_time']).substring(5, 7) + '月'"
         :title="newsItem['title']"
         :brief="newsItem['content']"
         @click="toNewsDetails(newsItem['id'])"
@@ -69,27 +80,23 @@ const toNewsDetails = (id: number) => {
         />
       </video>
 
-      <BlockHeader title="校庆活动" title_english="Activities" to-path="/activity"></BlockHeader>
+      <BlockHeader
+        title="校庆活动"
+        title_english="Anniversary"
+        to-path="/anniversary"
+      ></BlockHeader>
 
-      <div
-        style="
-          margin: 0 2% 0 2%;
-          overflow-y: overlay;
-          height: 40vh;
-          border-radius: 2%;
-          border: 2px solid #bbb;
-        "
-      >
+      <div class="timeline-container">
         <el-timeline style="margin: 3%">
           <el-timeline-item
             v-for="item in anniversaries"
             center
-            :timestamp="item['start']"
+            :timestamp="timestamp2time(item['start_time'])"
             placement="top"
           >
             <el-card>
-              <h2>{{ item['title'] }}</h2>
-              <h3>{{ item['adminID'] }}提交于{{ item['start'] }}</h3>
+              <h2>{{ item.title }}</h2>
+              <h3>截止于{{ timestamp2time(item['end_time']) }}</h3>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -97,19 +104,8 @@ const toNewsDetails = (id: number) => {
       <BlockHeader title="时光长廊" title_english="Gallery" to-path="/gallery"></BlockHeader>
       <div class="flex f-col images">
         <el-carousel :interval="3000" type="card" height="20vh" arrow="always">
-          <el-carousel-item
-            v-for="gallery in galleries"
-            :key="gallery.id"
-            style="height: 100%"
-            :label="gallery.title"
-          >
-            <el-image
-              style="height: 100%"
-              :src="gallery.cover"
-              :preview-src-list="gallery.cover"
-              alt=""
-              fit="contain"
-            />
+          <el-carousel-item v-for="gallery in galleries" :key="gallery.id" style="height: 100%">
+            <el-image style="height: 100%" :src="gallery.cover" alt="" fit="contain" />
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -119,8 +115,9 @@ const toNewsDetails = (id: number) => {
           v-for="item in posts"
           :title="item['title']"
           :description="item['description']"
-          :creator="item['authorID'].toString()"
-          :date="item['updatedTime']"
+          :creator="item['author_id'].toString()"
+          :date="timestamp2date(item['updated_time'])"
+          @click="toPostDetail(item.id)"
         />
       </div>
       <BaseTail />
@@ -172,5 +169,12 @@ const toNewsDetails = (id: number) => {
   display: flex;
   z-index: 2;
   justify-content: space-between;
+}
+.timeline-container {
+  margin: 0 2% 0 2%;
+  overflow-y: overlay;
+  height: 40vh;
+  border-radius: 2%;
+  border: 2px solid #bbb;
 }
 </style>

@@ -15,24 +15,23 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getPosts } from '@/server/api'
 import type { Post } from '@/server/models'
+import { timestamp2date } from '@/tool'
 const posts = ref<Post[] | null>()
+const router = useRouter()
 const displayMode = ref('location')
-getPosts().then((res) => {
+getPosts(0,100).then((res) => {
   posts.value = res
 })
-const filteredPosts = computed(() => {
-  if (displayMode.value === 'theme') {
-    return posts.value?.filter((item) => {
-      console.log(item.basedOnTheme)
-      return item.basedOnTheme
-    })
-  } else if (displayMode.value === 'location') {
-    return posts.value?.filter((item) => {
-      return !item.basedOnTheme
-    })
-  }
-})
-
+const toPostDetail = (id: number) => {
+  router.push({
+    path: `/post/${id}`
+  })
+}
+const toCreatePost = () => {
+  router.push({
+    path: `/post/create`
+  })
+}
 </script>
 
 <template>
@@ -46,26 +45,20 @@ const filteredPosts = computed(() => {
       <!--图标-->
       <div class="icon-div">
         <Filter class="icon-more" />
-        <el-radio-group size="large" v-model="displayMode">
-          <el-radio-button label="location">
-            <h2>地点</h2>
-          </el-radio-button>
-          <el-radio-button label="theme">
-            <h2>主题</h2>
-          </el-radio-button>
-        </el-radio-group>
         <Search class="icon-more" />
       </div>
 
       <div class="flex f-col forum-container">
         <BlockSingleForum
-          v-for="item in filteredPosts"
+          v-for="item in posts"
           :title="item['title']"
           :description="item['description']"
-          :creator="item['authorID'].toString()"
-          :date="item['updatedTime']"
+          :creator="item['author_id'].toString()"
+          :date="timestamp2date(item['updated_time'])"
+          @click="toPostDetail(item.id)"
         />
       </div>
+      <el-button type="primary" class="createPost" @click="toCreatePost()">创建属于您的帖子</el-button>
     </div>
     <BaseTail />
   </div>
@@ -132,5 +125,12 @@ const filteredPosts = computed(() => {
   width: 10%;
   height: 10%;
   color: #bd3124;
+}
+
+.createPost {
+  margin: 5vh 3vw 1vh 3vw;
+  font-size: 1.8em;
+  height: 5vh;
+  border-radius: 2vw;
 }
 </style>

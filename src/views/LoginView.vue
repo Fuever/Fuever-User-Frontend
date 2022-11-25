@@ -12,8 +12,11 @@ import { ElForm, ElFormItem } from 'element-plus'
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { Message } from '@element-plus/icons-vue'
+import { postLogin } from '@/server/api'
+import { useLoginStateStore } from '@/stores/counter'
+const loginStateStore = useLoginStateStore()
 const ruleFormRef = ref<FormInstance>()
+const router = useRouter()
 const ruleForm = reactive({
   accountID: '',
   password: ''
@@ -22,6 +25,7 @@ const rules = reactive<FormRules>({
   accountID: [{ required: true, message: '请输入您的账号', trigger: 'blur' }],
   password: [{ required: true, message: '请输入您的密码', trigger: 'blur' }]
 })
+
 const open = () => {
   ElMessage.warning('账号和密码不得为空！')
 }
@@ -30,13 +34,31 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       console.log('submit!')
+      postLogin(ruleForm.password, ruleForm.accountID)
+        .then((res) => {
+          // 将获取token存入localStorage
+          localStorage.setItem('token', res['token'])
+
+          // 修改全局登录状态为已登录
+          loginStateStore.setLogin()
+
+          // 跳转至首页并提示
+          router.push({
+            path: '/'
+          })
+          ElMessage.info('登录成功！')
+        })
+        .catch((err) => {
+          console.log("===>",err)
+          ElMessage.info('账号和密码不匹配！')
+        })
     } else {
+      // 前端表单验证
       open()
     }
   })
 }
 
-const router = useRouter()
 const toSignUp = () => {
   router.push({
     name: 'signup'

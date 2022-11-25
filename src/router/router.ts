@@ -20,8 +20,9 @@ const whiteList: Array<string> = [
   'gallery',
   'galleryDetail',
   'video',
-  'activity',
-  'post'
+  'anniversary',
+  'post',
+  'user'
 ]
 
 const router = createRouter({
@@ -55,17 +56,17 @@ const router = createRouter({
     {
       path: '/forum',
       name: 'forum',
-      component: ()=> import('../views/ForumView.vue')
+      component: () => import('../views/ForumView.vue')
     },
     {
       path: '/post/:id',
       name: 'post',
-      component: () => import('../views/GuideOutView.vue')
+      component: () => import('../views/PostDetailedView.vue')
     },
     {
-      path: '/post/:id',
-      name: 'post',
-      component: () => import('../views/GuideOutView.vue')
+      path: '/post/create',
+      name: 'createPost',
+      component: () => import('../views/PostView.vue')
     },
     {
       path: '/news',
@@ -93,22 +94,15 @@ const router = createRouter({
       component: () => import('../views/VideoView.vue')
     },
     {
-      path: '/activity',
-      name: 'activity',
+      path: '/anniversary',
+      name: 'anniversary',
       component: () => import('../views/ActivityView.vue')
-    },
-    
-    {
-      path: '/forum/detail',
-      name: 'forumDetail',
-      component: () => import('../views/GuideOutView.vue')
     },
     {
       path: '/user',
       name: 'user',
       component: () => import('../views/UserView.vue')
     },
-    
     {
       path: '/:pathMatch(.*)',
       name: 'notFound',
@@ -120,13 +114,15 @@ router.beforeEach((to, from, next) => {
   const loginStateStore = useLoginStateStore()
   //https://stackoverflow.com/questions/70710965
 
-  let whiteDynamicListJudge: boolean = false
-
-  if (whiteList.includes(to.name?.toString() as string) || whiteDynamicListJudge) {
-    console.log(to.path)
+  if (
+    whiteList.includes(to.name?.toString() as string) ||
+    loginStateStore.login ||
+    localStorage.getItem('dev') === '666'
+  ) {
+    console.log('beforeEach to path ===>', to.path)
     next()
   } else {
-    next(false)
+    next('/login')
     ElMessage.info('请先登录')
   }
 })

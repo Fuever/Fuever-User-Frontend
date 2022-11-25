@@ -7,7 +7,6 @@
 -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import axios from 'axios'
 import Avatar from '@/components/Avatar.vue'
 import BlockHeader from '@/components/BaseBlockHeader.vue'
 import type { Post } from '@/server/models'
