@@ -14,10 +14,16 @@ export interface Props {
   title_english: string;
   hideMore?: boolean;
   toPath?: string
+  width?: string
+  title_size?: string
+  align?:string
 }
 const props = withDefaults(defineProps<Props>(), {
   hideMore: false,
-  toPath: '/'
+  toPath: '/',
+  width: '100%',
+  title_size: '0.8em',
+  align:'center'
 })
 const router = useRouter()
 const toMore = (path:string) => {
@@ -27,7 +33,8 @@ const toMore = (path:string) => {
 }
 </script>
 <template>
-  <div class="flex header-container">
+  <div style="display:flex;flex-direction: column;" :style="{'width':width,'font-size':title_size,'align-self':align}">
+    <div class="flex header-container">
     <h1 class="title">{{ title }}</h1>
     <h2 class="title-eng">{{ title_english }}</h2>
     <div v-if="!hideMore">
@@ -40,6 +47,8 @@ const toMore = (path:string) => {
     </div>
   </div>
   <img class="years" src="../assets/images/years.png" alt="" />
+  </div>
+  
 </template>
 
 <style scoped>

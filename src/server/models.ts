@@ -2,7 +2,7 @@
 export interface User {
   id: number
   mail: string
-  userName: string
+  usename: string
   password: string
 }
 export interface UserDetailed extends User {

@@ -12,7 +12,7 @@ import { ElForm, ElFormItem } from 'element-plus'
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { postLogin } from '@/server/api'
+import { getToken, postLogin } from '@/server/api'
 import { useLoginStateStore } from '@/stores/counter'
 const loginStateStore = useLoginStateStore()
 const ruleFormRef = ref<FormInstance>()
@@ -40,16 +40,24 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           localStorage.setItem('token', res['token'])
 
           // 修改全局登录状态为已登录
-          loginStateStore.setLogin()
+          // loginStateStore.setLogin()
 
-          // 跳转至首页并提示
-          router.push({
-            path: '/'
+          getToken().then((res) => {
+            if (res) {
+              const loginStateStore = useLoginStateStore()
+              loginStateStore.setUserID(res)
+              loginStateStore.setLogin()
+              console.log('login get token =>>', res)
+              // 跳转至首页并提示
+              router.push({
+                path: '/'
+              })
+              ElMessage.info('登录成功！')
+            }
           })
-          ElMessage.info('登录成功！')
         })
         .catch((err) => {
-          console.log("===>",err)
+          console.log('===>', err)
           ElMessage.info('账号和密码不匹配！')
         })
     } else {

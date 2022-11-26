@@ -34,8 +34,7 @@
         </template>
 
         <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item v-if="!loginStateStore.login" index="/login">登录</el-menu-item>
-        <el-menu-item v-else @click="onLogout()" index="/login">退出登录</el-menu-item>
+        <el-menu-item index="/user">个人页面</el-menu-item>
         <el-menu-item index="/forum">交流区</el-menu-item>
         <el-menu-item index="/news">新闻资讯</el-menu-item>
         <el-menu-item index="/video">影像福大</el-menu-item>

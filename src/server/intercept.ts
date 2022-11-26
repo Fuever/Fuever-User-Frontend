@@ -1,4 +1,4 @@
-import { useUserIDStore, useLoginStateStore } from './../stores/counter'
+import {  useLoginStateStore } from './../stores/counter'
 import axios from 'axios'
 import humps from 'humps'
 // 创建一个单例（实例）
@@ -31,7 +31,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     (res) => {
     res.data = humps.camelizeKeys(res.data);
-    console.log("camelized data==>",res.data)
+    // console.log("camelized data==>",res.data)
     return res
   },
   (err) => {
@@ -40,7 +40,7 @@ instance.interceptors.response.use(
 )
 
 // GET /api/auth/user/r 获取token
-async function postToken(): Promise<number | null> {
+async function getToken(): Promise<number | null> {
   const response = await instance.get(`/api/auth/user/r`)
   if (response.status == 200) {
     return response.data.data
@@ -49,11 +49,10 @@ async function postToken(): Promise<number | null> {
   }
 }
 
-postToken().then((res) => {
+getToken().then((res) => {
   if (res) {
-    const userIDStore = useUserIDStore()
-    userIDStore.setUserID(res)
     const loginStateStore = useLoginStateStore()
+    loginStateStore.setUserID(res)
     loginStateStore.setLogin()
   }
 })

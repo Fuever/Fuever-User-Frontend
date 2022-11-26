@@ -11,7 +11,8 @@ import type {
   CaptchaRespose,
   Message,
   PostResponse,
-  Block
+  Block,
+  UserDetailed
 } from './models'
 
 // 新闻
@@ -121,9 +122,9 @@ export async function postLogin(password: string, mailbox: string) {
   // }
 }
 
-// POST /api/auth/user/r 获取token
-export async function postToken():Promise<number|null> {
-  const response = await instance.post(`/api/auth/user/r`)
+// GET /api/auth/user/r 获取token
+export async function getToken():Promise<number|null> {
+  const response = await instance.get(`/api/auth/user/r`)
   if (response.status == 200) {
     return response.data.data
   } else {
@@ -234,8 +235,24 @@ export async function getGalleryDetail(id: number): Promise<Gallery | null> {
 // 退出登录 前端操作
 // 1. 将localStorage清空
 // 2. 将全局登录状态改为false
-export function logout() {
-  localStorage.clear()
+export async function logout() {
+  
   const loginStateStore = useLoginStateStore()
   loginStateStore.setLoginOut()
+  loginStateStore.setUserID(null)
+  await instance.delete('/api/auth/user/logout')
+  localStorage.clear()
+}
+
+
+// GET /api/auth/user/{id}  获取用户个人信息
+export async function getUserDetail(id: number): Promise<UserDetailed | null> {
+  try {
+    const response = await instance.get(`/api/auth/user/${id}`)
+    console.log('getUserDetail response===>', response)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
 }

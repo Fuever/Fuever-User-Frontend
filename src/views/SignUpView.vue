@@ -41,7 +41,7 @@ const submitRules = reactive<FormRules>({
       trigger: 'blur'
     },
     {
-      pattern: '^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$',
+      pattern: '^[A-Za-z0-9\u4e00-\u9fa5]{1,30}@[a-zA-Z0-9_-]{1,30}(\.[a-zA-Z0-9_-]{1,30}){1,30}$',
       message: '您的邮箱格式不正确',
       trigger: 'blur'
     }

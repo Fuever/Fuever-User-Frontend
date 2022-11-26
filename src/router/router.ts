@@ -22,7 +22,8 @@ const whiteList: Array<string> = [
   'video',
   'anniversary',
   'post',
-  'user'
+  'user',
+  'working'
 ]
 
 const router = createRouter({
@@ -102,6 +103,11 @@ const router = createRouter({
       path: '/user',
       name: 'user',
       component: () => import('../views/UserView.vue')
+    },
+    {
+      path: '/working',
+      name: 'working',
+      component: () => import('../views/GuideOutView.vue')
     },
     {
       path: '/:pathMatch(.*)',

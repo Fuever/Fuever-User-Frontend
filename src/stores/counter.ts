@@ -1,19 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-
-export const useUserIDStore = defineStore('userId', () => {
-  const userID = ref<number|null>(null)
-  
-
-  function setUserID(id:number) {
-    userID.value=id
-  }
-
-
-  return { userID,setUserID }
-})
-
 export const useLoginStateStore = defineStore('loginState', () => {
   const login = ref(false)
   
@@ -26,7 +13,14 @@ export const useLoginStateStore = defineStore('loginState', () => {
     login.value=false
   }
 
-  return { login,setLogin,setLoginOut }
+  const userID = ref<number|null>(null)
+  
+
+  function setUserID(id:number|null) {
+    userID.value=id
+  }
+
+  return { login,setLogin,setLoginOut, userID,setUserID  }
 })
 
 
