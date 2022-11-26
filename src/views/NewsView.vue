@@ -78,14 +78,6 @@ const toNewsDetails = (id: number) => {
   flex-direction: column;
 }
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
 .pager {
   align-self: center;
   margin-top: 4%;

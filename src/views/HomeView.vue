@@ -62,8 +62,8 @@ const toPostDetail = (id: number) => {
       <BlockNewsItem
         v-for="newsItem in news"
         :key="newsItem['id']"
-        :day="timestamp2time(newsItem['create_time']).substring(8, 10)"
-        :month="timestamp2time(newsItem['create_time']).substring(5, 7) + '月'"
+        :day="timestamp2time(newsItem['createTime']).substring(8, 10)"
+        :month="timestamp2time(newsItem['createTime']).substring(5, 7) + '月'"
         :title="newsItem['title']"
         :brief="newsItem['content']"
         @click="toNewsDetails(newsItem['id'])"
@@ -91,12 +91,12 @@ const toPostDetail = (id: number) => {
           <el-timeline-item
             v-for="item in anniversaries"
             center
-            :timestamp="timestamp2time(item['start_time'])"
+            :timestamp="timestamp2date(item['start'])"
             placement="top"
           >
             <el-card>
-              <h2>{{ item.title }}</h2>
-              <h3>截止于{{ timestamp2time(item['end_time']) }}</h3>
+              <h2>{{ item['title'] }}</h2>
+              <h3>截止于{{timestamp2date(item['end'])}}</h3>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -114,9 +114,8 @@ const toPostDetail = (id: number) => {
         <BlockSingleForum
           v-for="item in posts"
           :title="item['title']"
-          :description="item['description']"
-          :creator="item['author_id'].toString()"
-          :date="timestamp2date(item['updated_time'])"
+          :creator="item['authorName'].toString()"
+          :date="timestamp2date(item['updatedTime'])"
           @click="toPostDetail(item.id)"
         />
       </div>

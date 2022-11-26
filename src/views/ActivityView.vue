@@ -13,12 +13,12 @@
         <el-timeline-item
           v-for="item in anniversaries"
           center
-          :timestamp="item['start']"
+          :timestamp="timestamp2date(item['start'])"
           placement="top"
         >
           <el-card>
             <h2>{{ item['title'] }}</h2>
-            <h3>{{ item['adminID'] }}提交于{{ item['start'] }}</h3>
+            <h3>截止于{{timestamp2date(item['end'])}}</h3>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -38,8 +38,9 @@ import { getAnniversaries } from '@/server/api'
 import type { Anniversary } from '@/server/models'
 import { ref } from 'vue'
 import MapMarked from '@/components/MapMarked.vue'
+import { timestamp2date } from '@/tool'
 const anniversaries = ref<Anniversary[] | null>()
-getAnniversaries().then((res) => (anniversaries.value = res))
+getAnniversaries(0,100).then((res) => (anniversaries.value = res))
 </script>
 
 <style scoped>

@@ -10,7 +10,8 @@ import type {
   Gallery,
   CaptchaRespose,
   Message,
-  BlockResponse
+  PostResponse,
+  Block
 } from './models'
 
 // 新闻
@@ -18,9 +19,9 @@ import type {
 // GET /api/pub/news 获取多条新闻
 export async function getNews(offset: number, limit: number): Promise<News[] | null> {
   try {
-    // const response = await instance.get(`/api/pub/news?offset=${offset}&limit=${limit}`)
-    const response = await instance.get(`/api/pub/news?_page=1&_limit=12`)
-    return response.data
+    const response = await instance.get(`/api/pub/news/?offset=${offset}&limit=${limit}`)
+    // const response = await instance.get(`/api/pub/news?_page=1&_limit=12`)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -30,7 +31,8 @@ export async function getNews(offset: number, limit: number): Promise<News[] | n
 export async function getNewsDetail(id: number): Promise<News | null> {
   try {
     const response = await instance.get(`/api/pub/news/${id}`)
-    return response.data
+    console.log('NewsDetail response.data ==>', response.data)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -44,9 +46,9 @@ export async function getAnniversaries(
   limit: number
 ): Promise<Anniversary[] | null> {
   try {
-    // const response = await instance.get(`/api/pub/anniversaries?offset=${offset}&limit=${limit}`)
-    const response = await instance.get(`/api/pub/anniversaries?_page=1&_limit=100`)
-    return response.data
+    const response = await instance.get(`/api/pub/anniv?offset=${offset}&limit=${limit}`)
+    // const response = await instance.get(`/api/pub/anniversaries?_page=1&_limit=100`)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -55,7 +57,7 @@ export async function getAnniversaries(
 // GET /api/pub/anniversaries 获取单条活动
 export async function getAnniversary(id: number): Promise<Anniversary | null> {
   try {
-    const response = await instance.get(`/api/pub/anniversaries?id=${id}`)
+    const response = await instance.get(`/api/pub/anniv/?id=${id}`)
     return response.data
   } catch (error) {
     console.log(error)
@@ -89,9 +91,9 @@ export async function postEmailCaptcha(verify_id: string, verify_code: string, m
 }
 
 // POST /api/pub/user/register 注册接口
-export async function postRegister(email_verify_code: number, mailbox: string, password: string) {
+export async function postRegister(mail_verify_code: number, mailbox: string, password: string) {
   const jsonObject = {
-    email_verify_code: email_verify_code,
+    mail_verify_code: mail_verify_code,
     mailbox: mailbox,
     password: password
   }
@@ -119,45 +121,57 @@ export async function postLogin(password: string, mailbox: string) {
   // }
 }
 
+// POST /api/auth/user/r 获取token
+export async function postToken():Promise<number|null> {
+  const response = await instance.post(`/api/auth/user/r`)
+  if (response.status == 200) {
+    return response.data.data
+  } else {
+    return null
+  }
+}
+
+
+
 // 帖子
 
-// GET /api/pub/news/{id} 获取单条帖子
-export async function getPost(id: number): Promise<Post | null> {
+// GET /api/pub/posts/p/{id} 获取单条帖子
+export async function getPost(id: number,offset:number,limit:number): Promise<PostResponse | null> {
   try {
     // const response = await instance.get(`/api/pub/posts/${id}`)
-    const response = await instance.get(`/api/pub/posts?id=${id}`)
-    console.log('getPost===>', response)
-    return response.data[0]
+    const response = await instance.get(`/api/pub/posts/p/${id}?offset=${offset}&limit=${limit}`)
+    console.log('getPost response.data.data===>', response.data.data)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
   }
 }
-// GET /api/pub/news 获取多条帖子
+// GET /api/pub/posts 获取多条帖子
 export async function getPosts(offset: number, limit: number): Promise<Post[] | null> {
   try {
-    const response = await instance.get('/posts')
-    // const response = await instance.get(`/api/pub/news?offset=${offset}&limit=${limit}`)
-    // console.log("getPosts response===>",response);
-    return response.data
+    // const response = await instance.get('/posts')
+    const response = await instance.get(`/api/pub/posts/?offset=${offset}&limit=${limit}`)
+    console.log('getPosts response===>', response)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
   }
 }
-// POST /api/auth/posts/p 创建帖子
+// POST /api/auth/posts/p/ 创建帖子
 export async function postCreatePost(title: string, block_id: number) {
   const jsonObject = { title: title, block_id: block_id }
   console.log('postCreatePost jsonObject ===> ', jsonObject)
   // await instance.post(`/api/auth/posts/p`, jsonObject)
-  await instance.post(`/api/auth/posts/p`, jsonObject)
+  await instance.post(`/api/auth/posts/p/`, jsonObject)
 }
 // POST /api/auth/posts/p/{id} 增加评论
 export async function postComment(comment: string, post_id: number) {
   const jsonObject = { content: comment }
   console.log('postComment jsonObject ===> ', jsonObject)
-  // await instance.post(`//api/auth/posts/p/${id}`, jsonObject)
-  await instance.post(`/comments`, jsonObject)
+  await instance.post(`/api/auth/posts/p/${post_id}`, jsonObject)
+  // await instance.post(`/comments`, jsonObject)
 }
 // 初始化帖子
 // export async function initialPost(
@@ -168,7 +182,7 @@ export async function postComment(comment: string, post_id: number) {
 // ) {
 //   try {
 //     await postCreatePost(title, block_id)
-//     postComment(comment,post_id)  
+//     postComment(comment,post_id)
 //   } catch (error) {
 //     console.log("initialPost==>",error)
 //   }
@@ -177,12 +191,12 @@ export async function postComment(comment: string, post_id: number) {
 // 主题
 
 // GET /api/pub/block 获取主题
-export async function getBlocks(offset: number, limit: number): Promise<BlockResponse[] | null> {
+export async function getBlocks(offset: number, limit: number): Promise<Block[] | null> {
   try {
-    const response = await instance.get('/blocks')
-    // const response = await instance.get(`/api/pub/blocks?offset=${offset}&limit=${limit}`)
+    // const response = await instance.get('/blocks')
+    const response = await instance.get(`/api/pub/block/?offset=${offset}&limit=${limit}`)
     console.log('getBlocks response===>', response)
-    return response.data
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -195,8 +209,9 @@ export async function getBlocks(offset: number, limit: number): Promise<BlockRes
 
 export async function getGalleries(): Promise<Gallery[] | null> {
   try {
-    const response = await instance.get('/api/pub/gallery')
-    return response.data
+    const response = await instance.get('/api/pub/gallery/')
+    console.log('getGalleries response ===>', response.data)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -204,11 +219,12 @@ export async function getGalleries(): Promise<Gallery[] | null> {
 }
 
 // GET /api/pub/gallery/{id} 获取指定gallery
-export async function getGalleryDetail(id: number): Promise<Gallery[] | null> {
+export async function getGalleryDetail(id: number): Promise<Gallery | null> {
   try {
     // const response = await instance.get(`/api/pub/gallery/?id=${id}`)
-    const response = await instance.get(`/gallery?id=${id}`)
-    return response.data
+    const response = await instance.get(`/api/pub/gallery/${id}`)
+    console.log('getGalleryDetail response ===>', response.data)
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null

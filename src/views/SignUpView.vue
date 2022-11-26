@@ -103,7 +103,7 @@ const getCaptchaImage = () => {
   getCaptcha().then((res) => {
     verifyRespose.value = res
     imgUrl.value = res?.img
-    currentVerifyID.value = res?.verify_id
+    currentVerifyID.value = res?.verifyId
     // console.log("==>" + verifyRespose.value)
     // console.log("==>" + res?.img)
     // console.log("==>"+res?.verify_id)

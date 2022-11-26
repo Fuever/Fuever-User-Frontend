@@ -31,7 +31,7 @@ getNewsDetail(+route.params.id).then((result) => {
       <h2 class="title"> {{ news?.title }} </h2>
       <div class="flex info">
         <h3>发布日期：{{news?timestamp2date(news.createTime):"不详"}} </h3>
-        <h3>作者：{{ news?.authorID }}</h3>
+        <h3>作者：{{ news?.authorName }}</h3>
       </div>
       <el-divider content-position="center" />
       <p v-for="row in contentRows" class="row">

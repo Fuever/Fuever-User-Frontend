@@ -9,7 +9,6 @@
 import IconFzu from '../components/icons/IconFzu.vue'
 const props = defineProps<{
   title: string
-  description: string
   creator: string
   date: string
 }>()
@@ -18,12 +17,9 @@ const props = defineProps<{
   <div class="flex single-forum-container light-gray-bk">
     <IconFzu class="fzu-forum-icon" />
     <div class="flex f-col" style="flex: 1">
-      <h2 style="font-weight: bolder; margin-top: 6%">
+      <h2 style="font-weight: bolder; margin-top: 6%;flex:1">
         {{ title }}
       </h2>
-      <h3 class="description">
-        {{ description }}
-      </h3>
       <div class="flex">
         <User class="forum-icon"></User>
         <h3 class="forum-info author">{{ creator }}</h3>
@@ -75,15 +71,6 @@ const props = defineProps<{
   background-color: #f1f1f1;
 }
 
-.description {
-  flex: 1;
-  width: 54vw;
-  white-space: nowrap;
-  /* 防止文字内容过多导致被撑开 */
-  overflow: hidden;
-  /* 溢出文字用省略号取代 */
-  text-overflow: ellipsis;
-}
 .date {
   width: 40%;
   white-space: nowrap;

@@ -13,7 +13,8 @@
   ],
   "include": ["app.d.ts"],
   "compilerOptions": {
-    "types": ["element-plus/global"]
+    "types": ["element-plus/global"],
+    "allowJs": true
   },
   
 }

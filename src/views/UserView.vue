@@ -121,7 +121,7 @@ const toMore = (path: string) => {
     <div class="recommend">
       <div class="recommend1" v-for="i in avatars">
         <el-avatar :src="i.avatar" size="large" />
-        <Avatar :grade="i.classID" :schoolmate="i.nickname" />
+        <Avatar :grade="i.classId" :schoolmate="i.nickname" />
       </div>
     </div>
     <!--热聊话题-->
@@ -130,8 +130,7 @@ const toMore = (path: string) => {
       <BlockSingleForum
         v-for="item in posts"
         :title="item['title']"
-        :description="item['description']"
-        :creator="item['authorID'].toString()"
+        :creator="item['authorId'].toString()"
         :date="item['updatedTime']"
       />
     </div>

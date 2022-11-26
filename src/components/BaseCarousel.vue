@@ -9,7 +9,7 @@
   <div class="top">
     <el-carousel>
       <el-carousel-item v-for="item in 4" :key="item">
-        <el-image style="height: 100%;" :src="`@/../public/photo/photo${item}.jpg`" fit="fill"/>
+        <el-image style="height: 100%;" :src="`@/../public/photo/${item}.jpg`" fit="fill"/>
       </el-carousel-item>
     </el-carousel>
   </div>

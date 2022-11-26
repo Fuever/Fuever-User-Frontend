@@ -19,7 +19,8 @@ import { timestamp2date } from '@/tool'
 const posts = ref<Post[] | null>()
 const router = useRouter()
 const displayMode = ref('location')
-getPosts(0,100).then((res) => {
+const currentPage = ref(1)
+getPosts(0,10).then((res) => {
   posts.value = res
 })
 const toPostDetail = (id: number) => {
@@ -32,6 +33,15 @@ const toCreatePost = () => {
     path: `/post/create`
   })
 }
+const handleCurrentChange = (val:number) => {
+  getPosts((val - 1) * 10, 10).then(
+    res => {
+      posts.value = res
+      console.log(res)
+    }
+  )
+}
+
 </script>
 
 <template>
@@ -52,14 +62,23 @@ const toCreatePost = () => {
         <BlockSingleForum
           v-for="item in posts"
           :title="item['title']"
-          :description="item['description']"
-          :creator="item['author_id'].toString()"
-          :date="timestamp2date(item['updated_time'])"
+          :creator="item['authorName'].toString()"
+          :date="timestamp2date(item['updatedTime'])"
           @click="toPostDetail(item.id)"
         />
       </div>
-      <el-button type="primary" class="createPost" @click="toCreatePost()">创建属于您的帖子</el-button>
+      
     </div>
+    <h1 v-if="posts?(posts?.length < 10):true" class="nomore">没有更多了哦~</h1>
+    <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-count="100"
+          v-model:currentPage="currentPage"
+          class="pager"
+          @current-change="handleCurrentChange"
+        />
+        <el-button type="primary" class="createPost" @click="toCreatePost()">创建属于您的帖子</el-button>
     <BaseTail />
   </div>
 </template>
@@ -67,6 +86,11 @@ const toCreatePost = () => {
 <style scoped>
 .frame {
   border: 2px solid royalblue;
+}
+.nomore {
+  align-self: center;
+  flex: 1;
+  font-size: 1.2em;
 }
 
 .f-center {
@@ -106,7 +130,6 @@ const toCreatePost = () => {
 }
 
 .forum-container {
-  border: 1px solid #777;
   overflow-y: auto;
   overflow-x: hidden;
   align-items: center;
@@ -132,5 +155,11 @@ const toCreatePost = () => {
   font-size: 1.8em;
   height: 5vh;
   border-radius: 2vw;
+}
+
+.pager {
+  align-self: center;
+  margin-top: 4%;
+  margin-bottom: 2%;
 }
 </style>

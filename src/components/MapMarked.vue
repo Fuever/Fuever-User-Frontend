@@ -25,7 +25,7 @@ const toDetail = (id: number) => {
       <div
         v-for="item in props.anniversaries"
         class="icon-container"
-        :style="{ top: item['y'], left: item['x'] }"
+        :style="{ top: (item['position_y'] as number *100)?.toString()+'%', left: (item['position_x'] as number *100)?.toString()+'%'}"
       >
         <el-button class="btn" link>
           <LocationFilled color="red" class="icon" />
@@ -38,7 +38,7 @@ const toDetail = (id: number) => {
       <div
         v-for="item in props.galleries"
         class="icon-container"
-        :style="{ top: item['y'], left: item['x'] }"
+        :style="{ top: (item['position_y'] as number *100)?.toString()+'%', left: (item['position_x'] as number *100)?.toString()+'%'}"
       >
         <el-button class="btn" link @click="toDetail(item.id)">
           <LocationFilled color="red" class="icon" />

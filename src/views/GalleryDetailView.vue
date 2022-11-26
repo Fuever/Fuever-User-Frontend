@@ -14,7 +14,7 @@ const speaking = ref(-1)
 const route = useRoute()
 getGalleryDetail(+route.params.id).then((result) => {
   // https://stackoverflow.com/questions/14667713
-  gallery.value = result ? result[0] : null
+  gallery.value = result
   msg.lang = 'zh-CN' // 使用的语言
   msg.pitch = 0.1 // 表示说话的音高
   msg.rate = 0.8 // 语速
@@ -91,8 +91,8 @@ speechSynthesis.cancel()
         style="width: 100%; justify-content: space-around"
         :class="{ col: fontSize != '小' }"
       >
-        <div>作者：{{ gallery?.author_name }}</div>
-        <div>发布时间：{{ gallery?.create_time }}</div>
+        <div>作者：{{ gallery?['authorName'] }}</div>
+        <div>发布时间：{{ gallery?.createTime }}</div>
       </div>
 
       <div class="content" v-for="p in gallery?.content.split('\n')">

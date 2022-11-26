@@ -10,7 +10,7 @@ import BlockHeader from '@/components/BaseBlockHeader.vue'
 import { ref, watch } from 'vue'
 import IconFzu from '@/components/icons/IconFzu.vue'
 import { ElMessage, type UploadFile } from 'element-plus'
-import type { BlockResponse } from '@/server/models'
+import type { Block} from '@/server/models'
 import { getBlocks, postCreatePost } from '@/server/api'
 import { initial } from 'lodash'
 import NavMenu from '@/components/NavMenu.vue'
@@ -19,9 +19,9 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const text = ref('')
 
-const blockResponse = ref<BlockResponse[] | null>()
+const block = ref<Block[] | null>()
 getBlocks(0, 1000).then((res) => {
-  blockResponse.value = res
+  block.value = res
 })
 const blockValue = ref('')
 watch(blockValue, (oldVal, newVal) => {
@@ -67,10 +67,10 @@ const submitCreatePost = (title: string, block_id: number) => {
           <h1 class="title" style="margin-left: 4%"></h1>
           <el-select v-model="blockValue" class="m-2" placeholder="请选择主题" size="large">
             <el-option
-              v-for="response in blockResponse"
-              :key="response.block.id"
-              :label="response.block.title"
-              :value="response.block.id"
+              v-for="item in block"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>

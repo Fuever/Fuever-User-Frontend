@@ -1,8 +1,18 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 
+export const useUserIDStore = defineStore('userId', () => {
+  const userID = ref<number|null>(null)
+  
 
+  function setUserID(id:number) {
+    userID.value=id
+  }
+
+
+  return { userID,setUserID }
+})
 
 export const useLoginStateStore = defineStore('loginState', () => {
   const login = ref(false)
