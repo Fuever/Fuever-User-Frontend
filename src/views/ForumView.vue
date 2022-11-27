@@ -11,17 +11,18 @@ import BlockSingleForum from '@/components/BlockSingleForum.vue'
 import BaseTail from '@/components/BaseTail.vue'
 import NavMenu from '@/components/NavMenu.vue'
 import BaseCarousel from '@/components/BaseCarousel.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { getBlocks, getPosts, getPostsFromBlock } from '@/server/api'
+import { getBlocks, getPosts, getPostsBySearch, getPostsFromBlock } from '@/server/api'
 import type { Block, Post } from '@/server/models'
 import { timestamp2date } from '@/tool'
-import type { ElDropdownInjectionContext } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 const posts = ref<Post[] | null>()
 const router = useRouter()
 const currentPage = ref(1)
 const blocks = ref<Block[] | null>()
+const searchValue = ref('')
+const searching = ref(false)
 const filterRadioValue = ref(0)
 getBlocks(0, 1000).then((res) => {
   blocks.value = res
@@ -40,14 +41,20 @@ const toCreatePost = () => {
   })
 }
 const handleCurrentChange = (val: number) => {
-  if (filterRadioValue.value == 0) {
+  if (searching.value == true) {
+    getPostsBySearch((val - 1) * 6, 6, searchValue.value).then((res) => {
+      posts.value = res
+      console.log('searching posts 6==>', res)
+    })
+  }
+  else if (filterRadioValue.value == 0) {
     getPosts((val - 1) * 6, 6).then((res) => {
       posts.value = res
       console.log('all posts 6==>', res)
     })
   } else {
     getPostsFromBlock((val - 1) * 6, 6, filterRadioValue.value).then((res) => {
-      posts.value = res 
+      posts.value = res
       console.log('block posts 6==>', res)
     })
   }
@@ -57,6 +64,22 @@ const handleFilter = () => {
   displayFilterDrawer.value = false
   handleCurrentChange(1)
 }
+watch(searchValue, (newVal, oldVal) => {
+  console.log('old', oldVal, 'new', typeof(newVal))
+  if (newVal.length < oldVal.length || newVal=="") {
+    searching.value = false
+    // console.log("调用");
+    handleCurrentChange(1)
+    
+  }
+})
+const handleSearch = () => {
+  getPostsBySearch(0, 6, searchValue.value).then((res) => {
+    posts.value = res
+    searching.value = true
+  })
+}
+
 </script>
 
 <template>
@@ -69,12 +92,18 @@ const handleFilter = () => {
       <!--标题栏-->
       <!--图标-->
       <div class="icon-div">
-        <el-button icon @click="displayFilterDrawer=!displayFilterDrawer">
+        <el-button icon @click="displayFilterDrawer = !displayFilterDrawer">
           <Operation style="height: 3vh; color: #bd4132" />
           <h3 style="color: #bd4132; font-weight: bold">筛选主题</h3>
         </el-button>
-        <el-input class="w-50 m-2" placeholder="搜索" :prefix-icon="Search" />
-        <el-button icon>
+        <el-input
+          v-model="searchValue"
+          class="w-50 m-2"
+          placeholder="搜索"
+          :prefix-icon="Search"
+          clearable
+        />
+        <el-button icon @click="handleSearch">
           <Search style="height: 3vh; color: #bd4132" />
         </el-button>
       </div>
@@ -83,23 +112,37 @@ const handleFilter = () => {
           <h4>筛选主题</h4>
         </template>
         <template #default>
-          <div style="display:flex;flex-direction: column;">
-            <el-radio class="radio" :border="true" v-model="filterRadioValue" :label="0" size="large">
-              <p class="radio-text">
-                全部
-              </p>
-              
+          <div style="display: flex; flex-direction: column">
+            <el-radio
+              class="radio"
+              :border="true"
+              v-model="filterRadioValue"
+              :label="0"
+              size="large"
+            >
+              <p class="radio-text"> 全部 </p>
             </el-radio>
-            <el-radio class="radio" :border="true" v-for="block in blocks" v-model="filterRadioValue" :label="block.id" size="large">
+            <el-radio
+              class="radio"
+              :border="true"
+              v-for="block in blocks"
+              v-model="filterRadioValue"
+              :label="block.id"
+              size="large"
+            >
               <p class="radio-text">
-                {{block.title}}
+                {{ block.title }}
               </p>
-              
             </el-radio>
           </div>
-          <div style="margin-top:20vh;">
-            <el-button type="primary" style="width:22vw" @click="handleFilter">确定</el-button>
-            <el-button type="plain" style="width:22vw" @click="displayFilterDrawer=!displayFilterDrawer">取消</el-button>
+          <div style="margin-top: 20vh">
+            <el-button type="primary" style="width: 22vw" @click="handleFilter">确定</el-button>
+            <el-button
+              type="plain"
+              style="width: 22vw"
+              @click="displayFilterDrawer = !displayFilterDrawer"
+              >取消</el-button
+            >
           </div>
         </template>
       </el-drawer>
@@ -117,10 +160,9 @@ const handleFilter = () => {
     <el-pagination
       background
       layout="prev,next"
-      :page-count="3"
-      v-model:currentPage="currentPage"
+      :page-count="10"
       class="pager"
-      @current-change="handleCurrentChange"
+      @current-change=" handleCurrentChange"
     />
     <el-button type="primary" class="createPost" @click="toCreatePost()"
       >创建属于您的帖子</el-button
@@ -199,20 +241,19 @@ const handleFilter = () => {
 .el-popover {
   width: 250px;
 }
-.radio{
+.radio {
   width: 50vw;
-  
 }
 
-.radio-text{
+.radio-text {
   width: 40vw;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 <style>
-.el-button--info{
+.el-button--info {
   margin: 0;
   padding: 0;
 }
