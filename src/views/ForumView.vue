@@ -13,14 +13,20 @@ import NavMenu from '@/components/NavMenu.vue'
 import BaseCarousel from '@/components/BaseCarousel.vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getPosts } from '@/server/api'
-import type { Post } from '@/server/models'
+import { getBlocks, getPosts } from '@/server/api'
+import type { Block, Post } from '@/server/models'
 import { timestamp2date } from '@/tool'
+import type { ElDropdownInjectionContext } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
 const posts = ref<Post[] | null>()
 const router = useRouter()
 const displayMode = ref('location')
 const currentPage = ref(1)
-getPosts(0,10).then((res) => {
+const blocks = ref<Block[] | null>()
+getBlocks(0, 1000).then((res) => {
+  blocks.value = res
+})
+getPosts(0, 10).then((res) => {
   posts.value = res
 })
 const toPostDetail = (id: number) => {
@@ -33,15 +39,14 @@ const toCreatePost = () => {
     path: `/post/create`
   })
 }
-const handleCurrentChange = (val:number) => {
-  getPosts((val - 1) * 10, 10).then(
-    res => {
-      posts.value = res
-      console.log(res)
-    }
-  )
+const handleCurrentChange = (val: number) => {
+  getPosts((val - 1) * 10, 10).then((res) => {
+    posts.value = res
+    console.log(res)
+  })
 }
 
+const filterRadioValue = ref(0)
 </script>
 
 <template>
@@ -54,8 +59,34 @@ const handleCurrentChange = (val:number) => {
       <!--标题栏-->
       <!--图标-->
       <div class="icon-div">
-        <Filter class="icon-more" />
-        <Search class="icon-more" />
+        <el-popover placement="bottom" trigger="click">
+          <template #reference>
+            <el-button text>
+              <Filter style="height: 4vh; color: #bd4132" />
+              <h2 style="color: #bd4132; font-weight: bold">筛选主题</h2>
+            </el-button>
+          </template>
+          
+            <el-radio-group v-model="filterRadioValue" >
+              <el-radio-button label="0" size="large">
+                <h3 style="overflow: hidden;width: 20vw;overflow-x: hidden;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  全部</h3>
+                </el-radio-button>
+              <el-radio-button v-for="block in blocks" :label="block.id" size="large">
+              <h3 style="overflow: hidden;width: 20vw;overflow-x: hidden;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                {{block.title}}</h3>
+              </el-radio-button>
+            </el-radio-group>
+          
+        </el-popover>
+        <el-popover placement="bottom" trigger="click">
+          <template #reference>
+            <el-button>
+              <Search style="height: 4vh; color: #bd4132" />
+              <h2 style="color: #bd4132; font-weight: bold">筛选主题</h2>
+            </el-button>
+          </template>
+        </el-popover>
       </div>
 
       <div class="flex f-col forum-container">
@@ -67,18 +98,19 @@ const handleCurrentChange = (val:number) => {
           @click="toPostDetail(item.id)"
         />
       </div>
-      
     </div>
-    <h1 v-if="posts?(posts?.length < 10):true" class="nomore">没有更多了哦~</h1>
+    <h1 v-if="posts ? posts?.length < 10 : true" class="nomore">没有更多了哦~</h1>
     <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-count="100"
-          v-model:currentPage="currentPage"
-          class="pager"
-          @current-change="handleCurrentChange"
-        />
-        <el-button type="primary" class="createPost" @click="toCreatePost()">创建属于您的帖子</el-button>
+      background
+      layout="prev, pager, next"
+      :page-count="100"
+      v-model:currentPage="currentPage"
+      class="pager"
+      @current-change="handleCurrentChange"
+    />
+    <el-button type="primary" class="createPost" @click="toCreatePost()"
+      >创建属于您的帖子</el-button
+    >
     <BaseTail />
   </div>
 </template>
@@ -98,14 +130,6 @@ const handleCurrentChange = (val:number) => {
 }
 .f-col {
   flex-direction: column;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
 }
 
 .image-title {
@@ -144,11 +168,6 @@ const handleCurrentChange = (val:number) => {
   display: flex;
   justify-content: space-around;
 }
-.icon-more {
-  width: 10%;
-  height: 10%;
-  color: #bd3124;
-}
 
 .createPost {
   margin: 5vh 3vw 1vh 3vw;
@@ -161,5 +180,9 @@ const handleCurrentChange = (val:number) => {
   align-self: center;
   margin-top: 4%;
   margin-bottom: 2%;
+}
+
+.el-popover{
+  width: 250px;
 }
 </style>

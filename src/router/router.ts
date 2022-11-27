@@ -122,8 +122,8 @@ router.beforeEach((to, from, next) => {
 
   if (
     whiteList.includes(to.name?.toString() as string) ||
-    loginStateStore.login ||
-    localStorage.getItem('dev') === '666'
+    loginStateStore.login 
+    
   ) {
     console.log('beforeEach to path ===>', to.path)
     next()

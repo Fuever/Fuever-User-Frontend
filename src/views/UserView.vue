@@ -11,14 +11,21 @@ import { useLoginStateStore } from '@/stores/counter'
 import NavMenu from '@/components/NavMenu.vue'
 import type { UserDetailed } from '@/server/models'
 import { ref } from 'vue'
-import { getUserDetail, logout } from '@/server/api'
-const loginState = useLoginStateStore()
+import { getUserDetail, logout, postAvatar } from '@/server/api'
+import { ElMessage, type UploadInstance, type UploadProps, type UploadUserFile } from 'element-plus'
+const loginStateStore = useLoginStateStore()
 const router = useRouter()
-const currentUser = ref<UserDetailed | null>()
-
-if (loginState.userID) {
-  getUserDetail(loginState.userID).then((res) => {
-    currentUser.value = res
+const avatarUrl = ref('')
+if (loginStateStore.currentUser) {
+  avatarUrl.value = loginStateStore.currentUser.avatar as string
+}
+const currentFiles = ref<UploadUserFile | null>()
+if (!loginStateStore.currentUser && loginStateStore.userID) {
+  getUserDetail(loginStateStore.userID).then((res) => {
+    if (!loginStateStore.currentUser) {
+      loginStateStore.setCurrentUser(res as UserDetailed)
+      avatarUrl.value=res?res['avatar'] as string:""
+    }
   })
 }
 const toPath = (path: string) => {
@@ -26,21 +33,79 @@ const toPath = (path: string) => {
     path: path
   })
 }
-
+const handleUploadAvatar = () => {
+  if (loginStateStore.login) {
+    displayUploadPictureDialog.value = true
+  } else {
+    ElMessage.info('请先登录！')
+  }
+}
 
 const displayUploadPictureDialog = ref(false)
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  console.log('beforeAvatarUpload:我是有被调用的')
+  if (!['image/jpeg', 'image/jpg', 'image/png'].includes(rawFile.type)) {
+    ElMessage.error('头像图片格式应为jpeg、jpg、png中的一个')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('文件大小不得超过2MB!')
+    return false
+  }
+  return true
+}
+const change = () => {
+  console.log('change我有被调用的')
+}
+
+const handleRequest = (item: any) => {
+  console.log(item)
+  postAvatar(item.file)
+    .then((res) => {
+      if (loginStateStore.currentUser) {
+        loginStateStore.currentUser.avatar = res['avatar']
+      }
+    })
+    .then(
+      (res) => {
+        displayUploadPictureDialog.value = false
+        ElMessage.info('上传成功！')
+      },
+      (err) => {
+        ElMessage.info('上传失败！')
+      }
+    )
+}
+
+const uploadRef = ref<UploadInstance>()
+const submitUpload = () => {
+  uploadRef.value!.submit()
+}
+const handleLogout = () => {
+  logout()
+  avatarUrl.value = ""
+  loginStateStore.clearCurrentUser()
+
+}
 </script>
 
 <template>
   <div style="display: flex; flex-direction: column">
     <NavMenu></NavMenu>
     <div class="avatar-bk">
-      <el-avatar @click="displayUploadPictureDialog=true" style="align-self: center" :size="150" :src="currentUser?.avatar" />
+      <el-avatar
+        @click="handleUploadAvatar"
+        style="align-self: center"
+        ref="avatarRef"
+        :size="150"
+        :limit="1"
+        :src="avatarUrl"
+      />
 
       <h1 style="text-align: center; color: white">
-        <p> 欢迎您来到福依旧! </p>
-        <p v-if="loginState.login">
-          {{ currentUser?.nickname }}
+        <p>欢迎您来到福依旧!</p>
+        <p v-if="loginStateStore.login">
+          {{ loginStateStore.currentUser?.nickname }}
         </p>
       </h1>
     </div>
@@ -76,7 +141,7 @@ const displayUploadPictureDialog = ref(false)
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">校友推荐</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="4" disabled @click="toPath('/working')">
+      <el-collapse-item name="4" disabled @click="toPath('/forum')">
         <template #title>
           <img
             style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
@@ -86,9 +151,9 @@ const displayUploadPictureDialog = ref(false)
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">热聊话题</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item v-if="loginState.login" name="5">
-        <div style="display:flex;justify-content: flex-end;">
-          <el-button  @click="logout"  type="primary">
+      <el-collapse-item v-if="loginStateStore.login" name="5">
+        <div style="display: flex; justify-content: flex-end">
+          <el-button @click="handleLogout" type="primary">
             <h2>确认退出</h2>
           </el-button>
         </div>
@@ -103,15 +168,48 @@ const displayUploadPictureDialog = ref(false)
       </el-collapse-item>
     </el-collapse>
 
-    <el-button type="primary" class="status" v-if="!loginState.login" @click="toPath('/login')">
+    <el-button
+      type="primary"
+      class="status"
+      v-if="!loginStateStore.login"
+      @click="toPath('/login')"
+    >
       登录
     </el-button>
-    <el-dialog v-model="displayUploadPictureDialog" title="上传头像">
-      
+    <el-dialog
+      v-model="displayUploadPictureDialog"
+      title="上传头像"
+      style="width: 70vw; display: flex; flex-direction: column"
+    >
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <el-upload
+          style="display: flex; flex-direction: column; align-items: center"
+          ref="uploadRef"
+          class="avatar-uploader"
+          v-model="currentFiles"
+          :auto-upload="false"
+          action="Fake Action"
+          :before-upload="beforeAvatarUpload"
+          :on-change="change"
+          :http-request="handleRequest"
+          :limit="1"
+          list-type="picture"
+        >
+          <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+
+          <template #tip>
+            <h3>- 文件大小 &lt; 2MB</h3>
+            <h3 style="margin-bottom: 2vh">- 图片形式为jpg/png</h3>
+            <el-button class="submit-btn" type="primary" @click="submitUpload">
+              点击上传
+            </el-button>
+          </template>
+        </el-upload>
+      </div>
     </el-dialog>
   </div>
 </template>
-<style>
+<style scoped>
 .avatar-bk {
   height: 40vh;
   background-color: darkred;
@@ -127,5 +225,31 @@ const displayUploadPictureDialog = ref(false)
   font-size: 1.8em;
   font-weight: bolder;
   margin: 10vh 2vw 0 2vw;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+  border: 3px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #bd4132;
+  width: 50vw;
+  height: 50vw;
+  text-align: center;
+}
+
+.submit-btn {
+  width: 100%;
 }
 </style>

@@ -12,7 +12,7 @@ import { ElForm, ElFormItem } from 'element-plus'
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { getToken, postLogin } from '@/server/api'
+import { getToken, getUserDetail, postLogin } from '@/server/api'
 import { useLoginStateStore } from '@/stores/counter'
 const loginStateStore = useLoginStateStore()
 const ruleFormRef = ref<FormInstance>()
@@ -47,6 +47,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
               const loginStateStore = useLoginStateStore()
               loginStateStore.setUserID(res)
               loginStateStore.setLogin()
+              if (!loginStateStore.currentUser) {
+                getUserDetail(loginStateStore.userID as number).then((res) => {
+                  loginStateStore.currentUser = res
+                })
+              }
               console.log('login get token =>>', res)
               // 跳转至首页并提示
               router.push({

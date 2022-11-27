@@ -14,6 +14,7 @@ import type {
   Block,
   UserDetailed
 } from './models'
+import type { UploadUserFile } from 'element-plus'
 
 // 新闻
 
@@ -255,4 +256,19 @@ export async function getUserDetail(id: number): Promise<UserDetailed | null> {
     console.log(error)
     return null
   }
+}
+
+// POST /api/auth/user/avatar 上传头像
+export async function postAvatar(avatar: File) {
+  const form = new FormData()
+  form.append('avatar',avatar)
+  try {
+    const response = await instance.post(`/api/auth/user/avatar`, form)
+    console.log('postAvatar response===>', response)
+    return response.data
+  } catch (error) {
+    console.log('postAvatar err===>',error)
+    return null
+  }
+ 
 }
