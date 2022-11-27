@@ -30,7 +30,7 @@ getNews(0, 3).then((result) => {
   news.value = result
   console.log('news==>', news.value)
 })
-getPosts(0,4).then((result) => {
+getPosts(0,2).then((result) => {
   posts.value = result
   console.log('posts==>', posts.value)
 })
@@ -152,9 +152,8 @@ const toPostDetail = (id: number) => {
 }
 
 .forum-container {
-  border: 1px solid #777;
   height: 260px;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   align-items: center;
   margin: 0 3% 0 3%;

@@ -161,6 +161,18 @@ export async function getPosts(offset: number, limit: number): Promise<Post[] | 
     return null
   }
 }
+// GET /api/pub/posts/b/{block_id} 获取特定板块id的帖子
+export async function getPostsFromBlock(offset: number, limit: number,blockId:number): Promise<Post[] | null> {
+  try {
+    // const response = await instance.get('/posts')
+    const response = await instance.get(`/api/pub/posts/b/${blockId}?offset=${offset}&limit=${limit}`)
+    console.log('getPostsFromBlock', response)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
 // POST /api/auth/posts/p/ 创建帖子
 export async function postCreatePost(title: string, block_id: number) {
   const jsonObject = { title: title, block_id: block_id }

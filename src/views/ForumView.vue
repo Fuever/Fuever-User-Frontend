@@ -13,20 +13,20 @@ import NavMenu from '@/components/NavMenu.vue'
 import BaseCarousel from '@/components/BaseCarousel.vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getBlocks, getPosts } from '@/server/api'
+import { getBlocks, getPosts, getPostsFromBlock } from '@/server/api'
 import type { Block, Post } from '@/server/models'
 import { timestamp2date } from '@/tool'
 import type { ElDropdownInjectionContext } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 const posts = ref<Post[] | null>()
 const router = useRouter()
-const displayMode = ref('location')
 const currentPage = ref(1)
 const blocks = ref<Block[] | null>()
+const filterRadioValue = ref(0)
 getBlocks(0, 1000).then((res) => {
   blocks.value = res
 })
-getPosts(0, 10).then((res) => {
+getPosts(0, 6).then((res) => {
   posts.value = res
 })
 const toPostDetail = (id: number) => {
@@ -40,13 +40,23 @@ const toCreatePost = () => {
   })
 }
 const handleCurrentChange = (val: number) => {
-  getPosts((val - 1) * 10, 10).then((res) => {
-    posts.value = res
-    console.log(res)
-  })
+  if (filterRadioValue.value == 0) {
+    getPosts((val - 1) * 6, 6).then((res) => {
+      posts.value = res
+      console.log('all posts 6==>', res)
+    })
+  } else {
+    getPostsFromBlock((val - 1) * 6, 6, filterRadioValue.value).then((res) => {
+      posts.value = res 
+      console.log('block posts 6==>', res)
+    })
+  }
 }
-
-const filterRadioValue = ref(0)
+const displayFilterDrawer = ref(false)
+const handleFilter = () => {
+  displayFilterDrawer.value = false
+  handleCurrentChange(1)
+}
 </script>
 
 <template>
@@ -59,36 +69,40 @@ const filterRadioValue = ref(0)
       <!--标题栏-->
       <!--图标-->
       <div class="icon-div">
-        <el-popover placement="bottom" trigger="click">
-          <template #reference>
-            <el-button text>
-              <Filter style="height: 4vh; color: #bd4132" />
-              <h2 style="color: #bd4132; font-weight: bold">筛选主题</h2>
-            </el-button>
-          </template>
-          
-            <el-radio-group v-model="filterRadioValue" >
-              <el-radio-button label="0" size="large">
-                <h3 style="overflow: hidden;width: 20vw;overflow-x: hidden;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                  全部</h3>
-                </el-radio-button>
-              <el-radio-button v-for="block in blocks" :label="block.id" size="large">
-              <h3 style="overflow: hidden;width: 20vw;overflow-x: hidden;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                {{block.title}}</h3>
-              </el-radio-button>
-            </el-radio-group>
-          
-        </el-popover>
-        <el-popover placement="bottom" trigger="click">
-          <template #reference>
-            <el-button>
-              <Search style="height: 4vh; color: #bd4132" />
-              <h2 style="color: #bd4132; font-weight: bold">筛选主题</h2>
-            </el-button>
-          </template>
-        </el-popover>
+        <el-button icon @click="displayFilterDrawer=!displayFilterDrawer">
+          <Operation style="height: 3vh; color: #bd4132" />
+          <h3 style="color: #bd4132; font-weight: bold">筛选主题</h3>
+        </el-button>
+        <el-input class="w-50 m-2" placeholder="搜索" :prefix-icon="Search" />
+        <el-button icon>
+          <Search style="height: 3vh; color: #bd4132" />
+        </el-button>
       </div>
-
+      <el-drawer size="60%" v-model="displayFilterDrawer" direction="ltr">
+        <template #header>
+          <h4>筛选主题</h4>
+        </template>
+        <template #default>
+          <div style="display:flex;flex-direction: column;">
+            <el-radio class="radio" :border="true" v-model="filterRadioValue" :label="0" size="large">
+              <p class="radio-text">
+                全部
+              </p>
+              
+            </el-radio>
+            <el-radio class="radio" :border="true" v-for="block in blocks" v-model="filterRadioValue" :label="block.id" size="large">
+              <p class="radio-text">
+                {{block.title}}
+              </p>
+              
+            </el-radio>
+          </div>
+          <div style="margin-top:20vh;">
+            <el-button type="primary" style="width:22vw" @click="handleFilter">确定</el-button>
+            <el-button type="plain" style="width:22vw" @click="displayFilterDrawer=!displayFilterDrawer">取消</el-button>
+          </div>
+        </template>
+      </el-drawer>
       <div class="flex f-col forum-container">
         <BlockSingleForum
           v-for="item in posts"
@@ -99,11 +113,11 @@ const filterRadioValue = ref(0)
         />
       </div>
     </div>
-    <h1 v-if="posts ? posts?.length < 10 : true" class="nomore">没有更多了哦~</h1>
+    <h1 v-if="posts ? posts?.length < 6 : true" class="nomore">没有更多了哦~</h1>
     <el-pagination
       background
-      layout="prev, pager, next"
-      :page-count="100"
+      layout="prev,next"
+      :page-count="3"
       v-model:currentPage="currentPage"
       class="pager"
       @current-change="handleCurrentChange"
@@ -166,7 +180,7 @@ const filterRadioValue = ref(0)
   border: #777;
   margin: 0 3% 5% 3%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .createPost {
@@ -182,7 +196,24 @@ const filterRadioValue = ref(0)
   margin-bottom: 2%;
 }
 
-.el-popover{
+.el-popover {
   width: 250px;
+}
+.radio{
+  width: 50vw;
+  
+}
+
+.radio-text{
+  width: 40vw;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+</style>
+<style>
+.el-button--info{
+  margin: 0;
+  padding: 0;
 }
 </style>

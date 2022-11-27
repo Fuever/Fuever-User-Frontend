@@ -30,6 +30,7 @@ export interface Post {
   state: number
   blockId: number
   isLock: boolean
+  commentNumber:number
 }
 
 export interface PostResponse {

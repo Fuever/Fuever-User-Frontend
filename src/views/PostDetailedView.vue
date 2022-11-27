@@ -4,7 +4,7 @@
     <h1 class="post-title">{{ postResponse?.post?.title }}</h1>
     <hr />
     <IconFzu style="height: 20vh; color: currentColor; fill: #bd3124"></IconFzu>
-    <div v-if="topMessage" class="sticked-msg-container">
+    <div v-if="topMessage" class="comment-msg-container">
       <div class="sticked"></div>
       <p class="sticked-text">楼主</p>
       <div class="f-col user-info">
@@ -30,11 +30,11 @@
         </p>
       </div>
     </div>
-    <h1 v-if="postResponse?postResponse?.comment.length < 4:true" class="nomore">没有更多了哦~</h1>
+    <h1 v-if="postResponse?postResponse?.comment.length < 5:true" class="nomore">没有更多了哦~</h1>
     <el-pagination
       background
       layout="prev, pager, next"
-      :page-count="10"
+      :page-count="totalPageCount"
       v-model:currentPage="currentPage"
       class="pager"
       @current-change="handleCurrentChange"
@@ -76,16 +76,19 @@ import type { Post, Message, PostResponse } from '@/server/models'
 import { useLoginStateStore } from '@/stores/counter'
 import { timestamp2date } from '@/tool'
 import { ElMessage } from 'element-plus'
+import { ceil, floor, round } from 'lodash'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const currentPage = ref(1)
+const totalPageCount = ref(0)
 const postResponse = ref<PostResponse | null>()
 const topMessage = ref<Message | null>()
 const restMessage = ref<Message[] | null>()
 const textarea = ref('')
-getPost(+route.params.id, 0, 4).then((res) => {
+getPost(+route.params.id, 0, 5).then((res) => {
   postResponse.value = res
+  totalPageCount.value =  ceil((res?.post.commentNumber as number)/5)
   topMessage.value = res?.comment ? res.comment[0] : null
   restMessage.value = res?.comment ? res.comment.slice(1) : null
 })
@@ -94,6 +97,9 @@ const onClickComment = () => {
   const loginStateStore = useLoginStateStore()
   if (loginStateStore.login) {
     displayDrawer.value = true
+    if (postResponse.value?.post.isLock) {
+      ElMessage.info('该帖子无法添加评论！')
+    }
   } else {
     ElMessage.info('请先登录！')
   }
@@ -105,7 +111,7 @@ const submitComment = () => {
   })
 }
 const handleCurrentChange = (val: number) => {
-  getPost(+route.params.id, (val - 1) * 4, 4).then((res) => {
+  getPost(+route.params.id, (val - 1) * 5, 5).then((res) => {
     postResponse.value = res
     if (val == 1) {
       topMessage.value = res?.comment ? res.comment[0] : null
@@ -164,7 +170,7 @@ const handleCurrentChange = (val: number) => {
   left: 0;
   top: 0;
   transform: rotate(-45deg);
-  font-size: 6vw;
+  font-size: 5vw;
   margin: 1vw 0 0 1vw;
   z-index: 3;
 }
@@ -173,8 +179,8 @@ hr {
   border-top: 3px solid darkred;
   color: darkred;
   overflow: visible;
-  width: 96vw;
-  height: 6px;
+  width: 95vw;
+  height: 5px;
   margin-bottom: 2%;
 }
 .text-container {
@@ -183,35 +189,28 @@ hr {
   font-size: 1.2em;
   justify-content: space-between;
 }
-.sticked-msg-container {
-  border: 1px solid red;
-  width: 92vw;
-  height: 16vh;
-  border-radius: 2vw;
-  margin-top: 2vh;
-  display: flex;
-}
+
 
 .comment-msg-container {
-  border: 1px solid #666;
+  border: 1px solid #555;
   width: 92vw;
-  height: 16vh;
+  height: 14vh;
   border-radius: 2vw;
   margin-top: 2vh;
   display: flex;
 }
 
 .avatar {
-  width: 20vw;
-  height: 20vw;
+  width: 15vw;
+  height: 15vw;
 }
 
 .user-info {
-  padding-left: 6vw;
+  padding-left: 5vw;
   padding-top: 4vw;
   padding-right: 2vw;
   align-items: space-around;
-  border-right: 1px solid #666;
+  border-right: 1px solid #555;
 }
 
 .msg-time {
@@ -226,7 +225,7 @@ hr {
 .content {
   align-self: flex-start;
 
-  width: 60vw;
+  width: 50vw;
 }
 
 .pager {
