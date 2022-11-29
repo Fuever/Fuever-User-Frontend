@@ -72,8 +72,8 @@ const toPostDetail = (id: number) => {
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
 
       <h1 style="align-self: center; font-weight: bold">疫去春来</h1>
-      <video controls class="video" preload="auto">
-        <!-- 自动加载视频的下载 -->
+      <video controls class="video"  preload="none">
+        
         <source
           src="https://news.fzu.edu.cn/__local/6/3D/EF/C2A4B68E681360EA48AB4ABD0FF_B00AF9BA_C724CC8.mp4"
           type="video/mp4"

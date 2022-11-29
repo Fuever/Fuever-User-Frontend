@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
@@ -10,7 +10,7 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "json": "json-server --watch src/server/db.json -p 3001 --routes src/server/route.json"
+    "mock": "json-server --watch src/server/db.json -p 3001 --routes src/server/route.json"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",

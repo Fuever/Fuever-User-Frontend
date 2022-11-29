@@ -2,16 +2,19 @@
 import BaseBlockHeader from '@/components/BaseBlockHeader.vue'
 import NavMenu from '@/components/NavMenu.vue'
 import BaseTail from '@/components/BaseTail.vue'
-import type { Gallery } from '@/server/models'
-import { ref } from 'vue'
-import { getGalleries, getGalleryDetail } from '@/server/api'
+import type { Gallery, Post, PostResponse } from '@/server/models'
+import { computed, ref } from 'vue'
+import { getGalleries, getGalleryDetail, getPost } from '@/server/api'
 import { VideoPlay } from '@element-plus/icons-vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import BlockSingleForum from '@/components/BlockSingleForum.vue'
+import { timestamp2date } from '@/tool'
 const gallery = ref<Gallery | null>()
 const msg = new SpeechSynthesisUtterance()
 const fontSize = ref('小')
 const speaking = ref(-1)
 const route = useRoute()
+const post = ref<Post>()
 getGalleryDetail(+route.params.id).then((result) => {
   // https://stackoverflow.com/questions/14667713
   gallery.value = result
@@ -21,6 +24,9 @@ getGalleryDetail(+route.params.id).then((result) => {
   msg.text = gallery.value?.content as string // 要合成的文字内容
   msg.volume = 8 // 声音的音量
   speaking.value = 0
+  getPost(result?.postId as number, 0, 1).then((res) => {
+    post.value = res?.post
+  })
 })
 
 const controlSpeech = () => {
@@ -37,6 +43,26 @@ const controlSpeech = () => {
   }
 }
 speechSynthesis.cancel()
+const postAuthorName = computed(() => {
+  console.log(post.value)
+  if (!post.value?.authorId) {
+    return '加载中'
+  }
+  else if (post.value.authorId == -1) {
+    return '已注销'
+  }
+  else {
+    return post.value.authorName
+  }
+})
+const toPostDetail = (id: number) => {
+  const router = useRouter()
+  router.push(
+    {
+      path:`/post/${id}`
+    }
+  )
+}
 </script>
 <template>
   <div class="top">
@@ -44,11 +70,7 @@ speechSynthesis.cancel()
     <h1 style="font-weight: bolder; font-size: 4em; margin-left: 5vw">图书馆</h1>
     <hr class="hr-dashed-fixed" />
     <BaseBlockHeader title="时光长廊" title_english="Gallery" :hide-more="true" />
-    <el-image
-      :src="gallery?.cover"
-      fit="scale-down"
-      style="height: 30vh;"
-    >
+    <el-image :src="gallery?.cover" fit="scale-down" style="height: 30vh">
       <template #placeholder>
         <div style="display: flex; flex-direction: column">
           <h1>加载中……</h1>
@@ -89,9 +111,9 @@ speechSynthesis.cancel()
       <div
         class="flex center"
         style="width: 100%; justify-content: space-around"
-        :class="{ col: fontSize != '小' }"
+        :class="{ col: fontSize !== '小' }"
       >
-        <div>作者：{{ gallery?['authorName'] }}</div>
+        <div>作者：{{ gallery?.['authorName'] }}</div>
         <div>发布时间：{{ gallery?.createTime }}</div>
       </div>
 
@@ -101,6 +123,13 @@ speechSynthesis.cancel()
     </div>
 
     <BaseBlockHeader title="热聊话题" title_english="Topic" :hide-more="true" />
+    <BlockSingleForum
+      style="align-self: center"
+      :title="(post?.title as string)"
+      :creator="postAuthorName"
+      @click="toPostDetail(post?.id as number)"
+      :date="post ? timestamp2date(post.updatedTime) : '未知'"
+    />
     <BaseTail />
   </div>
 </template>

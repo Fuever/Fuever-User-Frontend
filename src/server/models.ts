@@ -30,7 +30,8 @@ export interface Post {
   state: number
   blockId: number
   isLock: boolean
-  commentNumber:number
+  commentNumber: number
+
 }
 
 export interface PostResponse {
@@ -79,6 +80,7 @@ export interface Gallery extends Location {
   authorName: string
   content: string
   cover: string
+  postId:number
   createTime: number
   // 需要增加对应热帖的id
 }

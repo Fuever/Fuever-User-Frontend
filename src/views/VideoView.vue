@@ -10,8 +10,7 @@
         {{ titles[i - 1] }}
       </p>
       <hr />
-      <video controls class="video" preload="auto">
-        <!-- 自动加载视频的下载 -->
+      <video controls class="video" preload="none">
         <source :src="urls[i - 1]" type="video/mp4" />
       </video>
     </div>
