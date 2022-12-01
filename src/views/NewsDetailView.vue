@@ -14,12 +14,13 @@ import { ref } from 'vue'
 import { useRoute} from 'vue-router'
 const route = useRoute()
 const news = ref<News | null>()
-const contentRows = ref<string[] | null>()
+
+const content = ref<String|null>('')
 console.log(+route.params.id)
 getNewsDetail(+route.params.id).then((result) => {
   // https://stackoverflow.com/questions/14667713
   news.value = result
-  contentRows.value = news.value ? news.value.content?.split('\n') : ['']
+  content.value = result?.content as string
   console.log(news.value)
 })
 
@@ -34,9 +35,7 @@ getNewsDetail(+route.params.id).then((result) => {
         <h3>作者：{{ news?.authorName }}</h3>
       </div>
       <el-divider content-position="center" />
-      <p v-for="row in contentRows" class="row">
-        {{ row }}
-      </p>
+      <mavon-editor class="editor" style="font-size: 1.2em;" defaultOpen="preview" :editable="false" :toolbarsFlag="false" placeholder="开始编辑" :subfield="false" :boxShadow="false" v-model="content"/>
     </div>
     
   </div>

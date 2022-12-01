@@ -13,11 +13,13 @@ const gallery = ref<Gallery | null>()
 const msg = new SpeechSynthesisUtterance()
 const fontSize = ref('小')
 const speaking = ref(-1)
+const content = ref('')
 const route = useRoute()
 const post = ref<Post>()
 getGalleryDetail(+route.params.id).then((result) => {
   // https://stackoverflow.com/questions/14667713
   gallery.value = result
+  content.value = result?.content as string
   msg.lang = 'zh-CN' // 使用的语言
   msg.pitch = 0.1 // 表示说话的音高
   msg.rate = 0.8 // 语速
@@ -63,6 +65,17 @@ const toPostDetail = (id: number) => {
     }
   )
 }
+const editorFontSize = computed(() => {
+  if (fontSize.value == '大') {
+    console.log("大");
+    return '28px'
+  } else if (fontSize.value == '中') {
+    console.log("中");
+    return '16px'
+  } else {
+    return '12px'
+  }
+})
 </script>
 <template>
   <div class="top">
@@ -117,9 +130,7 @@ const toPostDetail = (id: number) => {
         <div>发布时间：{{ gallery?.createTime }}</div>
       </div>
 
-      <div class="content" v-for="p in gallery?.content.split('\n')">
-        {{ p }}
-      </div>
+      <mavon-editor class="editor" defaultOpen="preview" :editable="false" :toolbarsFlag="false" :class="{ 'editor-small': fontSize == '小', 'editor-middle': fontSize == '中', 'editor-large': fontSize == '大' }"  placeholder="开始编辑" :subfield="false" :boxShadow="false" v-model="content"/>
     </div>
 
     <BaseBlockHeader title="热聊话题" title_english="Topic" :hide-more="true" />
@@ -198,6 +209,17 @@ const toPostDetail = (id: number) => {
 
 .large {
   font-size: 2.1em;
+}
+
+.editor-small {
+  font-size: 1em;
+}
+.editor-middle {
+  font-size: 1.2em;
+}
+
+.editor-large {
+  font-size: 1.4em;
 }
 
 .col {

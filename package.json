@@ -19,6 +19,7 @@
     "element-plus": "^2.2.21",
     "humps": "^2.0.1",
     "json-server": "^0.17.1",
+    "mavon-editor": "^3.0.0-beta",
     "pinia": "^2.0.23",
     "sass": "^1.55.0",
     "snippets": "^0.0.6",
