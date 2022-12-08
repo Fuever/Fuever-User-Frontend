@@ -40,6 +40,7 @@
         <el-menu-item index="/video">影像福大</el-menu-item>
         <el-menu-item index="/activity">院庆活动</el-menu-item>
         <el-menu-item index="/gallery">时光长廊</el-menu-item>
+        <el-menu-item index="/login" v-if="!loginStateStore.login">登录</el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
@@ -57,8 +58,8 @@
 }
 </style>
 <script lang="ts" setup>
-import { useLoginStateStore } from '@/stores/counter';
-import { logout } from '@/server/api';
+import { useLoginStateStore } from '@/stores/counter'
+import { logout } from '@/server/api'
 import { Document, Menu as IconMenu, Location, Setting } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 const handleOpen = (key: string, keyPath: string[]) => {
@@ -73,6 +74,6 @@ const backHistory = () => {
 }
 const loginStateStore = useLoginStateStore()
 const onLogout = () => {
-    logout()
+  logout()
 }
 </script>
