@@ -19,7 +19,7 @@ const props = defineProps<{
     <BaseDateCircle class="news-date" :month="month" :day="day"></BaseDateCircle>
     <div class="flex f-col news-titles hidden">
       <h4 class="title">{{ title }}</h4>
-      <h4>{{ brief }}</h4>
+      <h4>{{ brief.replace(/#/g,'') }}</h4>
     </div>
   </div>
 </template>
