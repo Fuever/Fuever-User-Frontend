@@ -1,72 +1,3 @@
-<template>
-  <div class="f-col">
-    <NavMenu></NavMenu>
-    <h1 class="post-title">{{ postResponse?.post?.title }}</h1>
-    <hr />
-    <IconFzu style="height: 20vh; color: currentColor; fill: #bd3124"></IconFzu>
-    <div v-if="topMessage" class="comment-msg-container">
-      <div class="sticked"></div>
-      <p class="sticked-text">楼主</p>
-      <div class="f-col user-info">
-        <el-avatar shape="square" class="avatar" fit="contain" :src="topMessage?.authorAvatar" />
-        <h3>{{ topMessage?.authorName }}</h3>
-      </div>
-      <div class="f-col text-container">
-        <p class="content">{{ topMessage?.content }}</p>
-        <p class="msg-time">
-          {{ timestamp2date(topMessage?.createdTime as number) }}
-        </p>
-      </div>
-    </div>
-    <div v-for="msg in restMessage" class="comment-msg-container">
-      <div class="f-col user-info">
-        <el-avatar shape="square" class="avatar" fit="contain" :src="msg.authorAvatar" />
-        <h3>{{ msg?.authorName }}</h3>
-      </div>
-      <div class="f-col text-container">
-        <p class="content">{{ msg?.content }}</p>
-        <p class="msg-time">
-          {{ timestamp2date(msg?.createdTime as number) }}
-        </p>
-      </div>
-    </div>
-    <h1 v-if="postResponse?postResponse?.comment.length < 5:true" class="nomore">没有更多了哦~</h1>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :page-count="totalPageCount"
-      v-model:currentPage="currentPage"
-      class="pager"
-      @current-change="handleCurrentChange"
-    />
-    <el-button type="primary" class="submit-comment" @click="onClickComment()">发表评论</el-button>
-    <el-drawer v-model="displayDrawer" direction="btt" size="50%">
-      <template #header>
-        <h2>回复：</h2>
-      </template>
-      <template #default>
-        <div>
-          <el-input
-            type="textarea"
-            maxlength="300"
-            show-word-limit
-            v-model="textarea"
-            :rows="8"
-            placeholder="请输入您的回复内容"
-          ></el-input>
-        </div>
-      </template>
-      <template #footer>
-        <div style="flex: auto">
-          <el-button @click="displayDrawer = false">取消</el-button>
-          <el-button type="primary" @click="submitComment">确认提交</el-button>
-        </div>
-      </template>
-    </el-drawer>
-    <BaseTail :style="{ 'margin-top': postResponse?(postResponse.comment.length==0?'28vh':'22vh'):'28vh'}"></BaseTail>
-  </div>
-</template>
-
 <script setup lang="ts">
 import BaseTail from '@/components/BaseTail.vue'
 import IconFzu from '@/components/icons/IconFzu.vue'
@@ -78,8 +9,9 @@ import { timestamp2date } from '@/tool'
 import { ElMessage } from 'element-plus'
 import { ceil, floor, round } from 'lodash'
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
 const currentPage = ref(1)
 const totalPageCount = ref(0)
 const postResponse = ref<PostResponse | null>()
@@ -88,7 +20,7 @@ const restMessage = ref<Message[] | null>()
 const textarea = ref('')
 getPost(+route.params.id, 0, 5).then((res) => {
   postResponse.value = res
-  totalPageCount.value =  ceil((res?.post.commentNumber as number)/5)
+  totalPageCount.value = ceil((res?.post.commentNumber as number) / 5)
   topMessage.value = res?.comment ? res.comment[0] : null
   restMessage.value = res?.comment ? res.comment.slice(1) : null
 })
@@ -122,7 +54,110 @@ const handleCurrentChange = (val: number) => {
     }
   })
 }
+const toUserProfile = (id: number) => {
+  // console.log('toUserProfile->', id)
+  router.push({
+    name: 'profile',
+    params: {
+      id: id
+    }
+  })
+}
 </script>
+<template>
+  <div class="f-col">
+    <NavMenu></NavMenu>
+    <h1 class="post-title">{{ postResponse?.post?.title }}</h1>
+    <hr />
+    <IconFzu style="height: 20vh; color: currentColor; fill: #bd3124"></IconFzu>
+    <div
+      v-if="topMessage"
+      class="comment-msg-container"
+      @click="toUserProfile(topMessage?.authorId as number)"
+    >
+      <div class="sticked"></div>
+      <p class="sticked-text">楼主</p>
+      <div class="f-col user-info">
+        <el-avatar
+          shape="square"
+          class="avatar"
+          fit="contain"
+          :src="topMessage?.authorAvatar"
+          @click="toUserProfile(topMessage?.authorId as number)"
+        />
+        <h3>{{ topMessage?.authorName }}</h3>
+      </div>
+      <div class="f-col text-container">
+        <p class="content">{{ topMessage?.content }}</p>
+        <p class="msg-time">
+          {{ timestamp2date(topMessage?.createdTime as number) }}
+        </p>
+      </div>
+    </div>
+    <div
+      v-for="msg in restMessage"
+      class="comment-msg-container"
+      @click="toUserProfile(topMessage?.authorId as number)"
+    >
+      <div class="f-col user-info">
+        <el-avatar
+          shape="square"
+          class="avatar"
+          fit="contain"
+          :src="msg.authorAvatar"
+          @click="toUserProfile(msg?.authorId as number)"
+        />
+        <h3>{{ msg?.authorName }}</h3>
+      </div>
+      <div class="f-col text-container">
+        <p class="content">{{ msg?.content }}</p>
+        <p class="msg-time">
+          {{ timestamp2date(msg?.createdTime as number) }}
+        </p>
+      </div>
+    </div>
+    <h1 v-if="postResponse ? postResponse?.comment.length < 5 : true" class="nomore"
+      >没有更多了哦~</h1
+    >
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :page-count="totalPageCount"
+      v-model:currentPage="currentPage"
+      class="pager"
+      @current-change="handleCurrentChange"
+    />
+    <el-button type="primary" class="submit-comment" @click="onClickComment()">发表评论</el-button>
+    <el-drawer v-model="displayDrawer" direction="btt" size="50%">
+      <template #header>
+        <h2>回复：</h2>
+      </template>
+      <template #default>
+        <div>
+          <el-input
+            type="textarea"
+            maxlength="300"
+            show-word-limit
+            v-model="textarea"
+            :rows="8"
+            placeholder="请输入您的回复内容"
+          ></el-input>
+        </div>
+      </template>
+      <template #footer>
+        <div style="flex: auto">
+          <el-button @click="displayDrawer = false">取消</el-button>
+          <el-button type="primary" @click="submitComment">确认提交</el-button>
+        </div>
+      </template>
+    </el-drawer>
+    <BaseTail
+      :style="{
+        'margin-top': postResponse ? (postResponse.comment.length == 0 ? '28vh' : '22vh') : '28vh'
+      }"
+    ></BaseTail>
+  </div>
+</template>
 
 <style scoped>
 .frame {
@@ -189,7 +224,6 @@ hr {
   font-size: 1.2em;
   justify-content: space-between;
 }
-
 
 .comment-msg-container {
   border: 1px solid #555;
