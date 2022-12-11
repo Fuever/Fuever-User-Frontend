@@ -9,6 +9,7 @@ import router from './router/router'
 import './assets/main.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import 'dayjs/locale/zh-cn'
 const app = createApp(App)
 
 // 引入element组件

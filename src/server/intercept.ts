@@ -1,6 +1,8 @@
+import type { UserDetailed } from './models';
 import {  useLoginStateStore } from './../stores/counter'
 import axios from 'axios'
 import humps from 'humps'
+import { getUserDetail } from './api'
 // 创建一个单例（实例）
 const instance = axios.create({
   // baseURL: 'http://localhost:3001',
@@ -19,7 +21,7 @@ instance.interceptors.request.use(
     if (token) {
       config.headers!['Authorization'] = token
     }
-
+    config.data=humps.decamelizeKeys(config.data)
     return config
   },
   (err) => {
@@ -53,6 +55,7 @@ getToken().then((res) => {
   if (res) {
     const loginStateStore = useLoginStateStore()
     loginStateStore.setUserID(res)
+    getUserDetail(res).then(res => loginStateStore.setCurrentUser(res as UserDetailed))
     loginStateStore.setLogin()
   }
 })

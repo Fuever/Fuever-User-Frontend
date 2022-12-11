@@ -50,6 +50,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
               if (!loginStateStore.currentUser) {
                 getUserDetail(loginStateStore.userID as number).then((res) => {
                   loginStateStore.currentUser = res
+                  console.log("success");
+
                 })
               }
               console.log('login get token =>>', res)

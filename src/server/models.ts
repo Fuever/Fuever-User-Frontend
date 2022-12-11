@@ -2,8 +2,6 @@
 export interface User {
   id: number
   mail: string
-  usename: string
-  password: string
 }
 export interface UserDetailed extends User {
   nickname?: string

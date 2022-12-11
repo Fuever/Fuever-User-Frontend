@@ -16,6 +16,7 @@ import { ElMessage, type UploadInstance, type UploadProps, type UploadUserFile }
 const loginStateStore = useLoginStateStore()
 const router = useRouter()
 const avatarUrl = ref('')
+console.log("loginStateStore.currentUser",loginStateStore.currentUser);
 if (loginStateStore.currentUser) {
   avatarUrl.value = loginStateStore.currentUser.avatar as string
 }
@@ -54,9 +55,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-const change = () => {
-  console.log('change我有被调用的')
-}
+
 
 const handleRequest = (item: any) => {
   console.log(item)
@@ -121,7 +120,7 @@ const handleLogout = () => {
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">首页</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="2" disabled @click="toPath('/')">
+      <el-collapse-item name="2" disabled @click="toPath('/user/edit')">
         <template #title>
           <img
             style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
@@ -190,7 +189,6 @@ const handleLogout = () => {
           :auto-upload="false"
           action="Fake Action"
           :before-upload="beforeAvatarUpload"
-          :on-change="change"
           :http-request="handleRequest"
           :limit="1"
           list-type="picture"

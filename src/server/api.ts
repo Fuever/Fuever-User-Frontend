@@ -295,3 +295,9 @@ export async function postAvatar(avatar: File) {
   }
  
 }
+
+//  PUT /api/auth/user/ 完善资料
+export async function putEditInfo(user: UserDetailed) {
+  console.log('user Edit->',user);
+  await instance.put(`/api/auth/user/`,user)
+}
