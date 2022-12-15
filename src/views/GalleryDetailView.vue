@@ -15,8 +15,10 @@ const fontSize = ref('小')
 const speaking = ref(-1)
 const content = ref('')
 const route = useRoute()
+const router = useRouter()
 const post = ref<Post>()
 getGalleryDetail(+route.params.id).then((result) => {
+  console.log("Gallery",result);
   // https://stackoverflow.com/questions/14667713
   gallery.value = result
   content.value = result?.content as string
@@ -58,7 +60,7 @@ const postAuthorName = computed(() => {
   }
 })
 const toPostDetail = (id: number) => {
-  const router = useRouter()
+  
   router.push(
     {
       path:`/post/${id}`

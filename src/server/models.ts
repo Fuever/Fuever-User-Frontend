@@ -12,7 +12,6 @@ export interface UserDetailed extends User {
   age?: number
   job?: string
   entranceTime?: number
-  classId?: number
   residence?: string
 }
 // 下面增加description字段

@@ -350,3 +350,15 @@ export async function postAuthRoommates(studentNumber: number,
   }
  
 }
+
+//GET /api/auth/user/cls/all 获取班级列表
+export async function getClassList(): Promise<string[] | null> {
+  try {
+    const response = await instance.get(`/api/auth/user/cls/all/`)
+    console.log("res",response);
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
