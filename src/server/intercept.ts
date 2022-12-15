@@ -1,5 +1,5 @@
-import type { UserDetailed } from './models';
-import {  useLoginStateStore } from './../stores/counter'
+import type { UserDetailed } from './models'
+import { useLoginStateStore } from './../stores/counter'
 import axios from 'axios'
 import humps from 'humps'
 import { getUserDetail } from './api'
@@ -21,7 +21,7 @@ instance.interceptors.request.use(
     if (token) {
       config.headers!['Authorization'] = token
     }
-    config.data=humps.decamelizeKeys(config.data)
+    config.data = humps.decamelizeKeys(config.data)
     return config
   },
   (err) => {
@@ -31,8 +31,8 @@ instance.interceptors.request.use(
 
 // 响应拦截
 instance.interceptors.response.use(
-    (res) => {
-    res.data = humps.camelizeKeys(res.data);
+  (res) => {
+    res.data = humps.camelizeKeys(res.data)
     // console.log("camelized data==>",res.data)
     return res
   },
@@ -55,7 +55,7 @@ getToken().then((res) => {
   if (res) {
     const loginStateStore = useLoginStateStore()
     loginStateStore.setUserID(res)
-    getUserDetail(res).then(res => loginStateStore.setCurrentUser(res as UserDetailed))
+    getUserDetail(res).then((res) => loginStateStore.setCurrentUser(res as UserDetailed))
     loginStateStore.setLogin()
   }
 })
