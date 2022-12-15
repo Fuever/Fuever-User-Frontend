@@ -130,7 +130,7 @@ const handleLogout = () => {
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">完善信息</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="3" disabled @click="toPath('/working')">
+      <el-collapse-item name="3" disabled @click="toPath('/user/auth')">
         <template #title>
           <img
             style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"

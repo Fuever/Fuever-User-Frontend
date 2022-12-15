@@ -14,19 +14,32 @@ import { useRoute, useRouter } from 'vue-router'
 import { useLoginStateStore } from '@/stores/counter'
 import { reactive,watch } from 'vue'
 // @ts-ignore
-import { provinceAndCityDataPlus, CodeToText } from 'element-china-area-data'
+import { provinceAndCityDataPlus, CodeToText,TextToCode } from 'element-china-area-data'
 import { ElMessage } from 'element-plus'
 const loginStateStore = useLoginStateStore()
 const router = useRouter()
-let form = ref<UserDetailed>({id:-1,mail:""})
+const residenceCodes = ref()
+const form = ref<UserDetailed>({id:-1,mail:""})
 getUserDetail(loginStateStore.currentUser?.id as number).then(
   res => {
-    form.value=res as UserDetailed
+    form.value = res as UserDetailed
+    let residenceRes = TextToCode
+    if (res?.residence) {
+      console.log(res.residence);
+      for (const text of res?.residence?.split('/')) {
+        console.log(111,text);
+        residenceRes = residenceRes[text]
+      }
+    }
+    residenceCodes.value = residenceRes.code
+    
+    
+    
   }
 )
-const residenceCodes = ref([])
+
 const onSubmit = () => {
-  form.value.residence = residenceCodes.value.map(e => { return CodeToText[e] }).join("/")
+  form.value.residence = residenceCodes.value.map((e: string | number) => { return CodeToText[e] }).join("/")
   putEditInfo(form.value as UserDetailed).then(res => {
     ElMessage.success('编辑完成！')
     router.back()
