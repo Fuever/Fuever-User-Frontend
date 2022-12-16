@@ -390,3 +390,30 @@ export async function getClassListBySearch(
     return null
   }
 }
+//GET /api/auth/user/cls/{name} 获取班级学生列表
+export async function getStudentList(name:string):Promise<any[]|null> {
+  try {
+    const response = await instance.get(`/api/auth/user/cls/${name}`)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+//POST /api/auth/user/cls 加入班级
+export async function postJoin(
+  word: string
+){
+  try {
+    const response = await instance.post(
+      `/api/auth/user/cls/`,{className:word}
+    )
+    return response.data.data
+  } catch (error:any) {
+    if (error.response.status) {
+      return error.response.status
+    }
+    return null
+  }
+}

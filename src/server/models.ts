@@ -5,6 +5,7 @@ export interface User {
 }
 export interface UserDetailed extends User {
   nickname?: string
+  username?:string
   avatar?: string
   studentId?: number
   phone?: number

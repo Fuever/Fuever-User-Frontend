@@ -122,6 +122,11 @@ const router = createRouter({
       component:()=>import('../views/ClassSearchView.vue')
     },
     {
+      path: '/class/:name',
+      name: 'classDetail',
+      component:()=>import('../views/ClassDetailView.vue')
+    },
+    {
       path: '/working',
       name: 'working',
       component: () => import('../views/GuideOutView.vue')
@@ -150,7 +155,7 @@ router.beforeEach((to, from, next) => {
     console.log('beforeEach to path ===>', to.path)
     next()
   } else {
-    next('/login')
+    console.log(loginStateStore.currentUser);
     ElMessage.info('请先登录')
   }
 })
