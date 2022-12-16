@@ -34,6 +34,7 @@ getNewsDetail(+route.params.id).then((result) => {
         <h3>发布日期：{{news?timestamp2date(news.createTime):"不详"}} </h3>
         <h3>作者：{{ news?.authorName }}</h3>
       </div>
+      <img v-if="news?.cover" :src="news?.cover" style="width: 90vw;aspect-ratio: 4/3;height:auto">
       <el-divider content-position="center" />
       <mavon-editor class="editor" style="font-size: 1.2em;" defaultOpen="preview" :editable="false" :toolbarsFlag="false" placeholder="开始编辑" :subfield="false" :boxShadow="false" v-model="content"/>
     </div>
