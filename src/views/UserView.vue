@@ -140,14 +140,14 @@ const handleLogout = () => {
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">校友推荐</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="4" disabled @click="toPath('/forum')">
+      <el-collapse-item name="4" disabled @click="toPath('/class')">
         <template #title>
           <img
             style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
             src="@/assets/topic.svg"
             alt=""
           />
-          <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">热聊话题</h2>
+          <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">加入班级</h2>
         </template>
       </el-collapse-item>
       <el-collapse-item v-if="loginStateStore.login" name="5">

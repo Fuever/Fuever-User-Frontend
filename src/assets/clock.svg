@@ -5,10 +5,9 @@
         p-id="3895">
         <animate id="one" attributeName="fill" attributeType="XML" values="yellow;green;darkred;blue;yellow" begin="0s"
             dur="20s" fill="remove" repeatCount="indefinite"></animate>
-        <animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 512 512;360 512 512"
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate" values="360 512 512;0 512 512"
             begin="0s" dur="4s" fill="freeze" repeatCount="indefinite" additive="sum"></animateTransform>
-        <animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 512 512;360 512 512"
-            begin="outer.click" dur="1s" fill="freeze" repeatCount="indefinite" additive="sum"></animateTransform>
+       
         <!-- 外圈阴影 -->
     </path>
 
@@ -33,7 +32,7 @@
         d="M540.7 541.2c-2 0-4-0.6-5.8-1.8L337.5 399.9c-4.5-3.2-5.6-9.4-2.4-13.9 3.2-4.5 9.4-5.6 13.9-2.4L546.5 523c4.5 3.2 5.6 9.4 2.4 13.9-2 2.8-5.1 4.3-8.2 4.3z"
         fill="#000042" p-id="3901" data-spm-anchor-id="a313x.7781069.0.i15" class=""
         style="stroke: #000066; fill: none;stroke-width: 36px;">
-        <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 512 512" to="360 512 512"
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="360 512 512" to="0 512 512"
             begin="0s" dur="60s" fill="freeze" repeatCount="indefinite" additive="sum"></animateTransform>
     </path>
 
@@ -42,7 +41,7 @@
         d="M536.6 839.7c-5.2 0-9.6-4.1-10-9.4l-23.2-355.7c-0.4-5.5 3.8-10.3 9.3-10.6 5.5-0.4 10.3 3.8 10.6 9.3L546.5 829c0.4 5.5-3.8 10.3-9.3 10.6-0.1 0.1-0.4 0.1-0.6 0.1z"
         fill="#000042" p-id="3902" data-spm-anchor-id="a313x.7781069.0.i14" class=""
         style="stroke: #000066; fill: none;stroke-width: 32px;">
-        <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 512 512" to="360 512 512"
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="360 512 512" to="0 512 512"
             begin="0s" dur="4s" fill="freeze" repeatCount="indefinite" additive="sum"></animateTransform>
     </path>
 

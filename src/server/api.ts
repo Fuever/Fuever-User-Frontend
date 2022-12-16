@@ -352,13 +352,41 @@ export async function postAuthRoommates(studentNumber: number,
 }
 
 //GET /api/auth/user/cls/all 获取班级列表
-export async function getClassList(): Promise<string[] | null> {
+export async function getClassList(offset:number,limit:number): Promise<string[] | null> {
   try {
-    const response = await instance.get(`/api/auth/user/cls/all/`)
+    const response = await instance.get(`/api/auth/user/cls/all/?offset=${offset}&limit=${limit}`)
     console.log("res",response);
     return response.data.data
   } catch (error) {
     console.log(error)
+    return null
+  }
+}
+
+//GET /api/auth/user/cls 获取对应学生班级列表
+export async function getPersonalClassList(): Promise<string[] | null> {
+  try {
+    const response = await instance.get(`/api/auth/user/cls/`)
+    console.log("/api/auth/user/cls ",response);
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+// GET /api/pub/posts/search 帖子名字模糊搜索
+export async function getClassListBySearch(
+  word: string
+){
+  try {
+    const response = await instance.get(
+      `/api/auth/user/cls/search/?word=${word}`
+    )
+    return response.data.data
+  } catch (error:any) {
+    if (error.response.status) {
+      return error.response.status
+    }
     return null
   }
 }

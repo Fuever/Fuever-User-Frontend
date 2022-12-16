@@ -23,12 +23,12 @@
           <el-icon v-on:click="backHistory"><ArrowLeftBold /></el-icon>
 
           <img
-            src="../assets/images/11.png"
+            src="@/assets/images/11.png"
             style="width: 60px; height: 60%; display: flex; margin-left: 0"
           />
 
           <img
-            src="../assets/images/schoollogo.png"
+            src="@/assets/images/schoollogo.png"
             style="width: 200px; height: 80%; display: flex; margin-left: 10px"
           />
         </template>
