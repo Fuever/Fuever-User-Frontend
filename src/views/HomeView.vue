@@ -17,7 +17,7 @@ import { getAnniversaries, getGalleries, getNews, getPosts } from '@/server/api'
 import type { News, Post, Anniversary, Gallery } from '@/server/models'
 import { useRouter } from 'vue-router'
 import BaseCarousel from '@/components/BaseCarousel.vue'
-import { timestamp2date,timestamp2time } from '@/tool'
+import { timestamp2date, timestamp2time } from '@/tool'
 const router = useRouter()
 const news = ref<News[] | null>()
 const anniversaries = ref<Anniversary[] | null>()
@@ -30,11 +30,11 @@ getNews(0, 3).then((result) => {
   news.value = result
   console.log('news==>', news.value)
 })
-getPosts(0,2).then((result) => {
+getPosts(0, 2).then((result) => {
   posts.value = result
   console.log('posts==>', posts.value)
 })
-getAnniversaries(0,5).then((result) => {
+getAnniversaries(0, 5).then((result) => {
   anniversaries.value = result
   console.log('anniversaries==>', anniversaries.value)
 })
@@ -46,7 +46,7 @@ const toNewsDetails = (id: number) => {
 }
 const toPostDetail = (id: number) => {
   router.push({
-    path:`/post/${id}`
+    path: `/post/${id}`
   })
 }
 </script>
@@ -72,8 +72,7 @@ const toPostDetail = (id: number) => {
       <BlockHeader title="影像福大" title_english="Videos" to-path="/video"></BlockHeader>
 
       <h1 style="align-self: center; font-weight: bold">疫去春来</h1>
-      <video controls class="video"  preload="none">
-        
+      <video controls class="video" preload="none">
         <source
           src="https://news.fzu.edu.cn/__local/6/3D/EF/C2A4B68E681360EA48AB4ABD0FF_B00AF9BA_C724CC8.mp4"
           type="video/mp4"
@@ -96,7 +95,7 @@ const toPostDetail = (id: number) => {
           >
             <el-card>
               <h2>{{ item['title'] }}</h2>
-              <h3>截止于{{timestamp2date(item['end'])}}</h3>
+              <h3>截止于{{ timestamp2date(item['end']) }}</h3>
             </el-card>
           </el-timeline-item>
         </el-timeline>

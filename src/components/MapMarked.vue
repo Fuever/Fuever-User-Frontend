@@ -19,13 +19,13 @@ const toDetail = (id: number) => {
 }
 </script>
 <template>
-  <div style="overflow: scroll">
-    <div class="canves" style="height: 100%; position: absolute">
+  <div style="overflow: scroll" class="frame">
+    <div style="position: absolute">
       <img src="@/assets/images/map.png" alt="" />
       <div
         v-for="item in props.anniversaries"
         class="icon-container"
-        :style="{ top: (item['positionY'] as number *100)?.toString()+'%', left: (item['positionX'] as number *100)?.toString()+'%'}"
+        :style="{ top: (item['positionY'] as number *100 -4)?.toString()+'%', left: (item['positionX'] as number *100 -1.5)?.toString()+'%'}"
       >
         <el-button class="btn" link>
           <LocationFilled color="red" class="icon" />
@@ -38,7 +38,7 @@ const toDetail = (id: number) => {
       <div
         v-for="item in props.galleries"
         class="icon-container"
-        :style="{ top: (item['positionY'] as number *100)?.toString()+'%', left: (item['positionX'] as number *100)?.toString()+'%'}"
+        :style="{ top: (item['positionY'] as number *100 -4)?.toString()+'%', left: (item['positionX'] as number *100 -1.5)?.toString()+'%'}"
       >
         <el-button class="btn" link @click="toDetail(item.id)">
           <LocationFilled color="red" class="icon" />
