@@ -21,7 +21,11 @@ instance.interceptors.request.use(
     if (token) {
       config.headers!['Authorization'] = token
     }
-    config.data = humps.decamelizeKeys(config.data)
+    if (Object.prototype.toString.call(config.data) != '[object FormData]') {
+      config.data = humps.decamelizeKeys(config.data)
+    }else{
+      console.log("can't decamelize")
+    }
     return config
   },
   (err) => {
