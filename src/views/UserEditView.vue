@@ -39,7 +39,10 @@ getUserDetail(loginStateStore.currentUser?.id as number).then(
 )
 
 const onSubmit = () => {
-  form.value.residence = residenceCodes.value.map((e: string | number) => { return CodeToText[e] }).join("/")
+  if (residenceCodes.value) {
+    form.value.residence = residenceCodes.value.map((e: string | number) => { return CodeToText[e] }).join("/")
+  }
+
   putEditInfo(form.value as UserDetailed).then(res => {
     ElMessage.success('编辑完成！')
     router.back()
