@@ -296,22 +296,23 @@ export async function getUserDetail(id: number): Promise<UserDetailed | null> {
 
 // POST /api/auth/user/avatar 上传头像
 export async function postAvatar(avatar: File) {
-  const form = new FormData()
-  form.append('avatar', avatar)
-  try {
-    const response = await instance.post(`/api/auth/user/avatar`, form)
-    console.log('postAvatar response===>', response)
-    return response.data
-  } catch (error) {
-    console.log('postAvatar err===>', error)
-    return null
-  }
+  console.log("type of avatar",typeof avatar);
+  const formData = new FormData() 
+  console.log("before append formdata",formData.getAll('avatar'));
+  formData.append('avatar', avatar)
+  console.log("after append formdata",formData.getAll('avatar'));
+  return await instance.post(`/api/auth/user/avatar`,formData, {headers:{'Content-Type': 'multipart/form-data'}})
 }
 
 //  PUT /api/auth/user/ 完善资料
 export async function putEditInfo(user: UserDetailed) {
   console.log('user Edit->', user)
-  await instance.put(`/api/auth/user/`, user)
+  const response = await instance.put(`/api/auth/user/`, user, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return response.data 
 }
 
 // GET api/auth/user/stu/auth  获取验证所需信息
@@ -337,7 +338,7 @@ export async function postAuthRoommates(studentNumber: number,
   name: string, roommates: String[]) {
   try {
      await instance.post(`/api/auth/user/stu/auth`, {
-    studentNumber: studentNumber,
+    student_number: studentNumber,
     name: name,
     roommates:roommates
   })  
@@ -407,7 +408,7 @@ export async function postJoin(
 ){
   try {
     const response = await instance.post(
-      `/api/auth/user/cls/`,{className:word}
+      `/api/auth/user/cls/`,{class_name:word}
     )
     return response.data.data
   } catch (error:any) {

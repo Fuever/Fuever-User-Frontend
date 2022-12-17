@@ -10,7 +10,8 @@ const instance = axios.create({
   baseURL: 'http://1.13.169.95:8080',
   // baseURL: 'http://192.168.246.67:8080',
   timeout: 4000,
-  responseType: 'json'
+  responseType: 'json',
+  
 })
 
 // 请求拦截
@@ -20,8 +21,8 @@ instance.interceptors.request.use(
     let token = localStorage.getItem('token')
     if (token) {
       config.headers!['Authorization'] = token
+      
     }
-    config.data = humps.decamelizeKeys(config.data)
     return config
   },
   (err) => {

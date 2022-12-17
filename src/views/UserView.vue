@@ -13,6 +13,7 @@ import type { UserDetailed } from '@/server/models'
 import { ref } from 'vue'
 import { getUserDetail, logout, postAvatar } from '@/server/api'
 import { ElMessage, type UploadInstance, type UploadProps, type UploadUserFile } from 'element-plus'
+import { cloneFnJSON } from '@vueuse/core'
 const loginStateStore = useLoginStateStore()
 const router = useRouter()
 const avatarUrl = ref('')
@@ -58,19 +59,15 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 
 const handleRequest = (item: any) => {
-  console.log(item)
+  console.log("item object ->",item);
   postAvatar(item.file)
-    .then((res) => {
-      if (loginStateStore.currentUser) {
-        loginStateStore.currentUser.avatar = res['avatar']
-      }
-    })
     .then(
       (res) => {
         displayUploadPictureDialog.value = false
         ElMessage.info('上传成功！')
       },
       (err) => {
+        console.log("222",err);
         ElMessage.info('上传失败！')
       }
     )
