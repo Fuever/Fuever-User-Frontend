@@ -414,3 +414,14 @@ export async function postJoin(
     return null
   }
 }
+
+//GET /api/auth/user/reco 获取班级学生列表
+export async function getRecomendationList() {
+  try {
+    const response = await instance.get(`/api/auth/user/reco/`)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}

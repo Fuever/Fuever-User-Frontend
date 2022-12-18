@@ -11,13 +11,12 @@ import { useLoginStateStore } from '@/stores/counter'
 import NavMenu from '@/components/NavMenu.vue'
 import type { UserDetailed } from '@/server/models'
 import { ref } from 'vue'
-import { getUserDetail, logout, postAvatar } from '@/server/api'
+import { getRecomendationList, getUserDetail, logout, postAvatar } from '@/server/api'
 import { ElMessage, type UploadInstance, type UploadProps, type UploadUserFile } from 'element-plus'
-import { cloneFnJSON } from '@vueuse/core'
 const loginStateStore = useLoginStateStore()
 const router = useRouter()
-const avatarUrl = ref('')
-console.log("loginStateStore.currentUser",loginStateStore.currentUser);
+const avatarUrl = ref<string | null>(null)
+console.log('loginStateStore.currentUser', loginStateStore.currentUser)
 if (loginStateStore.currentUser) {
   avatarUrl.value = loginStateStore.currentUser.avatar as string
 }
@@ -26,7 +25,7 @@ if (!loginStateStore.currentUser && loginStateStore.userID) {
   getUserDetail(loginStateStore.userID).then((res) => {
     if (!loginStateStore.currentUser) {
       loginStateStore.setCurrentUser(res as UserDetailed)
-      avatarUrl.value=res?res['avatar'] as string:""
+      avatarUrl.value = res ? (res['avatar'] as string) : ''
     }
   })
 }
@@ -42,11 +41,13 @@ const handleUploadAvatar = () => {
     ElMessage.info('请先登录！')
   }
 }
-
+const recoList = ref()
+getRecomendationList().then((res) => {
+  recoList.value = res
+})
 const displayUploadPictureDialog = ref(false)
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  console.log('beforeAvatarUpload:我是有被调用的')
   if (!['image/jpeg', 'image/jpg', 'image/png'].includes(rawFile.type)) {
     ElMessage.error('头像图片格式应为jpeg、jpg、png中的一个')
     return false
@@ -57,20 +58,18 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   return true
 }
 
-
 const handleRequest = (item: any) => {
-  console.log("item object ->",item);
-  postAvatar(item.file)
-    .then(
-      (res) => {
-        displayUploadPictureDialog.value = false
-        ElMessage.info('上传成功！')
-      },
-      (err) => {
-        console.log("222",err);
-        ElMessage.info('上传失败！')
-      }
-    )
+  console.log('item object ->', item)
+  postAvatar(item.file).then(
+    (res) => {
+      displayUploadPictureDialog.value = false
+      ElMessage.info('上传成功！')
+    },
+    (err) => {
+      console.log('222', err)
+      ElMessage.info('上传失败！')
+    }
+  )
 }
 
 const uploadRef = ref<UploadInstance>()
@@ -79,9 +78,17 @@ const submitUpload = () => {
 }
 const handleLogout = () => {
   logout()
-  avatarUrl.value = ""
+  avatarUrl.value = ''
   loginStateStore.clearCurrentUser()
-
+}
+const toUserProfile = (id: number) => {
+  // console.log('toUserProfile->', id)
+  router.push({
+    name: 'profile',
+    params: {
+      id: id
+    }
+  })
 }
 </script>
 
@@ -127,16 +134,7 @@ const handleLogout = () => {
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">完善信息</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="3" disabled @click="toPath('/user/auth')">
-        <template #title>
-          <img
-            style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
-            src="@/assets/recom.svg"
-            alt=""
-          />
-          <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">校友推荐</h2>
-        </template>
-      </el-collapse-item>
+
       <el-collapse-item name="4" disabled @click="toPath('/class')">
         <template #title>
           <img
@@ -145,6 +143,41 @@ const handleLogout = () => {
             alt=""
           />
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">加入班级</h2>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="6" disabled @click="toPath('/user/auth')">
+        <template #title>
+          <img
+            style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
+            src="@/assets/refine.svg"
+            alt=""
+          />
+          <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">身份认证</h2>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="3">
+        <div style="display: flex; flex-direction: column; margin: 0 2vw 0 4vw">
+          <div
+            v-for="i in recoList"
+            @click="toUserProfile(i.id)"
+            style="display: flex; margin-top: 1vh; align-items: center"
+          >
+            <div>
+              <ElAvatar :src="i.avatar"></ElAvatar>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-left: 2vw">
+              <h2 style="font-weight: bold">{{ i.nickname }}</h2>
+              <h3>来自 {{ i.residence }} 的校友</h3>
+            </div>
+          </div>
+        </div>
+        <template #title>
+          <img
+            style="margin-left: 2vw; color: darkred; font-weight: bolder; height: 50%"
+            src="@/assets/recom.svg"
+            alt=""
+          />
+          <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">校友推荐</h2>
         </template>
       </el-collapse-item>
       <el-collapse-item v-if="loginStateStore.login" name="5">
