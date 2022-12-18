@@ -38,9 +38,8 @@
         <el-menu-item index="/forum">交流区</el-menu-item>
         <el-menu-item index="/news">新闻资讯</el-menu-item>
         <el-menu-item index="/video">影像福大</el-menu-item>
-        <el-menu-item index="/activity">院庆活动</el-menu-item>
+        <el-menu-item index="/anniversary">院庆活动</el-menu-item>
         <el-menu-item index="/gallery">时光长廊</el-menu-item>
-        <el-menu-item index="/dev">DEV</el-menu-item>
         <el-menu-item index="/login" v-if="!loginStateStore.login">登录</el-menu-item>
       </el-sub-menu>
     </el-menu>
