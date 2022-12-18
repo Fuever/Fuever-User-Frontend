@@ -10,25 +10,32 @@ import { useRouter } from 'vue-router'
 import { useLoginStateStore } from '@/stores/counter'
 import NavMenu from '@/components/NavMenu.vue'
 import type { UserDetailed } from '@/server/models'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getRecomendationList, getUserDetail, logout, postAvatar } from '@/server/api'
 import { ElMessage, type UploadInstance, type UploadProps, type UploadUserFile } from 'element-plus'
 const loginStateStore = useLoginStateStore()
 const router = useRouter()
 const avatarUrl = ref<string | null>(null)
 console.log('loginStateStore.currentUser', loginStateStore.currentUser)
-if (loginStateStore.currentUser) {
-  avatarUrl.value = loginStateStore.currentUser.avatar as string
-}
-const currentFiles = ref<UploadUserFile | null>()
-if (!loginStateStore.currentUser && loginStateStore.userID) {
-  getUserDetail(loginStateStore.userID).then((res) => {
-    if (!loginStateStore.currentUser) {
-      loginStateStore.setCurrentUser(res as UserDetailed)
-      avatarUrl.value = res ? (res['avatar'] as string) : ''
-    }
+onMounted(() => {
+  if (loginStateStore.currentUser) {
+    avatarUrl.value = loginStateStore.currentUser.avatar as string
+  }
+  if (!loginStateStore.currentUser && loginStateStore.userID) {
+    getUserDetail(loginStateStore.userID).then((res) => {
+      if (!loginStateStore.currentUser) {
+        loginStateStore.setCurrentUser(res as UserDetailed)
+        avatarUrl.value = res ? (res['avatar'] as string) : ''
+      }
+    })
+  }
+  getRecomendationList().then((res) => {
+    recoList.value = res
   })
-}
+})
+
+const currentFiles = ref<UploadUserFile | null>()
+
 const toPath = (path: string) => {
   router.push({
     path: path
@@ -42,9 +49,7 @@ const handleUploadAvatar = () => {
   }
 }
 const recoList = ref()
-getRecomendationList().then((res) => {
-  recoList.value = res
-})
+
 const displayUploadPictureDialog = ref(false)
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
