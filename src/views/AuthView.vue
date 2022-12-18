@@ -54,6 +54,7 @@ const router = useRouter()
 const onSubmit = () => {
   getAuthNameArray(Number(studentNumber.value), name.value).then((res) => {
     if (res) {
+      authNameArray.value=null
       if (res == 404) {
         ElMessage.info('学号和姓名不匹配，请重试')
       } else if (res == 403) {
