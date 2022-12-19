@@ -56,13 +56,39 @@ getUserDetail(+route.params.id).then((res) => {
           <template #label>
             <div class="cell-item">
               <el-icon>
+                <MessageBox />
+              </el-icon>
+              <h3 style="font-weight: bolder; margin-left: 1vw"> 真实姓名 </h3>
+            </div>
+          </template>
+          <h3>
+            {{ userDisplayed ? (userDisplayed.username?userDisplayed.username:'未认证') : '未认证' }}
+          </h3>
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template #label>
+            <div class="cell-item">
+              <el-icon>
+                <DocumentCopy />
+              </el-icon>
+              <h3 style="font-weight: bolder; margin-left: 1vw"> 学号 </h3>
+            </div>
+          </template>
+          <h3>
+            {{ userDisplayed ? (userDisplayed.studentId?userDisplayed.studentId:'未认证') : '未认证' }}
+          </h3>
+        </el-descriptions-item>
+        <el-descriptions-item :span="2">
+          <template #label>
+            <div class="cell-item">
+              <el-icon>
                 <message />
               </el-icon>
               <h3 style="font-weight: bolder; margin-left: 1vw"> Email </h3>
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? userDisplayed?.mail : '未知' }}
+            {{ userDisplayed ? (userDisplayed.mail?userDisplayed.mail:'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
         <el-descriptions-item :span="2">
@@ -75,7 +101,7 @@ getUserDetail(+route.params.id).then((res) => {
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? userDisplayed?.phone : '未知' }}
+            {{ userDisplayed ? (userDisplayed.phone?userDisplayed.phone:'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
         <el-descriptions-item :span="2">
@@ -88,7 +114,7 @@ getUserDetail(+route.params.id).then((res) => {
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? userDisplayed?.residence : '未知' }}
+            {{ userDisplayed ? (userDisplayed.residence?userDisplayed.residence:'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
         <el-descriptions-item :span="2">
@@ -101,7 +127,7 @@ getUserDetail(+route.params.id).then((res) => {
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? userDisplayed?.job : '未知' }}
+            {{ userDisplayed ? (userDisplayed.job?userDisplayed.job:'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
         <el-descriptions-item label="性别" :span="2">
@@ -114,7 +140,7 @@ getUserDetail(+route.params.id).then((res) => {
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? (userDisplayed?.gender ? '男' : '女') : '未知' }}
+            {{ userDisplayed ? (userDisplayed.gender?(userDisplayed.gender?'男':'女'):'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
         <el-descriptions-item label="入学年份">
