@@ -13,7 +13,7 @@ import { timestamp2time } from '@/tool'
 const router = useRouter()
 const news = ref<News[] | null>()
 // TODO 修改为换页时才请求
-getNews(1, Number.MAX_SAFE_INTEGER).then((result) => {
+getNews(0, 10).then((result) => {
   news.value = result
 })
 

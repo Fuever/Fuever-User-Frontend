@@ -14,7 +14,7 @@ import { useRoute } from 'vue-router'
 import { CreditCard } from '@element-plus/icons-vue'
 import { timestamp2date } from '@/tool'
 
-const userDisplayed = ref<UserDetailed | null>()
+const userDisplayed = ref<UserDetailed | null>(null)
 const avatarUrl = ref('')
 const route = useRoute()
 // console.log(route)
@@ -22,6 +22,7 @@ getUserDetail(+route.params.id).then((res) => {
   userDisplayed.value = res
   avatarUrl.value = res?.avatar as string
 })
+
 </script>
 
 <template>
@@ -126,7 +127,7 @@ getUserDetail(+route.params.id).then((res) => {
             </div>
           </template>
           <h3>
-            {{ userDisplayed ? timestamp2date(userDisplayed?.entranceTime as number) : '未知' }}
+            {{ userDisplayed ? (userDisplayed.entranceTime?new Date(userDisplayed.entranceTime as number).toLocaleString():'未知') : '未知' }}
           </h3>
         </el-descriptions-item>
       </el-descriptions>

@@ -72,7 +72,7 @@ const onSubmit = () => {
         <el-input-number v-model="form.age" :min="18" :max="100" />
       </el-form-item>
       <el-form-item label="手机号码">
-        <el-input v-model="form.phone" />
+        <el-input v-model.number="form.phone" />
       </el-form-item>
       <el-form-item label="职业">
         <el-input v-model="form.job" />
