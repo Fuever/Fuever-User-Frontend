@@ -98,14 +98,14 @@ const editorFontSize = computed(() => {
       <div class="flex center" style="margin-left: 2vw">
         <h2>字体：</h2>
         <el-radio-group v-model="fontSize" size="large" :border="false">
-          <el-radio-button label="大"><h2>大</h2></el-radio-button>
-          <el-radio-button label="中"><h3>中</h3></el-radio-button>
+          <el-radio-button label="大"><h4>大</h4></el-radio-button>
+          <el-radio-button label="中"><h4>中</h4></el-radio-button>
           <el-radio-button label="小"><h4>小</h4></el-radio-button>
         </el-radio-group>
       </div>
 
       <el-button link type="plain" @click="controlSpeech()">
-        <h2>语音介绍</h2>
+        <h3>语音介绍</h3>
         <el-icon style="height: 40px; width: 40px">
           <img
             v-if="speaking === -1"
@@ -129,7 +129,7 @@ const editorFontSize = computed(() => {
         :class="{ col: fontSize !== '小' }"
       >
         <div>作者：{{ gallery?.['authorName'] }}</div>
-        <div>发布时间：{{ gallery?.createTime }}</div>
+        <div>发布时间：{{ new Date(gallery?.createTime as number).toLocaleDateString() }}</div>
       </div>
 
       <mavon-editor class="editor" defaultOpen="preview" :editable="false" :toolbarsFlag="false" :class="{ 'editor-small': fontSize == '小', 'editor-middle': fontSize == '中', 'editor-large': fontSize == '大' }"  placeholder="开始编辑" :subfield="false" :boxShadow="false" v-model="content"/>
