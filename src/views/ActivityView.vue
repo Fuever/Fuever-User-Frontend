@@ -6,9 +6,7 @@
     </div>
     <BaseBlockHeader title="时间轴" title_english="Timeline" :hide-more="true"></BaseBlockHeader>
 
-    <div
-      class="timeline-container"
-    >
+    <div class="timeline-container">
       <el-timeline style="margin: 3%">
         <el-timeline-item
           v-for="item in anniversaries"
@@ -18,7 +16,7 @@
         >
           <el-card>
             <h2>{{ item['title'] }}</h2>
-            <h3>截止于{{timestamp2date(item['end'])}}</h3>
+            <h3>截止于{{ timestamp2date(item['end']) }}</h3>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -40,13 +38,14 @@ import { ref } from 'vue'
 import MapMarked from '@/components/MapMarked.vue'
 import { timestamp2date } from '@/tool'
 const anniversaries = ref<Anniversary[] | null>()
-getAnniversaries(0,100).then((res) => (anniversaries.value = res))
+getAnniversaries(0, 100).then((res) => (anniversaries.value = res))
 </script>
 
 <style scoped>
 .top {
   display: flex;
   flex-direction: column;
+  
 }
 
 .flex {
@@ -66,12 +65,12 @@ getAnniversaries(0,100).then((res) => (anniversaries.value = res))
   margin-bottom: 4%;
 }
 
-.timeline-container{
-    margin: 0 2% 0 2%;
-    overflow-y: overlay;
-    height: 60vh;
-    border-radius: 2%;
-    border: 2px solid #bbb;
+.timeline-container {
+  margin: 0 2% 0 2%;
+  overflow-y: overlay;
+  height: 60vh;
+  border-radius: 2%;
+  border: 2px solid #bbb;
 }
 
 hr {
