@@ -185,9 +185,9 @@ const toUserProfile = (id: number) => {
           <h2 style="margin-left: 2vw; color: darkred; font-weight: bolder">校友推荐</h2>
         </template>
       </el-collapse-item>
-      <el-collapse-item v-if="loginStateStore.login" name="5">
+      <el-collapse-item id="logout" v-if="loginStateStore.login" name="5">
         <div style="display: flex; justify-content: flex-end">
-          <el-button @click="handleLogout" type="primary">
+          <el-button id="logout_btn" @click="handleLogout" type="primary">
             <h2>确认退出</h2>
           </el-button>
         </div>

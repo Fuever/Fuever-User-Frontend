@@ -50,8 +50,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
               if (!loginStateStore.currentUser) {
                 getUserDetail(loginStateStore.userID as number).then((res) => {
                   loginStateStore.currentUser = res
-                  console.log("success");
-
+                  console.log('success')
                 })
               }
               console.log('login get token =>>', res)
@@ -91,10 +90,11 @@ const toSignUp = () => {
     <elCard class="f-col form-card">
       <el-form class="form" ref="ruleFormRef" :model="ruleForm" :rules="rules">
         <el-form-item label="账号：" class="account" prop="accountID">
-          <el-input v-model="ruleForm.accountID" placeholder="邮箱/电话号" clearable />
+          <el-input id="email" v-model="ruleForm.accountID" placeholder="邮箱" clearable />
         </el-form-item>
         <el-form-item label="密码：" class="pwd" prop="password">
           <el-input
+            id="password"
             v-model="ruleForm.password"
             type="password"
             placeholder="密码"
