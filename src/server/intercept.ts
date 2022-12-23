@@ -56,14 +56,5 @@ async function getToken(): Promise<number | null> {
   }
 }
 
-getToken().then((res) => {
-  if (res) {
-    const loginStateStore = useLoginStateStore()
-    loginStateStore.setUserID(res)
-    getUserDetail(res).then((res) => loginStateStore.setCurrentUser(res as UserDetailed))
-    loginStateStore.setLogin()
-  }
-})
-
 // 整体导出
 export default instance

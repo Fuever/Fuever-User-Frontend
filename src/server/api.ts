@@ -126,10 +126,10 @@ export async function postLogin(password: string, mailbox: string) {
 
 // GET /api/auth/user/r 获取token
 export async function getToken(): Promise<number | null> {
-  const response = await instance.get(`/api/auth/user/r`)
-  if (response.status == 200) {
+  try {
+    const response = await instance.get(`/api/auth/user/r`)
     return response.data.data
-  } else {
+  } catch (error:any) {
     return null
   }
 }
@@ -296,29 +296,28 @@ export async function getUserDetail(id: number): Promise<UserDetailed | null> {
 
 // POST /api/auth/user/avatar 上传头像
 export async function postAvatar(avatar: File) {
-  console.log("type of avatar",typeof avatar);
-  const formData = new FormData() 
-  console.log("before append formdata",formData.getAll('avatar'));
+  console.log('type of avatar', typeof avatar)
+  const formData = new FormData()
+  console.log('before append formdata', formData.getAll('avatar'))
   formData.append('avatar', avatar)
-  console.log("after append formdata",formData.getAll('avatar'));
-  return await instance.post(`/api/auth/user/avatar`,formData, {headers:{'Content-Type': 'multipart/form-data'}})
+  console.log('after append formdata', formData.getAll('avatar'))
+  return await instance.post(`/api/auth/user/avatar`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
 }
 
 //  PUT /api/auth/user/ 完善资料
 export async function putEditInfo(user: UserDetailed) {
   console.log('user Edit->', user)
   const response = await instance.put(`/api/auth/user/`, user)
-  return response.data 
+  return response.data
 }
 
 // GET api/auth/user/stu/auth  获取验证所需信息
-export async function getAuthNameArray(
-  studentNumber: number,
-  name: string
-) {
+export async function getAuthNameArray(studentNumber: number, name: string) {
   try {
     const response = await instance.get(
-      `api/auth/user/stu/auth?student_number=${studentNumber}&name=${name}`
+      `/api/auth/user/stu/auth?student_number=${studentNumber}&name=${name}`
     )
     return response.data.data.nameArray
   } catch (error: any) {
@@ -330,29 +329,26 @@ export async function getAuthNameArray(
 }
 
 // POST /api/auth/user/stu/auth 验证学生身份
-export async function postAuthRoommates(studentNumber: number,
-  name: string, roommates: String[]) {
+export async function postAuthRoommates(studentNumber: number, name: string, roommates: String[]) {
   try {
-     await instance.post(`/api/auth/user/stu/auth`, {
-    student_number: studentNumber,
-    name: name,
-    roommates:roommates
-  })  
+    await instance.post(`/api/auth/user/stu/auth`, {
+      student_number: studentNumber,
+      name: name,
+      roommates: roommates
+    })
   } catch (error: any) {
-    
     if (error.response.status) {
       return error.response.status
     }
     return null
   }
- 
 }
 
 //GET /api/auth/user/cls/all 获取班级列表
-export async function getClassList(offset:number,limit:number): Promise<string[] | null> {
+export async function getClassList(offset: number, limit: number): Promise<string[] | null> {
   try {
     const response = await instance.get(`/api/auth/user/cls/all/?offset=${offset}&limit=${limit}`)
-    console.log("res",response);
+    console.log('res', response)
     return response.data.data
   } catch (error) {
     console.log(error)
@@ -364,7 +360,7 @@ export async function getClassList(offset:number,limit:number): Promise<string[]
 export async function getPersonalClassList(): Promise<string[] | null> {
   try {
     const response = await instance.get(`/api/auth/user/cls/`)
-    console.log("/api/auth/user/cls ",response);
+    console.log('/api/auth/user/cls ', response)
     return response.data.data
   } catch (error) {
     console.log(error)
@@ -372,15 +368,11 @@ export async function getPersonalClassList(): Promise<string[] | null> {
   }
 }
 // GET /api/pub/posts/search 帖子名字模糊搜索
-export async function getClassListBySearch(
-  word: string
-){
+export async function getClassListBySearch(word: string) {
   try {
-    const response = await instance.get(
-      `/api/auth/user/cls/search/?word=${word}`
-    )
+    const response = await instance.get(`/api/auth/user/cls/search/?word=${word}`)
     return response.data.data
-  } catch (error:any) {
+  } catch (error: any) {
     if (error.response.status) {
       return error.response.status
     }
@@ -388,7 +380,7 @@ export async function getClassListBySearch(
   }
 }
 //GET /api/auth/user/cls/{name} 获取班级学生列表
-export async function getStudentList(name:string):Promise<any[]|null> {
+export async function getStudentList(name: string): Promise<any[] | null> {
   try {
     const response = await instance.get(`/api/auth/user/cls/${name}`)
     return response.data.data
@@ -399,15 +391,11 @@ export async function getStudentList(name:string):Promise<any[]|null> {
 }
 
 //POST /api/auth/user/cls 加入班级
-export async function postJoin(
-  word: string
-){
+export async function postJoin(word: string) {
   try {
-    const response = await instance.post(
-      `/api/auth/user/cls/`,{class_name:word}
-    )
+    const response = await instance.post(`/api/auth/user/cls/`, { class_name: word })
     return response.data.data
-  } catch (error:any) {
+  } catch (error: any) {
     if (error.response.status) {
       return error.response.status
     }
